@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#d6cbb3" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="#efe6d4"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <rect x="36" y="36" width="1528" height="828" fill="none" stroke="#1d2118" stroke-width="3"/>
+  <rect x="36" y="36" width="1528" height="64" fill="#1d2118"/>
+  <text x="60" y="78" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#F2C14E" font-weight="700">AP-1-ASM-001  ·  Figure 4 — Pinion P-05 and handle P-04</text>
+  <text x="1480" y="78" text-anchor="end" font-family="DejaVu Sans, sans-serif" font-size="18" fill="#efe6d4">REV A</text>
+  
+    <rect x="680" y="250" width="160" height="420" fill="#8d9278" stroke="#1d2118" stroke-width="3"/>
+    <rect x="710" y="270" width="100" height="300" fill="#c9c2ab" stroke="#1d2118" stroke-width="2"/>
+    <circle cx="760" cy="470" r="46" fill="#6b6f58" stroke="#1d2118" stroke-width="3"/>
+    <circle cx="760" cy="470" r="16" fill="#efe6d4" stroke="#1d2118" stroke-width="2"/>
+    <rect x="430" y="446" width="250" height="48" rx="8" fill="#4a5340" stroke="#1d2118" stroke-width="3"/>
+    <circle cx="430" cy="470" r="28" fill="#1d2118" stroke="#1d2118" stroke-width="3"/>
+    
+    <g>
+      <circle cx="400" cy="400" r="16" fill="#efe6d4" stroke="#1d2118" stroke-width="2"/>
+      <text x="400" y="404" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="11" font-weight="700" fill="#1d2118">P-04</text>
+    </g>
+    
+    <g>
+      <circle cx="860" cy="470" r="16" fill="#efe6d4" stroke="#1d2118" stroke-width="2"/>
+      <text x="860" y="474" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="11" font-weight="700" fill="#1d2118">P-05</text>
+    </g>
+    <text x="1000" y="400" font-family="DejaVu Sans, sans-serif" font-size="20" fill="#1d2118">Mesh pinion with ram rack</text>
+    <text x="1000" y="436" font-family="DejaVu Sans, sans-serif" font-size="20" fill="#1d2118">Retain handle on pinion square</text>
+    
+  <text x="60" y="840" font-family="DejaVu Sans, sans-serif" font-size="16" fill="#4a5340">Source-faithful illustration. Do not substitute hardware.</text>
+</svg>

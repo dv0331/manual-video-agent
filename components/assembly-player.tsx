@@ -1,0 +1,82 @@
+"use client";
+
+import { useRef, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import type { Scene } from "@/lib/agent/types";
+import { SCENE_SECONDS } from "@/lib/agent/types";
+
+export function AssemblyPlayer({
+  videoUrl,
+  vttUrl,
+  scenes,
+}: {
+  videoUrl: string;
+  vttUrl?: string;
+  scenes: Scene[];
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [active, setActive] = useState(0);
+
+  function seekTo(index: number) {
+    const video = videoRef.current;
+    if (!video) return;
+    video.currentTime = index * SCENE_SECONDS + 0.05;
+    void video.play();
+  }
+
+  return (
+    <section className="grid gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(16rem,0.9fr)]">
+      <div className="overflow-hidden rounded-xl border border-border/80 bg-black">
+        <video
+          ref={videoRef}
+          className="aspect-video w-full"
+          controls
+          src={videoUrl}
+          onTimeUpdate={(e) => {
+            const index = Math.min(
+              scenes.length - 1,
+              Math.floor(e.currentTarget.currentTime / SCENE_SECONDS),
+            );
+            if (index >= 0) setActive(index);
+          }}
+        >
+          {vttUrl ? <track kind="chapters" src={vttUrl} default /> : null}
+        </video>
+      </div>
+      <ol className="flex max-h-[28rem] flex-col gap-2 overflow-auto lg:max-h-none">
+        {scenes.length ? (
+          scenes.map((scene, i) => (
+            <li key={scene.id}>
+              <button
+                type="button"
+                onClick={() => seekTo(i)}
+                className={`w-full rounded-lg border px-3 py-2 text-left transition ${
+                  i === active
+                    ? "border-primary bg-primary/10"
+                    : "border-border/80 bg-card hover:border-primary/40"
+                }`}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-mono text-[11px] text-primary">
+                    STEP {String(scene.index).padStart(2, "0")}
+                  </span>
+                  {scene.warnings.length ? (
+                    <Badge variant="destructive">warning</Badge>
+                  ) : null}
+                </div>
+                <p className="mt-1 text-sm font-medium">{scene.title}</p>
+                <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+                  {scene.narration}
+                </p>
+              </button>
+            </li>
+          ))
+        ) : (
+          <li className="rounded-lg border border-border/80 p-3 text-sm text-muted-foreground">
+            No chapter list yet.
+          </li>
+        )}
+      </ol>
+    </section>
+  );
+}

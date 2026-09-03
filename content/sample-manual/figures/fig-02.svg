@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#d6cbb3" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="#efe6d4"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <rect x="36" y="36" width="1528" height="828" fill="none" stroke="#1d2118" stroke-width="3"/>
+  <rect x="36" y="36" width="1528" height="64" fill="#1d2118"/>
+  <text x="60" y="78" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#F2C14E" font-weight="700">AP-1-ASM-001  ·  Figure 2 — F-10 bolts and W-10 washers, finger-tight</text>
+  <text x="1480" y="78" text-anchor="end" font-family="DejaVu Sans, sans-serif" font-size="18" fill="#efe6d4">REV A</text>
+  
+    <rect x="430" y="600" width="500" height="130" rx="8" fill="#b7b09c" stroke="#1d2118" stroke-width="3"/>
+    <rect x="620" y="280" width="130" height="330" fill="#8d9278" stroke="#1d2118" stroke-width="3"/>
+    <g transform="translate(520,690)">
+      <circle cx="0" cy="0" r="16" fill="#cfc6b0" stroke="#1d2118" stroke-width="2"/>
+      <rect x="-8" y="-28" width="16" height="22" fill="#6b6f58" stroke="#1d2118" stroke-width="2"/>
+    </g>
+    <g transform="translate(840,690)">
+      <circle cx="0" cy="0" r="16" fill="#cfc6b0" stroke="#1d2118" stroke-width="2"/>
+      <rect x="-8" y="-28" width="16" height="22" fill="#6b6f58" stroke="#1d2118" stroke-width="2"/>
+    </g>
+    
+    <g>
+      <circle cx="500" cy="740" r="16" fill="#efe6d4" stroke="#1d2118" stroke-width="2"/>
+      <text x="500" y="744" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="11" font-weight="700" fill="#1d2118">F-10</text>
+    </g>
+    
+    <g>
+      <circle cx="900" cy="740" r="16" fill="#efe6d4" stroke="#1d2118" stroke-width="2"/>
+      <text x="900" y="744" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="11" font-weight="700" fill="#1d2118">W-10</text>
+    </g>
+    <rect x="1040" y="260" width="420" height="160" fill="#efe6d4" stroke="#c45c26" stroke-width="3"/>
+    <text x="1060" y="310" font-family="DejaVu Sans, sans-serif" font-size="22" fill="#c45c26" font-weight="700">WARNING</text>
+    <text x="1060" y="350" font-family="DejaVu Sans, sans-serif" font-size="18" fill="#1d2118">Do not apply final torque</text>
+    <text x="1060" y="380" font-family="DejaVu Sans, sans-serif" font-size="18" fill="#1d2118">until step 5 travel check.</text>
+    
+  <text x="60" y="840" font-family="DejaVu Sans, sans-serif" font-size="16" fill="#4a5340">Source-faithful illustration. Do not substitute hardware.</text>
+</svg>
