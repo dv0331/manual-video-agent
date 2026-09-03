@@ -1,6 +1,14 @@
-import { readFile } from "node:fs/promises";
+import sharp from "sharp";
 import type { MediaProvider } from "@/lib/agent/providers/types";
 import type { AssemblyGraph, EvaluationScores, Scene } from "@/lib/agent/types";
+
+async function compactImage(filePath: string) {
+  const compressed = await sharp(filePath)
+    .resize({ width: 720, withoutEnlargement: true })
+    .png({ compressionLevel: 9 })
+    .toBuffer();
+  return { mimeType: "image/png", base64: compressed.toString("base64") };
+}
 
 export async function evaluateScene(options: {
   provider: MediaProvider;
@@ -12,15 +20,9 @@ export async function evaluateScene(options: {
   const knownPartIds = options.graph.parts.map((p) => p.id);
   return options.provider.evaluateFrame({
     scene: options.scene,
-    frame: {
-      mimeType: "image/png",
-      base64: (await readFile(options.framePath)).toString("base64"),
-    },
+    frame: await compactImage(options.framePath),
     previousFrame: options.previousFramePath
-      ? {
-          mimeType: "image/png",
-          base64: (await readFile(options.previousFramePath)).toString("base64"),
-        }
+      ? await compactImage(options.previousFramePath)
       : undefined,
     knownPartIds,
   });

@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { GoogleGenAI } from "@google/genai";
 import { extractJson } from "@/lib/agent/json";
+import { withTimeout } from "@/lib/agent/timeout";
 import { MAX_SCENES, type AssemblyGraph, type EvaluationScores, type Scene } from "@/lib/agent/types";
 import { demoProvider } from "@/lib/agent/providers/demo";
 import type { ImageInput, MediaProvider } from "@/lib/agent/providers/types";
@@ -78,10 +79,14 @@ ${text.slice(0, 20000)}`,
       for (const image of images.slice(0, 8)) {
         parts.push(inlineImage(image));
       }
-      const response = await ai.models.generateContent({
-        model: TEXT_MODEL,
-        contents: [{ role: "user", parts }],
-      });
+      const response = await withTimeout(
+        ai.models.generateContent({
+          model: TEXT_MODEL,
+          contents: [{ role: "user", parts }],
+        }),
+        35000,
+        "Gemini understand",
+      );
       const graph = extractJson<AssemblyGraph>(textFromResponse(response));
       if (!graph.steps?.length) {
         return demoProvider.understand({ text, images });
@@ -100,7 +105,8 @@ ${text.slice(0, 20000)}`,
   async plan(graph) {
     try {
       const ai = client();
-      const response = await ai.models.generateContent({
+      const response = await withTimeout(
+        ai.models.generateContent({
         model: TEXT_MODEL,
         contents: `You are a technical-video director for mechanical assembly.
 Turn this assembly graph into at most ${MAX_SCENES} scenes.
@@ -115,7 +121,10 @@ Return JSON: { "scenes": [{
 }] }
 Graph:
 ${JSON.stringify(graph)}`,
-      });
+        }),
+        25000,
+        "Gemini plan",
+      );
       const parsed = extractJson<{ scenes: Scene[] }>(textFromResponse(response));
       if (!parsed.scenes?.length) return demoProvider.plan(graph);
       return parsed.scenes.slice(0, MAX_SCENES);
@@ -129,14 +138,18 @@ ${JSON.stringify(graph)}`,
     if (!critique) return scene;
     try {
       const ai = client();
-      const response = await ai.models.generateContent({
+      const response = await withTimeout(
+        ai.models.generateContent({
         model: TEXT_MODEL,
         contents: `Rewrite framePrompt and motionPrompt so the next generation fixes this critique.
 Do not add parts that are not in allowedPartIds.
 Return JSON with framePrompt and motionPrompt.
 Scene: ${JSON.stringify(scene)}
 Critique: ${critique}`,
-      });
+        }),
+        20000,
+        "Gemini prompt rewrite",
+      );
       const parsed = extractJson<{ framePrompt: string; motionPrompt: string }>(
         textFromResponse(response),
       );
@@ -259,10 +272,14 @@ Scene: ${JSON.stringify({
         inlineImage(frame),
       ];
       if (previousFrame) parts.push(inlineImage(previousFrame));
-      const response = await ai.models.generateContent({
-        model: TEXT_MODEL,
-        contents: [{ role: "user", parts }],
-      });
+      const response = await withTimeout(
+        ai.models.generateContent({
+          model: TEXT_MODEL,
+          contents: [{ role: "user", parts }],
+        }),
+        20000,
+        "Gemini judge",
+      );
       const scores = extractJson<EvaluationScores>(textFromResponse(response));
       const invented =
         scores.inventedParts ||

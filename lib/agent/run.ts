@@ -35,12 +35,19 @@ export async function runJob(
     if (!sourceFile && current.sourceKind === "upload") {
       const { readFile } = await import("node:fs/promises");
       const { existsSync } = await import("node:fs");
-      const sourcePdf = path.join(dir, "source.pdf");
-      if (existsSync(sourcePdf)) {
+      const pdf = path.join(dir, "source.pdf");
+      const png = path.join(dir, "source.png");
+      if (existsSync(pdf)) {
         sourceFile = {
           name: current.sourceName,
-          buffer: await readFile(sourcePdf),
+          buffer: await readFile(pdf),
           mimeType: "application/pdf",
+        };
+      } else if (existsSync(png)) {
+        sourceFile = {
+          name: current.sourceName,
+          buffer: await readFile(png),
+          mimeType: "image/png",
         };
       }
     }

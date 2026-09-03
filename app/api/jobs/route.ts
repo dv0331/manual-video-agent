@@ -1,5 +1,9 @@
 import { randomUUID } from "node:crypto";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { after } from "next/server";
 import { NextResponse } from "next/server";
+import { jobDir } from "@/lib/agent/paths";
 import { startJob } from "@/lib/agent/run";
 import { serializeJob } from "@/lib/agent/serialize";
 import { createJob } from "@/lib/agent/store";
@@ -28,7 +32,9 @@ export async function POST(request: Request) {
       sourceKind: "sample",
       provider: process.env.GEMINI_API_KEY ? "gemini" : "demo",
     });
-    startJob(id);
+    after(() => {
+      startJob(id);
+    });
     return NextResponse.json(serializeJob(job));
   }
 
@@ -42,6 +48,7 @@ export async function POST(request: Request) {
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
+  const mimeType = file.type || "application/octet-stream";
   const job = await createJob({
     id,
     createdAt,
@@ -53,10 +60,22 @@ export async function POST(request: Request) {
     sourceKind: "upload",
     provider: process.env.GEMINI_API_KEY ? "gemini" : "demo",
   });
-  startJob(id, {
-    name: file.name,
-    buffer,
-    mimeType: file.type || "application/octet-stream",
+  const ext = mimeType.includes("pdf") || file.name.toLowerCase().endsWith(".pdf")
+    ? ".pdf"
+    : ".png";
+  await mkdir(jobDir(id), { recursive: true });
+  await writeFile(path.join(jobDir(id), `source${ext}`), buffer);
+  await writeFile(
+    path.join(jobDir(id), "upload.json"),
+    JSON.stringify({ name: file.name, mimeType }),
+  );
+
+  after(() => {
+    startJob(id, {
+      name: file.name,
+      buffer,
+      mimeType,
+    });
   });
   return NextResponse.json(serializeJob(job));
 }
