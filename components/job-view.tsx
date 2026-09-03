@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { AlertCircle, CheckCircle2, LoaderCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { AssemblyPlayer } from "@/components/assembly-player";
@@ -69,9 +68,12 @@ export function JobView({ jobId }: { jobId: string }) {
           <AlertTitle>Job unavailable</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
-        <Button variant="outline" className="mt-4" render={<Link href="/" />}>
+        <Link
+          href="/"
+          className="mt-4 inline-flex min-h-9 items-center rounded-lg border border-border px-3 text-sm hover:bg-muted"
+        >
           Back to upload
-        </Button>
+        </Link>
       </main>
     );
   }
@@ -118,10 +120,15 @@ export function JobView({ jobId }: { jobId: string }) {
           <AlertTitle>The agent stopped</AlertTitle>
           <AlertDescription className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <span>{job.error}</span>
-            <Button size="sm" onClick={() => void retry()} disabled={retrying}>
-              {retrying ? <LoaderCircle className="animate-spin" /> : null}
+            <button
+              type="button"
+              onClick={() => void retry()}
+              disabled={retrying}
+              className="inline-flex min-h-9 items-center justify-center gap-2 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50"
+            >
+              {retrying ? <LoaderCircle className="size-4 animate-spin" /> : null}
               Retry
-            </Button>
+            </button>
           </AlertDescription>
         </Alert>
       ) : null}

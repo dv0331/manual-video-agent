@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AlertCircle, FileUp, LoaderCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function UploadPanel() {
@@ -124,10 +123,15 @@ export function UploadPanel() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button onClick={() => void onSample()} disabled={busy !== null}>
-            {busy === "sample" ? <LoaderCircle className="animate-spin" /> : null}
+          <button
+            type="button"
+            onClick={() => void onSample()}
+            disabled={busy !== null}
+            className="inline-flex min-h-11 min-w-48 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:pointer-events-none disabled:opacity-50"
+          >
+            {busy === "sample" ? <LoaderCircle className="size-4 animate-spin" /> : null}
             Generate sample video
-          </Button>
+          </button>
           <a
             href="/sample-manual/AP-1-ASM-001.pdf"
             className="text-sm text-primary underline-offset-4 hover:underline"

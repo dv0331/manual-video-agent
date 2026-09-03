@@ -1,7 +1,9 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { jobDir } from "@/lib/agent/paths";
+import { DATA_DIR, jobDir } from "@/lib/agent/paths";
 import type { AgentStage, Job, JobStatus } from "@/lib/agent/types";
+
+const JOB_ID = /^[0-9a-f-]{36}$/i;
 
 export async function createJob(partial: Omit<Job, "logs" | "updatedAt"> & { logs?: Job["logs"] }): Promise<Job> {
   const job: Job = {
@@ -61,6 +63,20 @@ export async function setStage(
     log: stageLabel,
     ...extra,
   });
+}
+
+export async function listJobs(limit = 12): Promise<Job[]> {
+  try {
+    const names = await readdir(DATA_DIR);
+    const jobs = (
+      await Promise.all(names.filter((name) => JOB_ID.test(name)).map((id) => loadJob(id)))
+    ).filter((job): job is Job => Boolean(job));
+    return jobs
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(0, limit);
+  } catch {
+    return [];
+  }
 }
 
 export async function failJob(id: string, error: string): Promise<Job> {

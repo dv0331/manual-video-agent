@@ -6,7 +6,22 @@ import { NextResponse } from "next/server";
 import { jobDir } from "@/lib/agent/paths";
 import { startJob } from "@/lib/agent/run";
 import { serializeJob } from "@/lib/agent/serialize";
-import { createJob } from "@/lib/agent/store";
+import { createJob, listJobs } from "@/lib/agent/store";
+
+export async function GET() {
+  const jobs = await listJobs();
+  return NextResponse.json(
+    jobs.map((job) => ({
+      id: job.id,
+      createdAt: job.createdAt,
+      status: job.status,
+      stageLabel: job.stageLabel,
+      progress: job.progress,
+      sourceName: job.sourceName,
+      provider: job.provider,
+    })),
+  );
+}
 
 export const runtime = "nodejs";
 export const maxDuration = 300;

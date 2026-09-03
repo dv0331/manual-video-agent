@@ -1,3 +1,4 @@
+import { RecentJobs } from "@/components/recent-jobs";
 import { UploadPanel } from "@/components/upload-panel";
 
 const steps = [
@@ -42,6 +43,7 @@ export default function Home() {
       </section>
 
       <UploadPanel />
+      <RecentJobs />
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step) => (
