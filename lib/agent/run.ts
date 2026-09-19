@@ -3,13 +3,12 @@ import path from "node:path";
 import { ingestSource } from "@/lib/agent/ingest";
 import { jobDir } from "@/lib/agent/paths";
 import { planStoryboard } from "@/lib/agent/plan";
-import { generateScene } from "@/lib/agent/generate";
+import { generateAllScenes } from "@/lib/agent/generate";
 import { logProduction } from "@/lib/agent/production-log";
 import { getMediaProvider } from "@/lib/agent/providers";
 import { stitchJob } from "@/lib/agent/stitch";
 import { failJob, setStage, updateJob } from "@/lib/agent/store";
 import { understandManual } from "@/lib/agent/understand";
-import type { SceneResult } from "@/lib/agent/types";
 
 const running = new Set<string>();
 
@@ -69,35 +68,35 @@ export async function runJob(
     const scenes = await planStoryboard(provider, graph, ingest);
     await updateJob(id, { scenes });
 
-    const results: SceneResult[] = [];
-    await logProduction(dir, `Plan locked: ${scenes.length} scenes, one at a time, no batching`);
-    for (const [i, scene] of scenes.entries()) {
-      const pct = 40 + Math.round((i / Math.max(scenes.length, 1)) * 45);
-      await setStage(
-        id,
-        "generate",
-        `Scene ${i + 1} of ${scenes.length}: still → motion → spoken line → judge`,
-        pct,
-        { sceneResults: results },
-      );
-      const result = await generateScene({
-        provider,
-        scene,
-        graph,
-        jobPath: dir,
-        previousFramePath: results.at(-1)?.framePath,
-        totalScenes: scenes.length,
-        onBeat: async (label) => {
-          await updateJob(id, { stageLabel: label, log: label });
-        },
-      });
-      results.push(result);
-      const kind = result.evaluation.failureType ?? "none";
-      await updateJob(id, {
-        sceneResults: results,
-        log: `Scene ${scene.index} ${result.evaluation.passed ? "PASS" : "accepted"} (${kind}, ${result.motionSource}, ${result.attempts} still, narrated)`,
-      });
-    }
+    await logProduction(
+      dir,
+      `Plan locked: ${scenes.length} scenes — stills, voices, and judges in parallel`,
+    );
+    await setStage(
+      id,
+      "generate",
+      `Shooting all ${scenes.length} scenes at once`,
+      42,
+    );
+    const results = await generateAllScenes({
+      provider,
+      scenes,
+      graph,
+      jobPath: dir,
+      onScene: async (done, total, label) => {
+        const pct = 42 + Math.round((done / Math.max(total, 1)) * 48);
+        await updateJob(id, {
+          stage: "generate",
+          stageLabel: label,
+          progress: Math.min(pct, 90),
+          log: label,
+        });
+      },
+    });
+    await updateJob(id, {
+      sceneResults: results,
+      log: `All ${results.length} scenes cut (${results.filter((r) => r.evaluation.passed).length} passed judge)`,
+    });
 
     await setStage(id, "stitch", "Stitching clips and writing chapter markers", 92);
     const { videoPath, vttPath, captionsPath } = await stitchJob({

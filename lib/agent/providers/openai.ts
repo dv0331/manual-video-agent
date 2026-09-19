@@ -76,6 +76,8 @@ async function generateImageEdit(prompt: string, reference: ImageInput) {
     form.set("model", IMAGE_MODEL);
     form.set("prompt", prompt);
     form.set("size", "1536x1024");
+    const quality = process.env.OPENAI_IMAGE_QUALITY ?? "low";
+    form.set("quality", quality);
     form.set("image", new Blob([new Uint8Array(png)], { type: "image/png" }), "reference.png");
     const data = await openaiForm("/images/edits", form, 50000);
     const first = (data.data as Array<{ b64_json?: string }> | undefined)?.[0];
@@ -321,15 +323,13 @@ Allowed part IDs: ${scene.allowedPartIds.join(", ")}`;
         const edited = await generateImageEdit(prompt, reference);
         if (edited) return edited;
       }
-      const data = await openaiFetch(
-        "/images/generations",
-        {
-          model: IMAGE_MODEL,
-          prompt,
-          size: "1536x1024",
-        },
-        45000,
-      );
+      const body: Record<string, unknown> = {
+        model: IMAGE_MODEL,
+        prompt,
+        size: "1536x1024",
+      };
+      body.quality = process.env.OPENAI_IMAGE_QUALITY ?? "low";
+      const data = await openaiFetch("/images/generations", body, 45000);
       const first = (data.data as Array<{ b64_json?: string }> | undefined)?.[0];
       if (!first?.b64_json) return null;
       return Buffer.from(first.b64_json, "base64");

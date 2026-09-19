@@ -23,7 +23,7 @@ Practices from the Google / DeepLearning.AI media-agents lessons (L2–L6, L8):
 5. **Judge** — cheap alignment gate, then a scored critique. One prompt rewrite. Warnings stay human-visible.
 6. **Cut** — concat clips, captions, chapter markers.
 
-A six-step job is minutes per scene. Progress around 63% is scene 4 of 6, not the credits.
+All scenes still shoot — they run **in parallel** (stills, voices, judges, retries). The film no longer waits on Sora unless you set `SORA_WAIT=1`. Target wall-clock is about one minute for a full sample, not one minute per scene.
 
 ## Run locally
 

@@ -1,13 +1,108 @@
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { motionPromptWithAudio } from "@/lib/agent/direction";
-import { emptyEvaluation, evaluateClip, evaluateScene } from "@/lib/agent/evaluate";
+import { evaluateClip, evaluateScene } from "@/lib/agent/evaluate";
 import { kenBurnsClip, mediaDuration, muxNarration } from "@/lib/agent/ffmpeg";
+import { mapLimit } from "@/lib/agent/pool";
 import { logProduction } from "@/lib/agent/production-log";
 import { demoProvider } from "@/lib/agent/providers/demo";
 import type { MediaProvider } from "@/lib/agent/providers/types";
 import type { AssemblyGraph, EvaluationScores, Scene, SceneResult } from "@/lib/agent/types";
-import { MAX_VIDEO_RETRIES, SCENE_SECONDS } from "@/lib/agent/types";
+import { MAX_RETRIES, MAX_VIDEO_RETRIES, SCENE_SECONDS } from "@/lib/agent/types";
+
+const IMAGE_CONCURRENCY = Number(process.env.SCENE_CONCURRENCY ?? 8);
+
+type Draft = {
+  scene: Scene;
+  framePath: string;
+  clipPath: string;
+  evaluation: EvaluationScores;
+  speech: { path?: string; seconds: number };
+  attempts: number;
+};
+
+export async function generateAllScenes(options: {
+  provider: MediaProvider;
+  scenes: Scene[];
+  graph: AssemblyGraph;
+  jobPath: string;
+  onScene?: (done: number, total: number, label: string) => Promise<void>;
+}): Promise<SceneResult[]> {
+  const framesDir = path.join(options.jobPath, "frames");
+  const clipsDir = path.join(options.jobPath, "clips");
+  await mkdir(framesDir, { recursive: true });
+  await mkdir(clipsDir, { recursive: true });
+
+  let finishedStills = 0;
+  const drafts = await mapLimit(options.scenes, IMAGE_CONCURRENCY, async (scene, index) => {
+    const framePath = path.join(framesDir, `${scene.id}.png`);
+    const clipPath = path.join(clipsDir, `${scene.id}.mp4`);
+    const previousFigure = options.scenes[index - 1]?.figurePath;
+    const [evaluation, speech] = await Promise.all([
+      generateStill({
+        provider: options.provider,
+        scene,
+        graph: options.graph,
+        jobPath: options.jobPath,
+        previousFramePath: previousFigure,
+        framePath,
+      }),
+      writeSpeech(options.provider, options.jobPath, scene, options.scenes.length),
+    ]);
+    finishedStills += 1;
+    await options.onScene?.(
+      finishedStills,
+      options.scenes.length,
+      `First takes ${finishedStills}/${options.scenes.length} — still, voice, and judge in parallel`,
+    );
+    return {
+      scene,
+      framePath,
+      clipPath,
+      evaluation,
+      speech,
+      attempts: 1,
+    } satisfies Draft;
+  });
+
+  const retries = drafts.filter(
+    (draft) => !draft.evaluation.passed && draft.evaluation.failureType === "visual",
+  );
+  if (retries.length && MAX_RETRIES > 0) {
+    await options.onScene?.(
+      finishedStills,
+      options.scenes.length,
+      `Retaking ${retries.length} still${retries.length === 1 ? "" : "s"} from judge feedback`,
+    );
+    await mapLimit(retries, IMAGE_CONCURRENCY, async (draft) => {
+      const rewritten = await options.provider.enhancePrompt(
+        draft.scene,
+        draft.evaluation.critique,
+      );
+      const takeB = path.join(framesDir, `${draft.scene.id}-take-b.png`);
+      const evaluation = await generateStill({
+        provider: options.provider,
+        scene: rewritten,
+        graph: options.graph,
+        jobPath: options.jobPath,
+        previousFramePath: draft.framePath,
+        framePath: takeB,
+      });
+      draft.attempts = 2;
+      if (betterStill(evaluation, draft.evaluation)) {
+        draft.scene = rewritten;
+        draft.evaluation = evaluation;
+        await copyFile(takeB, draft.framePath);
+      }
+    });
+  }
+
+  const results = await mapLimit(drafts, IMAGE_CONCURRENCY, async (draft) =>
+    finishClip(options.provider, options.jobPath, options.scenes.length, draft),
+  );
+
+  return results;
+}
 
 export async function generateScene(options: {
   provider: MediaProvider;
@@ -18,115 +113,100 @@ export async function generateScene(options: {
   totalScenes: number;
   onBeat?: (label: string) => Promise<void>;
 }): Promise<SceneResult> {
-  const framesDir = path.join(options.jobPath, "frames");
-  const clipsDir = path.join(options.jobPath, "clips");
-  await mkdir(framesDir, { recursive: true });
-  await mkdir(clipsDir, { recursive: true });
-
-  let scene = options.scene;
-  const framePath = path.join(framesDir, `${scene.id}.png`);
-  const clipPath = path.join(clipsDir, `${scene.id}.mp4`);
-  let evaluation = emptyEvaluation();
-  let attempts = 0;
-  let motionSource: SceneResult["motionSource"] = "kenburns";
-
-  evaluation = await generateStill({
-    ...options,
-    scene,
-    framePath,
+  const [result] = await generateAllScenes({
+    provider: options.provider,
+    scenes: [options.scene],
+    graph: options.graph,
+    jobPath: options.jobPath,
   });
-  attempts = 1;
-  if (!evaluation.passed && evaluation.failureType === "visual") {
-    await options.onBeat?.(
-      `Scene ${scene.index}: judge failed visual — rewriting the still prompt`,
-    );
-    scene = await options.provider.enhancePrompt(scene, evaluation.critique);
-    evaluation = await generateStill({
-      ...options,
-      scene,
-      framePath,
-    });
-    attempts = 2;
-  }
+  return result;
+}
 
-  const speech = await writeSpeech(options, scene);
-  let durationSeconds = Math.max(SCENE_SECONDS, Math.ceil(speech.seconds + 0.4));
+async function finishClip(
+  provider: MediaProvider,
+  jobPath: string,
+  totalScenes: number,
+  draft: Draft,
+): Promise<SceneResult> {
+  let { scene, evaluation } = draft;
+  let durationSeconds = Math.max(SCENE_SECONDS, Math.ceil(draft.speech.seconds + 0.4));
+  let motionSource: SceneResult["motionSource"] = "kenburns";
   let videoAttempts = 0;
 
   for (videoAttempts = 1; videoAttempts <= MAX_VIDEO_RETRIES + 1; videoAttempts++) {
-    await options.onBeat?.(
-      `Scene ${scene.index}: image-to-video with spoken narration (${videoAttempts === 1 ? "first take" : "audio retry"})`,
-    );
     await kenBurnsClip({
-      framePath,
-      outputPath: clipPath,
+      framePath: draft.framePath,
+      outputPath: draft.clipPath,
       scene,
-      totalScenes: options.totalScenes,
+      totalScenes,
       seconds: durationSeconds,
-      audioPath: speech.path,
+      audioPath: draft.speech.path,
     });
     motionSource = "kenburns";
 
-    const soraPath = `${clipPath}.sora-raw.mp4`;
-    const motionPrompt = motionPromptWithAudio(scene);
-    const animated = await options.provider.generateVideo({
-      scene: { ...scene, motionPrompt },
-      framePath,
-      outputPath: soraPath,
-      totalScenes: options.totalScenes,
-    });
-    if (animated) {
-      motionSource = options.provider.name === "openai" ? "sora" : "veo";
-      const motionSeconds = Number(process.env.OPENAI_VIDEO_SECONDS ?? 8);
-      durationSeconds = [4, 8, 12].includes(motionSeconds) ? motionSeconds : 8;
-      try {
-        if (speech.path) {
-          await muxNarration({
-            videoPath: soraPath,
-            audioPath: speech.path,
-            outputPath: clipPath,
-            seconds: durationSeconds,
-          });
-        } else {
-          await copyFile(soraPath, clipPath);
+    if (process.env.SORA_WAIT === "1") {
+      const soraPath = `${draft.clipPath}.sora-raw.mp4`;
+      const animated = await provider.generateVideo({
+        scene: { ...scene, motionPrompt: motionPromptWithAudio(scene) },
+        framePath: draft.framePath,
+        outputPath: soraPath,
+        totalScenes,
+      });
+      if (animated) {
+        motionSource = provider.name === "openai" ? "sora" : "veo";
+        const motionSeconds = Number(process.env.OPENAI_VIDEO_SECONDS ?? 8);
+        durationSeconds = [4, 8, 12].includes(motionSeconds) ? motionSeconds : 8;
+        try {
+          if (draft.speech.path) {
+            await muxNarration({
+              videoPath: soraPath,
+              audioPath: draft.speech.path,
+              outputPath: draft.clipPath,
+              seconds: durationSeconds,
+            });
+          } else {
+            await copyFile(soraPath, draft.clipPath);
+          }
+        } catch (error) {
+          console.warn("Could not mix narration onto the motion clip; keeping spoken still", error);
+          motionSource = "kenburns";
+          durationSeconds = Math.max(SCENE_SECONDS, Math.ceil(draft.speech.seconds + 0.4));
         }
-      } catch (error) {
-        console.warn("Could not mix narration onto the motion clip; keeping spoken still", error);
-        motionSource = "kenburns";
-        durationSeconds = Math.max(SCENE_SECONDS, Math.ceil(speech.seconds + 0.4));
       }
     }
 
     evaluation = await evaluateClip({
       still: evaluation,
-      speechPath: speech.path,
+      speechPath: draft.speech.path,
     });
-    if (evaluation.passed || evaluation.failureType !== "audio") {
-      break;
-    }
-    await options.onBeat?.(
-      `Scene ${scene.index}: audio fail — regenerating the clip, reusing the still`,
-    );
-    await logProduction(
-      options.jobPath,
-      `Scene ${scene.index} audio retry (keep ${path.basename(framePath)})`,
-    );
+    if (evaluation.passed || evaluation.failureType !== "audio") break;
+    await logProduction(jobPath, `Scene ${scene.index} audio retry (keep still)`);
   }
 
   await logProduction(
-    options.jobPath,
-    `Scene ${scene.index} ${evaluation.passed ? "PASS" : "accepted"} type=${evaluation.failureType} motion=${motionSource} stillAttempts=${attempts} videoAttempts=${videoAttempts}`,
+    jobPath,
+    `Scene ${scene.index} ${evaluation.passed ? "PASS" : "accepted"} type=${evaluation.failureType} motion=${motionSource} stillAttempts=${draft.attempts} videoAttempts=${videoAttempts}`,
   );
 
   return {
     scene: { ...scene, durationSeconds },
-    framePath,
-    clipPath,
-    attempts,
+    framePath: draft.framePath,
+    clipPath: draft.clipPath,
+    attempts: draft.attempts,
     evaluation,
     motionSource,
     durationSeconds,
   };
+}
+
+function betterStill(candidate: EvaluationScores, current: EvaluationScores) {
+  if (candidate.passed && !current.passed) return true;
+  if (candidate.passed === current.passed) {
+    const c = (candidate.partIdentity ?? 0) + (candidate.cheapGate ?? candidate.similarity ?? 0);
+    const a = (current.partIdentity ?? 0) + (current.cheapGate ?? current.similarity ?? 0);
+    return c > a;
+  }
+  return false;
 }
 
 async function generateStill(options: {
@@ -136,65 +216,51 @@ async function generateStill(options: {
   jobPath: string;
   previousFramePath?: string;
   framePath: string;
-  onBeat?: (label: string) => Promise<void>;
 }): Promise<EvaluationScores> {
-  const scene = options.scene;
-  await options.onBeat?.(`Scene ${scene.index}: start frame from the manual figure`);
-  const reference = scene.figurePath
+  const reference = options.scene.figurePath
     ? {
         mimeType: "image/png",
-        base64: (await readFile(scene.figurePath)).toString("base64"),
+        base64: (await readFile(options.scene.figurePath)).toString("base64"),
       }
     : undefined;
   const generated = await options.provider.generateFrame({
-    scene,
+    scene: options.scene,
     reference,
   });
   if (generated) {
     await writeFile(options.framePath, generated);
-  } else if (scene.figurePath) {
-    await copyFile(scene.figurePath, options.framePath);
+  } else if (options.scene.figurePath) {
+    await copyFile(options.scene.figurePath, options.framePath);
   } else {
-    throw new Error(`No figure available for ${scene.title}`);
+    throw new Error(`No figure available for ${options.scene.title}`);
   }
 
-  await options.onBeat?.(`Scene ${scene.index}: stacked judge on the still`);
   const evaluation = await evaluateScene({
     provider: options.provider,
-    scene,
+    scene: options.scene,
     framePath: options.framePath,
     previousFramePath: options.previousFramePath,
     graph: options.graph,
   });
   await logProduction(
     options.jobPath,
-    `Scene ${scene.index} still ${evaluation.passed ? "PASS" : "FAIL"} cheap=${(evaluation.cheapGate ?? 0).toFixed(2)} parts=${evaluation.partIdentity.toFixed(2)} ${evaluation.critique}`,
+    `Scene ${options.scene.index} still ${evaluation.passed ? "PASS" : "FAIL"} cheap=${(evaluation.cheapGate ?? 0).toFixed(2)} parts=${evaluation.partIdentity.toFixed(2)} ${evaluation.critique}`,
   );
   return evaluation;
 }
 
 async function writeSpeech(
-  options: {
-    provider: MediaProvider;
-    jobPath: string;
-    totalScenes: number;
-    onBeat?: (label: string) => Promise<void>;
-  },
+  provider: MediaProvider,
+  jobPath: string,
   scene: Scene,
+  totalScenes: number,
 ) {
-  await options.onBeat?.(`Scene ${scene.index}: spoken narration (~20 words / 8s)`);
-  const speechDir = path.join(options.jobPath, "speech");
+  const speechDir = path.join(jobPath, "speech");
   await mkdir(speechDir, { recursive: true });
   const speechPath = path.join(speechDir, `${scene.id}.mp3`);
-  let spoken = await options.provider.generateSpeech({
-    scene,
-    totalScenes: options.totalScenes,
-  });
-  if (!spoken && options.provider.name !== "demo") {
-    spoken = await demoProvider.generateSpeech({
-      scene,
-      totalScenes: options.totalScenes,
-    });
+  let spoken = await provider.generateSpeech({ scene, totalScenes });
+  if (!spoken && provider.name !== "demo") {
+    spoken = await demoProvider.generateSpeech({ scene, totalScenes });
   }
   const speechFile = spoken
     ? path.join(speechDir, `${scene.id}${spoken[0] === 0x52 ? ".wav" : ".mp3"}`)
