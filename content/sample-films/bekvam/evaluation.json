@@ -1,0 +1,90 @@
+[
+  {
+    "sceneId": "scene-1",
+    "attempts": 2,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.7,
+      "promptAdherence": 0.56,
+      "visualQuality": 0.95,
+      "partIdentity": 0.58,
+      "safetyCoverage": 1,
+      "inventedParts": true,
+      "warningPresent": true,
+      "sequenceCorrect": false,
+      "temporalConsistency": 0.62,
+      "passed": false,
+      "critique": "The image is high quality and generally shows a wooden assembly with a screw being driven, which partially matches the intended step. However, it appears to show more than one side frame already attached and includes a BRACE prominently assembled, while the planned scene is specifically attaching the lower step to one side frame. That makes the sequence look too advanced. The labeled BRACE is an allowed BOM item but is not part of this scene intent, so it functions as an invented/extra visible assembly focus for this step. The callout requirement is also off: SCREW should be the emphasized callout, but multiple labels are shown and the scene focus is diluted. To improve: show only one SIDE frame, the STEP being aligned into its pockets, visible SCREW insertion, and avoid showing the second side/brace already assembled.",
+      "failureType": "visual",
+      "narrationAlignment": 0.6,
+      "motionCoherence": 0.9,
+      "cheapGate": 0.57
+    }
+  },
+  {
+    "sceneId": "scene-2",
+    "attempts": 1,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.84,
+      "promptAdherence": 0.9,
+      "visualQuality": 0.96,
+      "partIdentity": 0.9,
+      "safetyCoverage": 1,
+      "inventedParts": false,
+      "warningPresent": true,
+      "sequenceCorrect": true,
+      "temporalConsistency": 0.9,
+      "passed": true,
+      "critique": "The frame matches the planned step well: the upper step is seated on the side frame and a screw fastening action is clearly shown, which aligns with the narration and SCREW callout. Visual quality is strong and all visible parts are within the allowed BOM. Part labeling is mostly correct, though the scene presents a realistic photo rather than the exact manual-style diagram, and the lower structure/brace area may be slightly ambiguous compared with the reference drawing. No required warning is missing because this scene has none. Overall this passes, but the next prompt could improve by matching the reference angle and simplifying the composition so the upper-step installation action reads even more directly.",
+      "failureType": "none",
+      "narrationAlignment": 0.92,
+      "motionCoherence": 0.9,
+      "cheapGate": 0.88
+    }
+  },
+  {
+    "sceneId": "scene-3",
+    "attempts": 1,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.78,
+      "promptAdherence": 0.82,
+      "visualQuality": 0.93,
+      "partIdentity": 0.72,
+      "safetyCoverage": 1,
+      "inventedParts": false,
+      "warningPresent": true,
+      "sequenceCorrect": true,
+      "temporalConsistency": 0.79,
+      "passed": true,
+      "critique": "The frame generally matches the planned step: a second side frame is being positioned onto the stool and screws are highlighted, which supports the narration about offering up the second side and starting screws. Visual quality is strong and the assembly state appears plausible. However, part labeling is incomplete and slightly ambiguous: SIDE and SCREW are clearly indicated, but BRACE is not called out and STEP is labeled on the lower frame area rather than clearly identifying the step board component. The image also emphasizes a screwdriver/tightening action in the insets, while the narration specifically suggests starting every screw before tightening evenly; this is acceptable but not ideal because it could imply tightening before all screws are started. No warnings were required, and no invented parts are visible. To improve prompt fidelity, show the second side frame being aligned with all visible screw positions loosely started, with less emphasis on final tightening and clearer identification of the stool step and side frame relationship.",
+      "failureType": "none",
+      "narrationAlignment": 0.85,
+      "motionCoherence": 0.84,
+      "cheapGate": 0.8
+    }
+  },
+  {
+    "sceneId": "scene-4",
+    "attempts": 2,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.62,
+      "promptAdherence": 0.54,
+      "visualQuality": 0.95,
+      "partIdentity": 0.8,
+      "safetyCoverage": 0,
+      "inventedParts": false,
+      "warningPresent": false,
+      "sequenceCorrect": false,
+      "temporalConsistency": 0.55,
+      "passed": false,
+      "critique": "The frame is high quality and shows the allowed parts only, with correct callouts for STEP, SIDE, BRACE, and SCREW. However, it does not clearly depict the planned scene action of installing cross braces and checking stability on a level floor. The stool appears on a tabletop rather than standing on the floor, which conflicts with the stability-check narration. The required warning, 'Do not stand on the stool until every screw is tight,' is missing, so this must fail. Sequence also looks off because the image emphasizes tightening a top screw rather than a clear brace-installation/stability-check step. Rewrite the prompt to explicitly show the stool on a level floor, cross braces being installed or already highlighted, and include the required safety warning text on screen.",
+      "failureType": "visual",
+      "narrationAlignment": 0.46,
+      "motionCoherence": 0.9,
+      "cheapGate": 0.58
+    }
+  }
+]

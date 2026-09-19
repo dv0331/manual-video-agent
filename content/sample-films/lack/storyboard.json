@@ -1,0 +1,64 @@
+[
+  {
+    "id": "scene-1",
+    "index": 1,
+    "title": "Unpack and flip the table top",
+    "narration": "Place the table top upside down on a soft surface so the four threaded inserts face up.",
+    "onScreenCallouts": [],
+    "motionPrompt": "A real adult assembling \"IKEA LACK side table — assembly\".\nStep: Unpack and flip the table top. Place the table top upside down on a soft surface so the four threaded inserts face up.\nContinuous documentary shot. Camera movement: slow_left_to_right.\nSound effects: quiet workshop, hands seating parts for \"Unpack and flip the table top\", no music, no extra voices.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: TOP, LEG.",
+    "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA LACK side table — assembly\".\nThe person is performing this exact step: Unpack and flip the table top.\nAction: Place the table top upside down on a soft surface so the four threaded inserts face up.\nOnly these parts may appear: TOP, LEG.\n\nCamera: eye-level slow_left_to_right.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+    "startFrameStrategy": "human-assembly",
+    "warnings": [],
+    "allowedPartIds": [
+      "TOP",
+      "LEG"
+    ],
+    "cameraMotion": "slow_left_to_right",
+    "soundEffects": "quiet workshop, hands seating parts for \"Unpack and flip the table top\", no music, no extra voices",
+    "visualDescription": "Place the table top upside down on a soft surface so the four threaded inserts face up.",
+    "figurePath": "/workspace/data/jobs/dd3adb4d-b8d7-43e4-af64-b37ecbe0dd18/figures/fig-01.png",
+    "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+  },
+  {
+    "id": "scene-2",
+    "index": 2,
+    "title": "Thread the first two legs",
+    "narration": "Screw two opposite legs into the inserts by hand until they seat. Do not cross-thread.",
+    "onScreenCallouts": [
+      "LEG"
+    ],
+    "motionPrompt": "A real adult assembling \"IKEA LACK side table — assembly\".\nStep: Thread the first two legs. Screw two opposite legs into the inserts by hand until they seat. Do not cross-thread.\nContinuous documentary shot. Camera movement: slow_zoom_in.\nSound effects: quiet workshop, hands seating parts for \"Thread the first two legs\", no music, no extra voices.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: TOP, LEG.",
+    "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA LACK side table — assembly\".\nThe person is performing this exact step: Thread the first two legs.\nAction: Screw two opposite legs into the inserts by hand until they seat. Do not cross-thread.\nOnly these parts may appear: TOP, LEG.\n\nCamera: eye-level slow_zoom_in.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+    "startFrameStrategy": "human-assembly",
+    "warnings": [],
+    "allowedPartIds": [
+      "TOP",
+      "LEG"
+    ],
+    "cameraMotion": "slow_zoom_in",
+    "soundEffects": "quiet workshop, hands seating parts for \"Thread the first two legs\", no music, no extra voices",
+    "visualDescription": "Screw two opposite legs into the inserts by hand until they seat. Do not cross-thread.",
+    "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+  },
+  {
+    "id": "scene-3",
+    "index": 3,
+    "title": "Fit the remaining legs and stand the table",
+    "narration": "Screw in the last two legs. Flip the table onto its legs and check it does not rock.",
+    "onScreenCallouts": [
+      "LEG"
+    ],
+    "motionPrompt": "A real adult assembling \"IKEA LACK side table — assembly\".\nStep: Fit the remaining legs and stand the table. Screw in the last two legs. Flip the table onto its legs and check it does not rock.\nContinuous documentary shot. Camera movement: slow_zoom_out.\nSound effects: quiet workshop, hands seating parts for \"Fit the remaining legs and stand the table\", no music, no extra voices.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: TOP, LEG.",
+    "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA LACK side table — assembly\".\nThe person is performing this exact step: Fit the remaining legs and stand the table.\nAction: Screw in the last two legs. Flip the table onto its legs and check it does not rock.\nOnly these parts may appear: TOP, LEG.\n\nCamera: eye-level slow_zoom_out.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+    "startFrameStrategy": "human-assembly",
+    "warnings": [],
+    "allowedPartIds": [
+      "TOP",
+      "LEG"
+    ],
+    "cameraMotion": "slow_zoom_out",
+    "soundEffects": "quiet workshop, hands seating parts for \"Fit the remaining legs and stand the table\", no music, no extra voices",
+    "visualDescription": "Screw in the last two legs. Flip the table onto its legs and check it does not rock.",
+    "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+  }
+]

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AlertCircle, FileUp, LoaderCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +13,20 @@ export function UploadPanel() {
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [precut, setPrecut] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    void fetch("/api/samples", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : []))
+      .then((rows: Array<{ id?: string; precut?: boolean }>) => {
+        const next: Record<string, boolean> = {};
+        for (const row of rows) {
+          if (row.id) next[row.id] = Boolean(row.precut);
+        }
+        setPrecut(next);
+      })
+      .catch(() => undefined);
+  }, []);
 
   async function createJob(init: RequestInit) {
     const response = await fetch("/api/jobs", init);
@@ -118,8 +132,9 @@ export function UploadPanel() {
         <div>
           <h2 className="text-lg font-semibold tracking-tight">Sample manuals</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Official IKEA assembly PDFs plus the original AP-1 kit. Open a
-            manual, then generate a video of a person assembling it.
+            Official IKEA assembly PDFs plus the original AP-1 kit. Each sample
+            already has a finished cut — open it and the film plays immediately.
+            Drop your own PDF above to shoot a new one.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -141,7 +156,7 @@ export function UploadPanel() {
                   className="inline-flex min-h-11 min-w-44 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:pointer-events-none disabled:opacity-50"
                 >
                   {busy === sample.id ? <LoaderCircle className="size-4 animate-spin" /> : null}
-                  Generate video
+                  {precut[sample.id] ? "Play the film" : "Generate video"}
                 </button>
                 <a
                   href={sample.pdfPublicPath}

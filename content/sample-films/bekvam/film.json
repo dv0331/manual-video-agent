@@ -1,0 +1,384 @@
+{
+  "sampleId": "bekvam",
+  "sourceName": "IKEA BEKVÄM step stool",
+  "provider": "openai",
+  "graph": {
+    "title": "IKEA BEKVÄM step stool — assembly",
+    "documentId": "AA-444158-9",
+    "tools": [
+      "Phillips screwdriver"
+    ],
+    "parts": [
+      {
+        "id": "STEP",
+        "name": "Step / tread",
+        "qty": 2
+      },
+      {
+        "id": "SIDE",
+        "name": "Side frame",
+        "qty": 2
+      },
+      {
+        "id": "BRACE",
+        "name": "Cross brace",
+        "qty": 2
+      },
+      {
+        "id": "SCREW",
+        "name": "Wood screw",
+        "qty": 8
+      }
+    ],
+    "steps": [
+      {
+        "index": 1,
+        "title": "Attach the lower step to one side frame",
+        "instruction": "Align the lower tread with the side-frame pockets and drive the screws until snug.",
+        "fasteners": [
+          "SCREW"
+        ],
+        "tools": [
+          "Phillips screwdriver"
+        ],
+        "warnings": []
+      },
+      {
+        "index": 2,
+        "title": "Fit the upper step",
+        "instruction": "Seat the upper tread and fasten it to the same side frame.",
+        "fasteners": [
+          "SCREW"
+        ],
+        "tools": [
+          "Phillips screwdriver"
+        ],
+        "warnings": []
+      },
+      {
+        "index": 3,
+        "title": "Close the stool with the second side",
+        "instruction": "Offer up the second side frame, start every screw, then tighten evenly.",
+        "fasteners": [
+          "SCREW"
+        ],
+        "tools": [
+          "Phillips screwdriver"
+        ],
+        "warnings": []
+      },
+      {
+        "index": 4,
+        "title": "Add the braces and check stability",
+        "instruction": "Install the cross braces. Stand on a level floor and confirm there is no wobble before use.",
+        "fasteners": [
+          "SCREW"
+        ],
+        "tools": [
+          "Phillips screwdriver"
+        ],
+        "warnings": [
+          "Do not stand on the stool until every screw is tight."
+        ]
+      }
+    ],
+    "notes": [
+      "From the IKEA 3D Assembly Dataset (Inter IKEA Systems B.V.)."
+    ]
+  },
+  "scenes": [
+    {
+      "id": "scene-1",
+      "index": 1,
+      "title": "Attach the lower step to one side frame",
+      "narration": "Align the lower tread with the side-frame pockets and drive the screws until snug.",
+      "onScreenCallouts": [
+        "SCREW"
+      ],
+      "motionPrompt": "A real adult assembling \"IKEA BEKVÄM step stool — assembly\".\nStep: Attach the lower step to one side frame. Align the lower tread with the side-frame pockets and drive the screws until snug.\nContinuous documentary shot. Camera movement: slow_left_to_right.\nSound effects: quiet workshop, hands seating parts for \"Attach the lower step to one side frame\", no music, no extra voices.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: STEP, SIDE, BRACE, SCREW.",
+      "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA BEKVÄM step stool — assembly\".\nThe person is performing this exact step: Attach the lower step to one side frame.\nAction: Align the lower tread with the side-frame pockets and drive the screws until snug.\nOnly these parts may appear: STEP, SIDE, BRACE, SCREW.\n\nCamera: eye-level slow_left_to_right.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "STEP",
+        "SIDE",
+        "BRACE",
+        "SCREW"
+      ],
+      "cameraMotion": "slow_left_to_right",
+      "soundEffects": "quiet workshop, hands seating parts for \"Attach the lower step to one side frame\", no music, no extra voices",
+      "visualDescription": "Align the lower tread with the side-frame pockets and drive the screws until snug.",
+      "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+    },
+    {
+      "id": "scene-2",
+      "index": 2,
+      "title": "Fit the upper step",
+      "narration": "Seat the upper tread and fasten it to the same side frame.",
+      "onScreenCallouts": [
+        "SCREW"
+      ],
+      "motionPrompt": "A real adult assembling \"IKEA BEKVÄM step stool — assembly\".\nStep: Fit the upper step. Seat the upper tread and fasten it to the same side frame.\nContinuous documentary shot. Camera movement: slow_zoom_in.\nSound effects: quiet workshop, hands seating parts for \"Fit the upper step\", no music, no extra voices.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: STEP, SIDE, BRACE, SCREW.",
+      "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA BEKVÄM step stool — assembly\".\nThe person is performing this exact step: Fit the upper step.\nAction: Seat the upper tread and fasten it to the same side frame.\nOnly these parts may appear: STEP, SIDE, BRACE, SCREW.\n\nCamera: eye-level slow_zoom_in.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "STEP",
+        "SIDE",
+        "BRACE",
+        "SCREW"
+      ],
+      "cameraMotion": "slow_zoom_in",
+      "soundEffects": "quiet workshop, hands seating parts for \"Fit the upper step\", no music, no extra voices",
+      "visualDescription": "Seat the upper tread and fasten it to the same side frame.",
+      "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+    },
+    {
+      "id": "scene-3",
+      "index": 3,
+      "title": "Close the stool with the second side",
+      "narration": "Offer up the second side frame, start every screw, then tighten evenly.",
+      "onScreenCallouts": [
+        "SCREW"
+      ],
+      "motionPrompt": "A real adult assembling \"IKEA BEKVÄM step stool — assembly\".\nStep: Close the stool with the second side. Offer up the second side frame, start every screw, then tighten evenly.\nContinuous documentary shot. Camera movement: slow_zoom_out.\nSound effects: quiet workshop, hands seating parts for \"Close the stool with the second side\", no music, no extra voices.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: STEP, SIDE, BRACE, SCREW.",
+      "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA BEKVÄM step stool — assembly\".\nThe person is performing this exact step: Close the stool with the second side.\nAction: Offer up the second side frame, start every screw, then tighten evenly.\nOnly these parts may appear: STEP, SIDE, BRACE, SCREW.\n\nCamera: eye-level slow_zoom_out.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "STEP",
+        "SIDE",
+        "BRACE",
+        "SCREW"
+      ],
+      "cameraMotion": "slow_zoom_out",
+      "soundEffects": "quiet workshop, hands seating parts for \"Close the stool with the second side\", no music, no extra voices",
+      "visualDescription": "Offer up the second side frame, start every screw, then tighten evenly.",
+      "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+    },
+    {
+      "id": "scene-4",
+      "index": 4,
+      "title": "Add the braces and check stability",
+      "narration": "Install the cross braces. Stand on a level floor and confirm there is no wobble before use.",
+      "onScreenCallouts": [
+        "SCREW"
+      ],
+      "motionPrompt": "A real adult assembling \"IKEA BEKVÄM step stool — assembly\".\nStep: Add the braces and check stability. Install the cross braces. Stand on a level floor and confirm there is no wobble before use.\nContinuous documentary shot. Camera movement: static.\nSound effects: quiet workshop, hands seating parts for \"Add the braces and check stability\", no music, no extra voices.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: STEP, SIDE, BRACE, SCREW.",
+      "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA BEKVÄM step stool — assembly\".\nThe person is performing this exact step: Add the braces and check stability.\nAction: Install the cross braces. Stand on a level floor and confirm there is no wobble before use.\nOnly these parts may appear: STEP, SIDE, BRACE, SCREW.\nVisible caution if relevant: Do not stand on the stool until every screw is tight..\nCamera: eye-level static.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [
+        "Do not stand on the stool until every screw is tight."
+      ],
+      "allowedPartIds": [
+        "STEP",
+        "SIDE",
+        "BRACE",
+        "SCREW"
+      ],
+      "cameraMotion": "static",
+      "soundEffects": "quiet workshop, hands seating parts for \"Add the braces and check stability\", no music, no extra voices",
+      "visualDescription": "Install the cross braces. Stand on a level floor and confirm there is no wobble before use.",
+      "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+    }
+  ],
+  "sceneResults": [
+    {
+      "scene": {
+        "id": "scene-1",
+        "index": 1,
+        "title": "Attach the lower step to one side frame",
+        "narration": "Align the lower tread with the side-frame pockets and drive the screws until snug.",
+        "onScreenCallouts": [
+          "SCREW"
+        ],
+        "motionPrompt": "A real adult assembling \"IKEA BEKVÄM step stool — assembly\".\nStep: Attach the lower step to one side frame. Align the lower tread with the side-frame pockets and drive the screws until snug.\nContinuous documentary shot. Camera movement: slow_left_to_right.\nSound effects: quiet workshop, hands seating parts for \"Attach the lower step to one side frame\", no music, no extra voices.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: STEP, SIDE, BRACE, SCREW.",
+        "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA BEKVÄM step stool — assembly\".\nThe person is performing this exact step: Attach the lower step to one side frame.\nAction: Align the lower tread with the side-frame pockets and drive the screws until snug.\nOnly these parts may appear: STEP, SIDE, BRACE, SCREW.\n\nCamera: eye-level slow_left_to_right.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "STEP",
+          "SIDE",
+          "BRACE",
+          "SCREW"
+        ],
+        "cameraMotion": "slow_left_to_right",
+        "soundEffects": "quiet workshop, hands seating parts for \"Attach the lower step to one side frame\", no music, no extra voices",
+        "visualDescription": "Align the lower tread with the side-frame pockets and drive the screws until snug.",
+        "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences.",
+        "durationSeconds": 11
+      },
+      "framePath": "frames/scene-1.png",
+      "clipPath": "clips/scene-1.mp4",
+      "attempts": 2,
+      "evaluation": {
+        "similarity": 0.7,
+        "promptAdherence": 0.56,
+        "visualQuality": 0.95,
+        "partIdentity": 0.58,
+        "safetyCoverage": 1,
+        "inventedParts": true,
+        "warningPresent": true,
+        "sequenceCorrect": false,
+        "temporalConsistency": 0.62,
+        "passed": false,
+        "critique": "The image is high quality and generally shows a wooden assembly with a screw being driven, which partially matches the intended step. However, it appears to show more than one side frame already attached and includes a BRACE prominently assembled, while the planned scene is specifically attaching the lower step to one side frame. That makes the sequence look too advanced. The labeled BRACE is an allowed BOM item but is not part of this scene intent, so it functions as an invented/extra visible assembly focus for this step. The callout requirement is also off: SCREW should be the emphasized callout, but multiple labels are shown and the scene focus is diluted. To improve: show only one SIDE frame, the STEP being aligned into its pockets, visible SCREW insertion, and avoid showing the second side/brace already assembled.",
+        "failureType": "visual",
+        "narrationAlignment": 0.6,
+        "motionCoherence": 0.9,
+        "cheapGate": 0.57
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 11
+    },
+    {
+      "scene": {
+        "id": "scene-2",
+        "index": 2,
+        "title": "Fit the upper step",
+        "narration": "Seat the upper tread and fasten it to the same side frame.",
+        "onScreenCallouts": [
+          "SCREW"
+        ],
+        "motionPrompt": "A real adult assembling \"IKEA BEKVÄM step stool — assembly\".\nStep: Fit the upper step. Seat the upper tread and fasten it to the same side frame.\nContinuous documentary shot. Camera movement: slow_zoom_in.\nSound effects: quiet workshop, hands seating parts for \"Fit the upper step\", no music, no extra voices.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: STEP, SIDE, BRACE, SCREW.",
+        "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA BEKVÄM step stool — assembly\".\nThe person is performing this exact step: Fit the upper step.\nAction: Seat the upper tread and fasten it to the same side frame.\nOnly these parts may appear: STEP, SIDE, BRACE, SCREW.\n\nCamera: eye-level slow_zoom_in.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "STEP",
+          "SIDE",
+          "BRACE",
+          "SCREW"
+        ],
+        "cameraMotion": "slow_zoom_in",
+        "soundEffects": "quiet workshop, hands seating parts for \"Fit the upper step\", no music, no extra voices",
+        "visualDescription": "Seat the upper tread and fasten it to the same side frame.",
+        "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences.",
+        "durationSeconds": 10
+      },
+      "framePath": "frames/scene-2.png",
+      "clipPath": "clips/scene-2.mp4",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 0.84,
+        "promptAdherence": 0.9,
+        "visualQuality": 0.96,
+        "partIdentity": 0.9,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "The frame matches the planned step well: the upper step is seated on the side frame and a screw fastening action is clearly shown, which aligns with the narration and SCREW callout. Visual quality is strong and all visible parts are within the allowed BOM. Part labeling is mostly correct, though the scene presents a realistic photo rather than the exact manual-style diagram, and the lower structure/brace area may be slightly ambiguous compared with the reference drawing. No required warning is missing because this scene has none. Overall this passes, but the next prompt could improve by matching the reference angle and simplifying the composition so the upper-step installation action reads even more directly.",
+        "failureType": "none",
+        "narrationAlignment": 0.92,
+        "motionCoherence": 0.9,
+        "cheapGate": 0.88
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 10
+    },
+    {
+      "scene": {
+        "id": "scene-3",
+        "index": 3,
+        "title": "Close the stool with the second side",
+        "narration": "Offer up the second side frame, start every screw, then tighten evenly.",
+        "onScreenCallouts": [
+          "SCREW"
+        ],
+        "motionPrompt": "A real adult assembling \"IKEA BEKVÄM step stool — assembly\".\nStep: Close the stool with the second side. Offer up the second side frame, start every screw, then tighten evenly.\nContinuous documentary shot. Camera movement: slow_zoom_out.\nSound effects: quiet workshop, hands seating parts for \"Close the stool with the second side\", no music, no extra voices.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: STEP, SIDE, BRACE, SCREW.",
+        "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA BEKVÄM step stool — assembly\".\nThe person is performing this exact step: Close the stool with the second side.\nAction: Offer up the second side frame, start every screw, then tighten evenly.\nOnly these parts may appear: STEP, SIDE, BRACE, SCREW.\n\nCamera: eye-level slow_zoom_out.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "STEP",
+          "SIDE",
+          "BRACE",
+          "SCREW"
+        ],
+        "cameraMotion": "slow_zoom_out",
+        "soundEffects": "quiet workshop, hands seating parts for \"Close the stool with the second side\", no music, no extra voices",
+        "visualDescription": "Offer up the second side frame, start every screw, then tighten evenly.",
+        "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences.",
+        "durationSeconds": 10
+      },
+      "framePath": "frames/scene-3.png",
+      "clipPath": "clips/scene-3.mp4",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 0.78,
+        "promptAdherence": 0.82,
+        "visualQuality": 0.93,
+        "partIdentity": 0.72,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.79,
+        "passed": true,
+        "critique": "The frame generally matches the planned step: a second side frame is being positioned onto the stool and screws are highlighted, which supports the narration about offering up the second side and starting screws. Visual quality is strong and the assembly state appears plausible. However, part labeling is incomplete and slightly ambiguous: SIDE and SCREW are clearly indicated, but BRACE is not called out and STEP is labeled on the lower frame area rather than clearly identifying the step board component. The image also emphasizes a screwdriver/tightening action in the insets, while the narration specifically suggests starting every screw before tightening evenly; this is acceptable but not ideal because it could imply tightening before all screws are started. No warnings were required, and no invented parts are visible. To improve prompt fidelity, show the second side frame being aligned with all visible screw positions loosely started, with less emphasis on final tightening and clearer identification of the stool step and side frame relationship.",
+        "failureType": "none",
+        "narrationAlignment": 0.85,
+        "motionCoherence": 0.84,
+        "cheapGate": 0.8
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 10
+    },
+    {
+      "scene": {
+        "id": "scene-4",
+        "index": 4,
+        "title": "Add the braces and check stability",
+        "narration": "Install the cross braces. Stand on a level floor and confirm there is no wobble before use.",
+        "onScreenCallouts": [
+          "SCREW"
+        ],
+        "motionPrompt": "A real adult assembling \"IKEA BEKVÄM step stool — assembly\".\nStep: Add the braces and check stability. Install the cross braces. Stand on a level floor and confirm there is no wobble before use.\nContinuous documentary shot. Camera movement: static.\nSound effects: quiet workshop, hands seating parts for \"Add the braces and check stability\", no music, no extra voices.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: STEP, SIDE, BRACE, SCREW.",
+        "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA BEKVÄM step stool — assembly\".\nThe person is performing this exact step: Add the braces and check stability.\nAction: Install the cross braces. Stand on a level floor and confirm there is no wobble before use.\nOnly these parts may appear: STEP, SIDE, BRACE, SCREW.\nVisible caution if relevant: Do not stand on the stool until every screw is tight..\nCamera: eye-level static.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [
+          "Do not stand on the stool until every screw is tight."
+        ],
+        "allowedPartIds": [
+          "STEP",
+          "SIDE",
+          "BRACE",
+          "SCREW"
+        ],
+        "cameraMotion": "static",
+        "soundEffects": "quiet workshop, hands seating parts for \"Add the braces and check stability\", no music, no extra voices",
+        "visualDescription": "Install the cross braces. Stand on a level floor and confirm there is no wobble before use.",
+        "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences.",
+        "durationSeconds": 15
+      },
+      "framePath": "frames/scene-4.png",
+      "clipPath": "clips/scene-4.mp4",
+      "attempts": 2,
+      "evaluation": {
+        "similarity": 0.62,
+        "promptAdherence": 0.54,
+        "visualQuality": 0.95,
+        "partIdentity": 0.8,
+        "safetyCoverage": 0,
+        "inventedParts": false,
+        "warningPresent": false,
+        "sequenceCorrect": false,
+        "temporalConsistency": 0.55,
+        "passed": false,
+        "critique": "The frame is high quality and shows the allowed parts only, with correct callouts for STEP, SIDE, BRACE, and SCREW. However, it does not clearly depict the planned scene action of installing cross braces and checking stability on a level floor. The stool appears on a tabletop rather than standing on the floor, which conflicts with the stability-check narration. The required warning, 'Do not stand on the stool until every screw is tight,' is missing, so this must fail. Sequence also looks off because the image emphasizes tightening a top screw rather than a clear brace-installation/stability-check step. Rewrite the prompt to explicitly show the stool on a level floor, cross braces being installed or already highlighted, and include the required safety warning text on screen.",
+        "failureType": "visual",
+        "narrationAlignment": 0.46,
+        "motionCoherence": 0.9,
+        "cheapGate": 0.58
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 15
+    }
+  ],
+  "videoPath": "output.mp4",
+  "vttPath": "chapters.vtt",
+  "captionsPath": "captions.vtt"
+}

@@ -42,9 +42,9 @@ export default function Home() {
             Open a sample, or drop your own manual.
           </h2>
           <p className="text-base leading-7 text-muted-foreground sm:text-lg">
-            The agent walks the same reel you just watched: plan, still, spoken
-            motion, judge, stitch. A six-step job is minutes per scene — 63%
-            means the fourth scene, not the credits.
+            The four sample kits already have a finished cut. Play one and the
+            movie opens immediately. Your own PDF still walks the full reel:
+            plan, still, spoken motion, judge, stitch.
           </p>
         </section>
 

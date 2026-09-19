@@ -7,8 +7,9 @@ import { generateAllScenes } from "@/lib/agent/generate";
 import { logProduction } from "@/lib/agent/production-log";
 import { getMediaProvider } from "@/lib/agent/providers";
 import { stitchJob } from "@/lib/agent/stitch";
-import { failJob, setStage, updateJob } from "@/lib/agent/store";
+import { failJob, loadJob, setStage, updateJob } from "@/lib/agent/store";
 import { understandManual } from "@/lib/agent/understand";
+import { hydrateSampleFilm, shouldUseSampleFilm } from "@/lib/sample-manual/films";
 
 const running = new Set<string>();
 
@@ -24,11 +25,16 @@ export async function runJob(
 ) {
   const dir = jobDir(id);
   try {
+    const existing = await loadJob(id);
+    if (existing && shouldUseSampleFilm(existing.sampleId)) {
+      await hydrateSampleFilm(id, existing.sampleId as string);
+      return;
+    }
+
     const provider = getMediaProvider();
     await updateJob(id, { provider: provider.name, status: "running" });
 
     await setStage(id, "ingest", "Reading the manual and pulling figures", 8);
-    const { loadJob } = await import("@/lib/agent/store");
     const current = await loadJob(id);
     if (!current) throw new Error("Job disappeared");
     await logProduction(dir, `Starting production for ${current.sourceName}`);

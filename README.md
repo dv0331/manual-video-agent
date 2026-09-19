@@ -10,6 +10,8 @@ Sample inputs in the repo:
 - **IKEA BEKVÄM** and **IKEA LACK** — from the IKEA 3D Assembly Dataset
 - **AP-1 benchtop arbor press** — original mechanical kit written for this tool
 
+Each sample has a pre-cut film under `content/sample-films/{id}/`. Opening a sample copies that cut into a job so the player starts immediately. Uploading your own PDF still runs the full agent.
+
 IKEA remains the rights holder. See `content/sample-manuals/NOTICE.md`.
 
 ## The reel (course-aligned)
@@ -23,7 +25,7 @@ Practices from the Google / DeepLearning.AI media-agents lessons (L2–L6, L8):
 5. **Judge** — cheap alignment gate, then a scored critique. One prompt rewrite. Warnings stay human-visible.
 6. **Cut** — concat clips, captions, chapter markers.
 
-All scenes still shoot — they run **in parallel** (stills, voices, judges, retries). The film no longer waits on Sora unless you set `SORA_WAIT=1`. Target wall-clock is about one minute for a full sample, not one minute per scene.
+All scenes still shoot — they run **in parallel** (stills, voices, judges, retries). The film no longer waits on Sora unless you set `SORA_WAIT=1`. Target wall-clock is about one minute for a new upload, not one minute per scene. Set `SAMPLE_FILM_REGEN=1` only if you want to reshoot a sample instead of using the saved cut.
 
 ## Run locally
 

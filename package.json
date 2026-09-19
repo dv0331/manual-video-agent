@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start --hostname 127.0.0.1 --port 43127",
     "lint": "eslint",
-    "sample-manual": "node scripts/generate-sample-manual.mjs"
+    "sample-manual": "node scripts/generate-sample-manual.mjs",
+    "save-sample-films": "node scripts/save-sample-films.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

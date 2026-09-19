@@ -1,0 +1,222 @@
+[
+  {
+    "id": "scene-1",
+    "index": 1,
+    "title": "Insert dowels into side panels",
+    "narration": "Lay both side panels flat, then press the wooden dowels into the marked holes until seated flush, without forcing them deeper.",
+    "visualDescription": "Clean workbench with two SIDE panels laid flat side by side. A person kneels or stands at the bench, sorting and pressing DOWEL pieces into the predrilled edge holes. Unused dowels are grouped neatly in a small tray.",
+    "cameraMotion": "slow_left_to_right",
+    "soundEffects": "wood pieces set on bench, light hand taps, workshop room tone",
+    "onScreenCallouts": [
+      "Step 1",
+      "Parts: SIDE ×2, DOWEL ×8",
+      "Torque: none",
+      "Warning: Do not force dowels past flush"
+    ],
+    "motionPrompt": "A real adult assembling \"IKEA KALLAX shelf unit — assembly\".\nStep: Insert dowels into side panels. Lay both side panels flat, then press the wooden dowels into the marked holes until seated flush, without forcing them deeper.\nContinuous documentary shot. Camera movement: slow_left_to_right.\nSound effects: wood pieces set on bench, light hand taps, workshop room tone.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: SIDE, DOWEL.",
+    "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA KALLAX shelf unit — assembly\".\nThe person is performing this exact step: Insert dowels into side panels.\nAction: Clean workbench with two SIDE panels laid flat side by side. A person kneels or stands at the bench, sorting and pressing DOWEL pieces into the predrilled edge holes. Unused dowels are grouped neatly in a small tray.\nOnly these parts may appear: SIDE, DOWEL.\nVisible caution if relevant: Do not force dowels past flush..\nCamera: eye-level slow_left_to_right.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+    "startFrameStrategy": "human-assembly",
+    "warnings": [
+      "Do not force dowels past flush."
+    ],
+    "allowedPartIds": [
+      "SIDE",
+      "DOWEL"
+    ],
+    "figurePath": "/workspace/data/jobs/0d79137d-c141-4148-b95b-df36d1ecac18/figures/fig-01.png",
+    "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+  },
+  {
+    "id": "scene-2",
+    "index": 2,
+    "title": "Install cam screws in top and bottom panels",
+    "narration": "Place the top and bottom panels on the bench, then thread each locking screw into its factory-marked hole until fully seated.",
+    "visualDescription": "Clean bench with TOP panels laid flat, one above the other. A person uses a Phillips screwdriver to install CAM locking screws into the marked holes. Remaining CAM pieces sit organized nearby.",
+    "cameraMotion": "slow_zoom_in",
+    "soundEffects": "screwdriver turning, hardware clink, workshop room tone",
+    "onScreenCallouts": [
+      "Step 2",
+      "Parts: TOP ×2, CAM ×8",
+      "Tool: Phillips screwdriver",
+      "Torque: seat fully"
+    ],
+    "motionPrompt": "A real adult assembling \"IKEA KALLAX shelf unit — assembly\".\nStep: Install cam screws in top and bottom panels. Place the top and bottom panels on the bench, then thread each locking screw into its factory-marked hole until fully seated.\nContinuous documentary shot. Camera movement: slow_zoom_in.\nSound effects: screwdriver turning, hardware clink, workshop room tone.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: TOP, CAM.",
+    "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA KALLAX shelf unit — assembly\".\nThe person is performing this exact step: Install cam screws in top and bottom panels.\nAction: Clean bench with TOP panels laid flat, one above the other. A person uses a Phillips screwdriver to install CAM locking screws into the marked holes. Remaining CAM pieces sit organized nearby.\nOnly these parts may appear: TOP, CAM.\n\nCamera: eye-level slow_zoom_in.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+    "startFrameStrategy": "human-assembly",
+    "warnings": [],
+    "allowedPartIds": [
+      "TOP",
+      "CAM"
+    ],
+    "figurePath": "/workspace/data/jobs/0d79137d-c141-4148-b95b-df36d1ecac18/figures/fig-02.png",
+    "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+  },
+  {
+    "id": "scene-3",
+    "index": 3,
+    "title": "Join first side to top panel",
+    "narration": "Stand one side panel, align its dowels with the top panel holes, press the joint closed, then turn cams to lock.",
+    "visualDescription": "A clean bench layout with one SIDE panel upright at the edge of the bench and one TOP panel aligned horizontally. The assembler holds the joint together and tightens the cam locks with a screwdriver.",
+    "cameraMotion": "static",
+    "soundEffects": "panel contact, screwdriver turning, bench creak",
+    "onScreenCallouts": [
+      "Step 3",
+      "Parts: SIDE ×1, TOP ×1, DOWEL, CAM",
+      "Tool: Phillips screwdriver",
+      "Torque: lock cams snug"
+    ],
+    "motionPrompt": "A real adult assembling \"IKEA KALLAX shelf unit — assembly\".\nStep: Join first side to top panel. Stand one side panel, align its dowels with the top panel holes, press the joint closed, then turn cams to lock.\nContinuous documentary shot. Camera movement: static.\nSound effects: panel contact, screwdriver turning, bench creak.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: SIDE, TOP, DOWEL, CAM.",
+    "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA KALLAX shelf unit — assembly\".\nThe person is performing this exact step: Join first side to top panel.\nAction: A clean bench layout with one SIDE panel upright at the edge of the bench and one TOP panel aligned horizontally. The assembler holds the joint together and tightens the cam locks with a screwdriver.\nOnly these parts may appear: SIDE, TOP, DOWEL, CAM.\n\nCamera: eye-level static.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+    "startFrameStrategy": "human-assembly",
+    "warnings": [],
+    "allowedPartIds": [
+      "SIDE",
+      "TOP",
+      "DOWEL",
+      "CAM"
+    ],
+    "figurePath": "/workspace/data/jobs/0d79137d-c141-4148-b95b-df36d1ecac18/figures/fig-03.png",
+    "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+  },
+  {
+    "id": "scene-4",
+    "index": 4,
+    "title": "Add bottom panel and second side",
+    "narration": "Fit the bottom panel, then bring in the second side panel. Check the box is square before tightening the last cam locks.",
+    "visualDescription": "On a clean bench, the partially assembled frame is laid carefully for access. The person aligns the second TOP panel as the bottom, then closes the frame with the second SIDE panel and tightens remaining cams.",
+    "cameraMotion": "slow_left_to_right",
+    "soundEffects": "panel sliding, screwdriver turning, light wood knock",
+    "onScreenCallouts": [
+      "Step 4",
+      "Parts: SIDE ×1, TOP ×1, CAM",
+      "Tool: Phillips screwdriver",
+      "Warning: Check box is square before final tightening"
+    ],
+    "motionPrompt": "A real adult assembling \"IKEA KALLAX shelf unit — assembly\".\nStep: Add bottom panel and second side. Fit the bottom panel, then bring in the second side panel. Check the box is square before tightening the last cam locks.\nContinuous documentary shot. Camera movement: slow_left_to_right.\nSound effects: panel sliding, screwdriver turning, light wood knock.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: SIDE, TOP, CAM.",
+    "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA KALLAX shelf unit — assembly\".\nThe person is performing this exact step: Add bottom panel and second side.\nAction: On a clean bench, the partially assembled frame is laid carefully for access. The person aligns the second TOP panel as the bottom, then closes the frame with the second SIDE panel and tightens remaining cams.\nOnly these parts may appear: SIDE, TOP, CAM.\nVisible caution if relevant: Check the box is square before tightening the last cams..\nCamera: eye-level slow_left_to_right.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+    "startFrameStrategy": "human-assembly",
+    "warnings": [
+      "Check the box is square before tightening the last cams."
+    ],
+    "allowedPartIds": [
+      "SIDE",
+      "TOP",
+      "CAM"
+    ],
+    "figurePath": "/workspace/data/jobs/0d79137d-c141-4148-b95b-df36d1ecac18/figures/fig-04.png",
+    "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+  },
+  {
+    "id": "scene-5",
+    "index": 5,
+    "title": "Install the first two shelves",
+    "narration": "Tilt the first shelves into the cube openings, then lower them gently into position, keeping the unit stable on the bench.",
+    "visualDescription": "Clean bench with the assembled outer frame lying in a stable position. A person tilts two SHELF panels one at a time into the cube openings and lowers them carefully into place.",
+    "cameraMotion": "slow_zoom_out",
+    "soundEffects": "wood sliding, soft panel set-down, workshop room tone",
+    "onScreenCallouts": [
+      "Step 5",
+      "Parts: SHELF ×2",
+      "Torque: none",
+      "Warning: Keep unit stable while inserting shelves"
+    ],
+    "motionPrompt": "A real adult assembling \"IKEA KALLAX shelf unit — assembly\".\nStep: Install the first two shelves. Tilt the first shelves into the cube openings, then lower them gently into position, keeping the unit stable on the bench.\nContinuous documentary shot. Camera movement: slow_zoom_out.\nSound effects: wood sliding, soft panel set-down, workshop room tone.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: SHELF, SIDE, TOP.",
+    "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA KALLAX shelf unit — assembly\".\nThe person is performing this exact step: Install the first two shelves.\nAction: Clean bench with the assembled outer frame lying in a stable position. A person tilts two SHELF panels one at a time into the cube openings and lowers them carefully into place.\nOnly these parts may appear: SHELF, SIDE, TOP.\nVisible caution if relevant: Keep unit stable while inserting shelves..\nCamera: eye-level slow_zoom_out.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+    "startFrameStrategy": "human-assembly",
+    "warnings": [
+      "Keep unit stable while inserting shelves."
+    ],
+    "allowedPartIds": [
+      "SHELF",
+      "SIDE",
+      "TOP"
+    ],
+    "figurePath": "/workspace/data/jobs/0d79137d-c141-4148-b95b-df36d1ecac18/figures/fig-05.png",
+    "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+  },
+  {
+    "id": "scene-6",
+    "index": 6,
+    "title": "Install the remaining shelves",
+    "narration": "Repeat for the remaining shelves, lowering each one carefully into the open cubes. Never stand or climb on the unit.",
+    "visualDescription": "The cabinet frame remains on the clean bench as the person inserts the last two SHELF panels. The finished internal grid becomes visible as each shelf settles into place.",
+    "cameraMotion": "slow_zoom_in",
+    "soundEffects": "wood sliding, light hand repositioning, workshop room tone",
+    "onScreenCallouts": [
+      "Step 5",
+      "Parts: SHELF ×2",
+      "Torque: none",
+      "Warning: Do not stand on the unit"
+    ],
+    "motionPrompt": "A real adult assembling \"IKEA KALLAX shelf unit — assembly\".\nStep: Install the remaining shelves. Repeat for the remaining shelves, lowering each one carefully into the open cubes. Never stand or climb on the unit.\nContinuous documentary shot. Camera movement: slow_zoom_in.\nSound effects: wood sliding, light hand repositioning, workshop room tone.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: SHELF, SIDE, TOP.",
+    "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA KALLAX shelf unit — assembly\".\nThe person is performing this exact step: Install the remaining shelves.\nAction: The cabinet frame remains on the clean bench as the person inserts the last two SHELF panels. The finished internal grid becomes visible as each shelf settles into place.\nOnly these parts may appear: SHELF, SIDE, TOP.\nVisible caution if relevant: Do not stand on the unit..\nCamera: eye-level slow_zoom_in.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+    "startFrameStrategy": "human-assembly",
+    "warnings": [
+      "Do not stand on the unit."
+    ],
+    "allowedPartIds": [
+      "SHELF",
+      "SIDE",
+      "TOP"
+    ],
+    "figurePath": "/workspace/data/jobs/0d79137d-c141-4148-b95b-df36d1ecac18/figures/fig-06.png",
+    "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+  },
+  {
+    "id": "scene-7",
+    "index": 7,
+    "title": "Prepare wall attachment hardware",
+    "narration": "With the unit assembled, position the supplied wall attachment hardware and prepare to secure it using suitable fixings for your wall.",
+    "visualDescription": "Clean bench with the assembled shelf unit upright and the WALL attachment hardware placed neatly beside it. A person holds the bracket in position near the top of the unit with a screwdriver ready.",
+    "cameraMotion": "static",
+    "soundEffects": "hardware clink, screwdriver handling, workshop room tone",
+    "onScreenCallouts": [
+      "Step 6",
+      "Parts: WALL ×1",
+      "Tool: Phillips screwdriver",
+      "Warning: Use wall plugs rated for your wall type"
+    ],
+    "motionPrompt": "A real adult assembling \"IKEA KALLAX shelf unit — assembly\".\nStep: Prepare wall attachment hardware. With the unit assembled, position the supplied wall attachment hardware and prepare to secure it using suitable fixings for your wall.\nContinuous documentary shot. Camera movement: static.\nSound effects: hardware clink, screwdriver handling, workshop room tone.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: WALL, SIDE, TOP, SHELF.",
+    "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA KALLAX shelf unit — assembly\".\nThe person is performing this exact step: Prepare wall attachment hardware.\nAction: Clean bench with the assembled shelf unit upright and the WALL attachment hardware placed neatly beside it. A person holds the bracket in position near the top of the unit with a screwdriver ready.\nOnly these parts may appear: WALL, SIDE, TOP, SHELF.\nVisible caution if relevant: Use wall plugs rated for your wall type..\nCamera: eye-level static.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+    "startFrameStrategy": "human-assembly",
+    "warnings": [
+      "Use wall plugs rated for your wall type."
+    ],
+    "allowedPartIds": [
+      "WALL",
+      "SIDE",
+      "TOP",
+      "SHELF"
+    ],
+    "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+  },
+  {
+    "id": "scene-8",
+    "index": 8,
+    "title": "Secure the unit against tip-over",
+    "narration": "Fasten the wall attachment device as instructed. This unit must be secured to the wall to reduce dangerous tip-over risk.",
+    "visualDescription": "Clean final bench-and-wall setup showing the assembled unit adjacent to a wall surface. A person secures the WALL attachment hardware with a screwdriver, then steadies the unit with one hand.",
+    "cameraMotion": "slow_zoom_out",
+    "soundEffects": "screwdriver turning, bracket contact, workshop room tone",
+    "onScreenCallouts": [
+      "Step 6",
+      "Parts: WALL ×1",
+      "Tool: Phillips screwdriver",
+      "Warning: Serious injury can occur from tip-over",
+      "Warning: Must be used with wall attachment device"
+    ],
+    "motionPrompt": "A real adult assembling \"IKEA KALLAX shelf unit — assembly\".\nStep: Secure the unit against tip-over. Fasten the wall attachment device as instructed. This unit must be secured to the wall to reduce dangerous tip-over risk.\nContinuous documentary shot. Camera movement: slow_zoom_out.\nSound effects: screwdriver turning, bracket contact, workshop room tone.\nHands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.\nAllowed parts: WALL, SIDE, TOP, SHELF.",
+    "framePrompt": "Photoreal 16:9 documentary still. Same workshop throughout: warm workbench or living-room floor, natural indoor light, shallow depth of field, real adult assembler. How-to assembly video — not a drawing, not exploded CAD, no invented logos.\nProduct: \"IKEA KALLAX shelf unit — assembly\".\nThe person is performing this exact step: Secure the unit against tip-over.\nAction: Clean final bench-and-wall setup showing the assembled unit adjacent to a wall surface. A person secures the WALL attachment hardware with a screwdriver, then steadies the unit with one hand.\nOnly these parts may appear: WALL, SIDE, TOP, SHELF.\nVisible caution if relevant: Serious injury can occur from tip-over. This furniture must be used with the wall attachment device..\nCamera: eye-level slow_zoom_out.\nShow real hands, real tools named in the step, and the product in a half-built state that matches the step.",
+    "startFrameStrategy": "human-assembly",
+    "warnings": [
+      "Serious injury can occur from tip-over. This furniture must be used with the wall attachment device."
+    ],
+    "allowedPartIds": [
+      "WALL",
+      "SIDE",
+      "TOP",
+      "SHELF"
+    ],
+    "voiceProfile": "calm, clear, male voice with a neutral American accent. Warm baritone, steady pace around 140 words per minute. Professional and conversational, like a senior engineer explaining to a colleague. No uptalk, no vocal fry. Even tone, slight emphasis on part IDs. Natural pauses between sentences."
+  }
+]

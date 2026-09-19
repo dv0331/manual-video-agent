@@ -1,5 +1,6 @@
 import path from "node:path";
 import { SAMPLE_CARDS } from "@/lib/sample-manual/cards";
+import { sampleFilmReady } from "@/lib/sample-manual/films";
 import { SAMPLE_GRAPH, SAMPLE_MANUAL_TEXT } from "@/lib/sample-manual/graph";
 import type { AssemblyGraph } from "@/lib/agent/types";
 
@@ -231,5 +232,8 @@ export function getSample(id?: string | null) {
 }
 
 export function listSamples() {
-  return SAMPLE_CATALOG.map(({ graph, text, pdfPath, pagesDir, figuresDir, ...publicFields }) => publicFields);
+  return SAMPLE_CATALOG.map(({ graph, text, pdfPath, pagesDir, figuresDir, ...publicFields }) => ({
+    ...publicFields,
+    precut: sampleFilmReady(publicFields.id),
+  }));
 }

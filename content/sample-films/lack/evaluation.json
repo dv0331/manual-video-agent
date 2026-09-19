@@ -1,0 +1,68 @@
+[
+  {
+    "sceneId": "scene-1",
+    "attempts": 1,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.97,
+      "promptAdherence": 0.98,
+      "visualQuality": 0.96,
+      "partIdentity": 0.99,
+      "safetyCoverage": 1,
+      "inventedParts": false,
+      "warningPresent": true,
+      "sequenceCorrect": true,
+      "temporalConsistency": 0.95,
+      "passed": true,
+      "critique": "Frame matches the planned scene well: the TOP is shown upside down on a soft surface, with four threaded inserts visible and facing up. Only allowed parts are present, and the label correctly identifies the table top. No warning is required for this scene, so its absence is acceptable. Visual quality is strong and the action timing is appropriate for the narration. Minor note: the upright legs/white posts in the background could slightly distract from the focus on unpacking/flipping the top, but they do not appear to introduce disallowed assembled content in the main action.",
+      "failureType": "none",
+      "narrationAlignment": 0.98,
+      "motionCoherence": 0.94,
+      "cheapGate": 0.97
+    }
+  },
+  {
+    "sceneId": "scene-2",
+    "attempts": 2,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.88,
+      "promptAdherence": 0.85,
+      "visualQuality": 0.96,
+      "partIdentity": 0.92,
+      "safetyCoverage": 0.95,
+      "inventedParts": false,
+      "warningPresent": true,
+      "sequenceCorrect": true,
+      "temporalConsistency": 0.89,
+      "passed": true,
+      "critique": "The frame matches the intended step well: two LEG parts are being hand-threaded into the TOP, which aligns with 'Screw two opposite legs into the inserts by hand until they seat.' Part identity is clear and only allowed BOM items are shown as active assembly parts. Sequence appears correct for the first two legs. Visual quality is strong. Minor issue: the still cannot clearly verify 'opposite' placement or fully communicate the caution about avoiding cross-threading, and there is an additional unlabeled white piece visible at right that could slightly distract, though it does not clearly read as an invented active part in the scene. To improve the next prompt, emphasize a clearer underside/insert view showing opposite corners and obvious hand-start threading before full seating.",
+      "failureType": "none",
+      "narrationAlignment": 0.85,
+      "motionCoherence": 0.9,
+      "cheapGate": 0.87
+    }
+  },
+  {
+    "sceneId": "scene-3",
+    "attempts": 1,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.94,
+      "promptAdherence": 0.92,
+      "visualQuality": 0.97,
+      "partIdentity": 0.95,
+      "safetyCoverage": 1,
+      "inventedParts": false,
+      "warningPresent": true,
+      "sequenceCorrect": true,
+      "temporalConsistency": 0.9,
+      "passed": true,
+      "critique": "Frame matches the planned scene well: only the allowed TOP and LEG parts are visible, and the person appears to be fitting the remaining legs to the tabletop. The visual labels correctly highlight LEG and TOP, with no invented parts. The table is already partly assembled and upright enough to support the narration about completing the last two legs and preparing to stand/check stability. Minor mismatch: this still does not explicitly show the flip onto its legs or the rock check, so narration alignment is slightly incomplete for the second half of the spoken line. Visual quality is strong and the assembly sequence appears correct.",
+      "failureType": "none",
+      "narrationAlignment": 0.85,
+      "motionCoherence": 0.93,
+      "cheapGate": 0.93
+    }
+  }
+]

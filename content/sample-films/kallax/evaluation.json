@@ -1,0 +1,178 @@
+[
+  {
+    "sceneId": "scene-1",
+    "attempts": 1,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.97,
+      "promptAdherence": 0.98,
+      "visualQuality": 0.96,
+      "partIdentity": 0.99,
+      "safetyCoverage": 1,
+      "inventedParts": false,
+      "warningPresent": true,
+      "sequenceCorrect": true,
+      "temporalConsistency": 0.95,
+      "passed": true,
+      "critique": "Frame matches the planned scene very well: two SIDE panels are laid flat and DOWEL parts are being inserted into predrilled holes. The on-screen callout correctly shows Step 1, the allowed parts count, and the required warning about not forcing dowels past flush. No invented parts are visible, and the action is sequence-correct for the first assembly step. Visual quality is high and the still supports the narration. Minor limitation: the image cannot fully verify 'until seated flush' from this exact moment, but it does depict appropriate insertion without contradiction.",
+      "failureType": "none",
+      "narrationAlignment": 0.96,
+      "motionCoherence": 0.95,
+      "cheapGate": 0.97
+    }
+  },
+  {
+    "sceneId": "scene-2",
+    "attempts": 2,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.08,
+      "promptAdherence": 0.02,
+      "visualQuality": 0.95,
+      "partIdentity": 0,
+      "safetyCoverage": 0,
+      "inventedParts": true,
+      "warningPresent": true,
+      "sequenceCorrect": false,
+      "temporalConsistency": 0,
+      "passed": false,
+      "critique": "Frame does not match Scene 2. It shows Step 1 with SIDE panels and DOWEL parts being inserted by hand, plus a dowel tray and a warning overlay about dowels. The planned scene requires Step 2: TOP panels and CAM/locking screws being threaded into factory-marked holes with a Phillips screwdriver. Allowed parts are only TOP and CAM, but the frame includes disallowed/invented parts for this scene (SIDE, DOWEL). Sequence is wrong, on-screen text is wrong, and the still cannot match the intended narration about threading locking screws into top/bottom panels. Rewrite prompt to explicitly show two TOP panels on the bench, eight CAM/locking screws, a Phillips screwdriver actively threading one into a predrilled hole, and Step 2 callouts only.",
+      "failureType": "visual",
+      "narrationAlignment": 0,
+      "motionCoherence": 0.88,
+      "cheapGate": 0.05
+    }
+  },
+  {
+    "sceneId": "scene-3",
+    "attempts": 2,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.18,
+      "promptAdherence": 0.08,
+      "visualQuality": 0.9,
+      "partIdentity": 0.22,
+      "safetyCoverage": 1,
+      "inventedParts": false,
+      "warningPresent": true,
+      "sequenceCorrect": false,
+      "temporalConsistency": 0.1,
+      "passed": false,
+      "critique": "The frame shows the wrong step and wrong action. Planned scene is Step 3: join one SIDE to the TOP by aligning dowels, pressing the joint closed, and turning cams to lock. Instead, the image overlay says Step 2 and shows two flat panels on a table with cams being installed/seated, not a side panel standing and joining to a top panel. The callouts are incorrect: 'TOP ×2, CAM ×8' conflicts with the required 'SIDE ×1, TOP ×1, DOWEL, CAM'. The required intermediate assembly state is missing: no visible side-to-top joint being closed, no standing side panel, and no clear dowel alignment moment. Tool and cam usage are broadly plausible, and no extra forbidden BOM parts are visible, but the scene should be rewritten to explicitly depict one SIDE panel upright meeting one TOP panel, visible dowels entering holes, and the screwdriver turning cams after the panels are pressed together. Update the on-screen text to Step 3 with the correct parts list and torque note.",
+      "failureType": "visual",
+      "narrationAlignment": 0.06,
+      "motionCoherence": 0.35,
+      "cheapGate": 0.14
+    }
+  },
+  {
+    "sceneId": "scene-4",
+    "attempts": 2,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.29,
+      "promptAdherence": 0.18,
+      "visualQuality": 0.9,
+      "partIdentity": 0.22,
+      "safetyCoverage": 0,
+      "inventedParts": true,
+      "warningPresent": false,
+      "sequenceCorrect": false,
+      "temporalConsistency": 0.2,
+      "passed": false,
+      "critique": "The frame does not match Scene 4. It appears to show an earlier step: only one side and one panel are being joined, with visible dowels and cam tightening in close-up. The overlay even says Step 3 and lists DOWEL, which is not allowed in this scene. Scene 4 should show the bottom/top panel already fitted and the second SIDE being brought in, with CAMs allowed, plus a warning to check the box is square before final tightening. That required warning is missing, so this must fail. Rewrite prompt to show a wider Step 4 assembly state with SIDE ×1, TOP ×1, CAM only, the cabinet box nearly formed, final cam tightening after squaring, and the explicit warning text present.",
+      "failureType": "visual",
+      "narrationAlignment": 0.12,
+      "motionCoherence": 0.78,
+      "cheapGate": 0.24
+    }
+  },
+  {
+    "sceneId": "scene-5",
+    "attempts": 2,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.03,
+      "promptAdherence": 0,
+      "visualQuality": 0.84,
+      "partIdentity": 0,
+      "safetyCoverage": 0,
+      "inventedParts": true,
+      "warningPresent": false,
+      "sequenceCorrect": false,
+      "temporalConsistency": 0,
+      "passed": false,
+      "critique": "Frame does not match Scene 5. It shows Step 4 side/top/cam assembly with a screwdriver, not installation of two SHELF parts into cube openings. Disallowed/invented parts are present (SIDE, TOP, CAM), and the on-screen callout lists the wrong step, wrong parts, and wrong tool. Required warning is missing/mismatched: it should say to keep the unit stable while inserting shelves. To fix: show Step 5 overlay, only SHELF ×2 with no tool/torque none, and depict two shelves being tilted into the existing cube openings of the unit while stabilized on the bench.",
+      "failureType": "visual",
+      "narrationAlignment": 0,
+      "motionCoherence": 0.08,
+      "cheapGate": 0.02
+    }
+  },
+  {
+    "sceneId": "scene-6",
+    "attempts": 2,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.69,
+      "promptAdherence": 0.58,
+      "visualQuality": 0.93,
+      "partIdentity": 0.9,
+      "safetyCoverage": 0,
+      "inventedParts": false,
+      "warningPresent": false,
+      "sequenceCorrect": true,
+      "temporalConsistency": 0.8,
+      "passed": false,
+      "critique": "The frame generally matches Step 5 with the correct furniture style and allowed parts only (SHELF, SIDE, TOP visible as the existing unit). The action of placing remaining shelves into open cubes is plausible and sequence-appropriate. Visual quality is strong and no invented hardware or extra BOM parts appear. However, the required warning is wrong/missing: the scene requires 'Do not stand on the unit,' but the frame shows a different warning about keeping the unit stable while inserting shelves. Because the required warning is absent, this must fail. To fix: replace the warning callout text with the exact required safety warning, keep Step 5 and SHELF ×2, and ideally show the shelves being lowered more clearly into the open cubes rather than hovering above them.",
+      "failureType": "visual",
+      "narrationAlignment": 0.72,
+      "motionCoherence": 0.86,
+      "cheapGate": 0.66
+    }
+  },
+  {
+    "sceneId": "scene-7",
+    "attempts": 2,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.08,
+      "promptAdherence": 0.02,
+      "visualQuality": 0.92,
+      "partIdentity": 0.05,
+      "safetyCoverage": 0,
+      "inventedParts": false,
+      "warningPresent": false,
+      "sequenceCorrect": false,
+      "temporalConsistency": 0.05,
+      "passed": false,
+      "critique": "Frame does not match the planned scene. The plan is Step 6: prepare wall attachment hardware with the unit already assembled, showing WALL hardware, a Phillips screwdriver, and the warning 'Use wall plugs rated for your wall type.' Instead, the frame shows Step 5 installing remaining shelves, with SHELF parts visible and a different warning ('Do not stand on the unit'). The required WALL hardware is not shown, the callouts are wrong, the sequence is earlier than expected, and the narration about positioning wall attachment hardware would not fit this still. Visual quality is good, but the scene content should be rewritten to show the fully assembled unit and wall bracket hardware with the correct safety warning on screen.",
+      "failureType": "visual",
+      "narrationAlignment": 0.04,
+      "motionCoherence": 0.88,
+      "cheapGate": 0.07
+    }
+  },
+  {
+    "sceneId": "scene-8",
+    "attempts": 2,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.72,
+      "promptAdherence": 0.58,
+      "visualQuality": 0.95,
+      "partIdentity": 0.78,
+      "safetyCoverage": 0.45,
+      "inventedParts": false,
+      "warningPresent": false,
+      "sequenceCorrect": true,
+      "temporalConsistency": 0.84,
+      "passed": false,
+      "critique": "The frame generally matches Step 6 wall-securing: a person is attaching a wall bracket to the top of the assembled unit with a Phillips screwdriver, and the allowed WALL/TOP parts are shown. Visual quality and action clarity are strong. However, the required safety warning coverage does not match the planned scene. The scene must explicitly include the warnings 'Serious injury can occur from tip-over' and 'This furniture must be used with the wall attachment device,' but the frame instead shows a different warning about wall plugs rated for the wall type. Because a required warning is missing, this fails. To improve the next prompt, ensure the overlay text includes both exact tip-over warnings and the wall attachment device requirement, while keeping Step 6, WALL ×1, and Phillips screwdriver callouts visible.",
+      "failureType": "visual",
+      "narrationAlignment": 0.74,
+      "motionCoherence": 0.94,
+      "cheapGate": 0.67
+    }
+  }
+]

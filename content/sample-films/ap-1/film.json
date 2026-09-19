@@ -1,0 +1,563 @@
+{
+  "sampleId": "ap-1",
+  "sourceName": "AP-1-ASM-001 Benchtop Arbor Press",
+  "provider": "openai",
+  "graph": {
+    "title": "BENCHTOP ARBOR PRESS",
+    "documentId": "AP-1-ASM-001",
+    "tools": [
+      "4 mm hex key",
+      "10 mm combination wrench",
+      "Rubber mallet",
+      "Torque wrench 5–25 N·m"
+    ],
+    "parts": [
+      {
+        "id": "P-01",
+        "name": "Base casting",
+        "qty": 1
+      },
+      {
+        "id": "P-02",
+        "name": "Column",
+        "qty": 1
+      },
+      {
+        "id": "P-03",
+        "name": "Ram",
+        "qty": 1
+      },
+      {
+        "id": "P-04",
+        "name": "Handle assembly",
+        "qty": 1
+      },
+      {
+        "id": "P-05",
+        "name": "Pinion shaft",
+        "qty": 1
+      },
+      {
+        "id": "P-06",
+        "name": "Rack guard",
+        "qty": 1
+      },
+      {
+        "id": "F-08",
+        "name": "M8 × 25 socket cap screw",
+        "qty": 4
+      },
+      {
+        "id": "F-10",
+        "name": "M10 × 30 hex bolt",
+        "qty": 2
+      },
+      {
+        "id": "W-10",
+        "name": "M10 lock washer",
+        "qty": 2
+      }
+    ],
+    "steps": [
+      {
+        "index": 1,
+        "title": "Seat the column in the base",
+        "instruction": "Stand the base casting P-01 on a bench. Lower column P-02 into the base socket until the dowel engages. A rubber mallet may be used on a wood block.",
+        "figureRef": "Figure 1",
+        "fasteners": [],
+        "tools": [
+          "Rubber mallet"
+        ],
+        "warnings": [
+          "Do not force the fit."
+        ],
+        "torque": null,
+        "dependsOn": []
+      },
+      {
+        "index": 2,
+        "title": "Install base-to-column hardware",
+        "instruction": "Pass two F-10 M10 × 30 hex bolts with W-10 lock washers up through the base into the column. Seat them finger-tight only.",
+        "figureRef": "Figure 2",
+        "fasteners": [
+          "F-10",
+          "W-10"
+        ],
+        "tools": [],
+        "warnings": [
+          "WARNING: Do not apply final torque until ram travel is verified in step 5."
+        ],
+        "torque": null,
+        "dependsOn": [
+          1
+        ]
+      },
+      {
+        "index": 3,
+        "title": "Slide the ram into the column",
+        "instruction": "Wipe the ram rack P-03. Apply a thin film of machine oil to the rack teeth. Slide the ram into the column bore from the top until the rack is visible in the pinion window.",
+        "figureRef": "Figure 3",
+        "fasteners": [],
+        "tools": [],
+        "warnings": [],
+        "torque": null,
+        "dependsOn": [
+          2
+        ]
+      },
+      {
+        "index": 4,
+        "title": "Mesh the pinion and fit the handle",
+        "instruction": "Insert pinion shaft P-05 through the column boss so the pinion teeth mesh with the ram rack. Fit handle assembly P-04 onto the pinion square and retain it with the 4 mm hex key.",
+        "figureRef": "Figure 4",
+        "fasteners": [],
+        "tools": [
+          "4 mm hex key"
+        ],
+        "warnings": [],
+        "torque": null,
+        "dependsOn": [
+          3
+        ]
+      },
+      {
+        "index": 5,
+        "title": "Verify travel, then torque the base",
+        "instruction": "Cycle the ram through full travel. Confirm there is no bind. Then torque both F-10 bolts to 18 N·m.",
+        "figureRef": "Figure 5",
+        "fasteners": [
+          "F-10"
+        ],
+        "tools": [
+          "Torque wrench 5–25 N·m"
+        ],
+        "warnings": [
+          "WARNING: Keep fingers clear of the ram path while cycling."
+        ],
+        "torque": "18 N·m",
+        "dependsOn": [
+          4
+        ]
+      },
+      {
+        "index": 6,
+        "title": "Fit the rack guard",
+        "instruction": "Place rack guard P-06 over the pinion window. Install four F-08 M8 × 25 socket cap screws and torque to 8 N·m.",
+        "figureRef": "Figure 6",
+        "fasteners": [
+          "F-08"
+        ],
+        "tools": [
+          "Torque wrench 5–25 N·m"
+        ],
+        "warnings": [],
+        "torque": "8 N·m",
+        "dependsOn": [
+          5
+        ]
+      }
+    ],
+    "notes": [
+      "Model AP-1",
+      "Revision A",
+      "This procedure assembles the AP-1 benchtop arbor press from the supplied kit.",
+      "Follow the sequence.",
+      "Do not invent fasteners, tools, or torque values."
+    ]
+  },
+  "scenes": [
+    {
+      "id": "scene-01",
+      "index": 1,
+      "title": "Seat the column in the base",
+      "narration": "Place the base casting on a stable bench, then lower the column into the base socket. Align it carefully and seat it until the dowel engages. If needed, use light taps through a wood block to bring the column fully home without forcing the fit.",
+      "onScreenCallouts": [
+        "Step 1",
+        "P-01, P-02",
+        "Torque: —",
+        "Warning: Do not force the fit"
+      ],
+      "motionPrompt": "Static isometric camera with a slow push-in toward the base socket. Two hands guide the column straight down into the base, pause to align, then apply gentle settling pressure. If needed, one hand steadies the column while the other mimics light mallet-assisted seating through a wood block without obscuring the joint.",
+      "framePrompt": "Figure 1 style assembly view of base casting P-01 on a bench with column P-02 being lowered vertically into the base socket, alignment at the dowel engagement clearly visible.",
+      "startFrameStrategy": "manual-figure",
+      "warnings": [
+        "Do not force the fit."
+      ],
+      "allowedPartIds": [
+        "P-01",
+        "P-02"
+      ]
+    },
+    {
+      "id": "scene-02",
+      "index": 2,
+      "title": "Install base-to-column hardware",
+      "narration": "With the column seated, install the two M10 bolts with lock washers up through the base into the column. Start both fasteners and bring them to finger-tight only so the assembly can still self-align during the travel check later.",
+      "onScreenCallouts": [
+        "Step 2",
+        "F-10 ×2, W-10 ×2",
+        "Torque: Finger-tight only",
+        "Warning: Do not apply final torque until Step 5"
+      ],
+      "motionPrompt": "Camera shifts to a low underside angle of the base, then rotates slightly to show both bolt locations. Hands place one lock washer on each bolt and thread both fasteners upward into the column, stopping at finger-tight.",
+      "framePrompt": "Figure 2 style underside or cutaway view showing two F-10 M10 × 30 hex bolts with W-10 lock washers passing up through base casting P-01 into column P-02.",
+      "startFrameStrategy": "manual-figure",
+      "warnings": [
+        "WARNING: Do not apply final torque until ram travel is verified in step 5."
+      ],
+      "allowedPartIds": [
+        "P-01",
+        "P-02",
+        "F-10",
+        "W-10"
+      ]
+    },
+    {
+      "id": "scene-03",
+      "index": 3,
+      "title": "Slide the ram into the column",
+      "narration": "Prepare the ram by wiping the rack clean and applying a thin film of machine oil to the rack teeth. Then lower the ram into the top of the column and continue until the rack becomes visible in the pinion window.",
+      "onScreenCallouts": [
+        "Step 3",
+        "P-03",
+        "Torque: —",
+        "Apply thin film of oil to rack teeth"
+      ],
+      "motionPrompt": "Top-down camera transitions to a front three-quarter view of the column. Hands present the ram above the column, make a brief wiping and oiling motion on the rack teeth, then slide the ram smoothly downward until the rack is visible at the pinion window.",
+      "framePrompt": "Figure 3 style view of ram P-03 entering the top of column P-02, with the rack aligned to become visible at the pinion window.",
+      "startFrameStrategy": "manual-figure",
+      "warnings": [],
+      "allowedPartIds": [
+        "P-02",
+        "P-03"
+      ]
+    },
+    {
+      "id": "scene-04",
+      "index": 4,
+      "title": "Mesh the pinion and fit the handle",
+      "narration": "Insert the pinion shaft through the column boss so its teeth engage the ram rack. Once the mesh is established, fit the handle assembly onto the pinion square and secure it using the specified hex-key-retained connection.",
+      "onScreenCallouts": [
+        "Step 4",
+        "P-05, P-04",
+        "Tool: 4 mm hex key",
+        "Torque: —"
+      ],
+      "motionPrompt": "Camera cuts to a close side view centered on the pinion window and column boss. Hands insert the pinion shaft horizontally until the teeth mesh with the ram rack, then move to the outer end, place the handle assembly onto the square, and tighten the retention point with a hex key motion.",
+      "framePrompt": "Figure 4 style close assembly view showing pinion shaft P-05 entering the column boss and meshing with ram P-03, with handle assembly P-04 positioned on the pinion square.",
+      "startFrameStrategy": "manual-figure",
+      "warnings": [],
+      "allowedPartIds": [
+        "P-02",
+        "P-03",
+        "P-04",
+        "P-05"
+      ]
+    },
+    {
+      "id": "scene-05",
+      "index": 5,
+      "title": "Verify travel and torque the base bolts",
+      "narration": "Cycle the handle to move the ram through its full travel and confirm the motion is smooth with no binding. After the travel check passes, tighten both base-to-column bolts to final torque.",
+      "onScreenCallouts": [
+        "Step 5",
+        "F-10 ×2",
+        "Torque: 18 N·m",
+        "Warning: Keep fingers clear of ram path"
+      ],
+      "motionPrompt": "Front isometric camera frames the full mechanism. Hands rotate the handle through a complete up-and-down ram cycle, staying clear of the ram path. The camera then drops to the base fasteners while hands apply a torque-wrench motion to both bolts in sequence.",
+      "framePrompt": "Figure 5 style view of assembled base, column, ram, pinion, and handle during a travel check, with emphasis on the two F-10 bolts at the base for final torquing.",
+      "startFrameStrategy": "manual-figure",
+      "warnings": [
+        "WARNING: Keep fingers clear of the ram path while cycling."
+      ],
+      "allowedPartIds": [
+        "P-01",
+        "P-02",
+        "P-03",
+        "P-04",
+        "P-05",
+        "F-10",
+        "W-10"
+      ]
+    },
+    {
+      "id": "scene-06",
+      "index": 6,
+      "title": "Fit the rack guard",
+      "narration": "Place the rack guard over the pinion window, align the mounting holes, and install the four socket cap screws. Tighten the screws evenly, then torque all four to specification.",
+      "onScreenCallouts": [
+        "Step 6",
+        "P-06, F-08 ×4",
+        "Torque: 8 N·m",
+        "Tool: Torque wrench 5–25 N·m"
+      ],
+      "motionPrompt": "Camera moves to a clean side view of the pinion window area. Hands position the rack guard over the opening, start all four screws by hand, then perform alternating tightening motions followed by final torque-wrench motions on each fastener.",
+      "framePrompt": "Figure 6 style assembly view showing rack guard P-06 covering the pinion window and four F-08 M8 × 25 socket cap screws aligned in their mounting positions.",
+      "startFrameStrategy": "manual-figure",
+      "warnings": [],
+      "allowedPartIds": [
+        "P-02",
+        "P-05",
+        "P-06",
+        "F-08"
+      ]
+    }
+  ],
+  "sceneResults": [
+    {
+      "scene": {
+        "id": "scene-01",
+        "index": 1,
+        "title": "Seat the column in the base",
+        "narration": "Place the base casting on a stable bench, then lower the column into the base socket. Align it carefully and seat it until the dowel engages. If needed, use light taps through a wood block to bring the column fully home without forcing the fit.",
+        "onScreenCallouts": [
+          "Step 1",
+          "P-01, P-02",
+          "Torque: —",
+          "Warning: Do not force the fit"
+        ],
+        "motionPrompt": "Static isometric camera with a slow push-in toward the base socket. Two hands guide the column straight down into the base, pause to align, then apply gentle settling pressure. If needed, one hand steadies the column while the other mimics light mallet-assisted seating through a wood block without obscuring the joint.",
+        "framePrompt": "Figure 1 style assembly view of base casting P-01 on a bench with column P-02 being lowered vertically into the base socket, alignment at the dowel engagement clearly visible.",
+        "startFrameStrategy": "manual-figure",
+        "warnings": [
+          "Do not force the fit."
+        ],
+        "allowedPartIds": [
+          "P-01",
+          "P-02"
+        ]
+      },
+      "framePath": "frames/scene-01.png",
+      "clipPath": "clips/scene-01.mp4",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 0.95,
+        "promptAdherence": 0.97,
+        "visualQuality": 0.93,
+        "partIdentity": 0.98,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.96,
+        "passed": true,
+        "critique": "Frame matches the planned step well: base P-01 and column P-02 are shown, with the column being seated into the base socket. The step label and part callout are present, and the warning not to force the fit is included. No extra parts are introduced. Visuals are clear and consistent with an assembly instruction illustration. Minor limitation: the image is a simplified schematic and does not explicitly depict light taps through a wood block, but this is optional/conditional in the narration."
+      },
+      "motionSource": "kenburns"
+    },
+    {
+      "scene": {
+        "id": "scene-02",
+        "index": 2,
+        "title": "Install base-to-column hardware",
+        "narration": "With the column seated, install the two M10 bolts with lock washers up through the base into the column. Start both fasteners and bring them to finger-tight only so the assembly can still self-align during the travel check later.",
+        "onScreenCallouts": [
+          "Step 2",
+          "F-10 ×2, W-10 ×2",
+          "Torque: Finger-tight only",
+          "Warning: Do not apply final torque until Step 5"
+        ],
+        "motionPrompt": "Camera shifts to a low underside angle of the base, then rotates slightly to show both bolt locations. Hands place one lock washer on each bolt and thread both fasteners upward into the column, stopping at finger-tight.",
+        "framePrompt": "Figure 2 style underside or cutaway view showing two F-10 M10 × 30 hex bolts with W-10 lock washers passing up through base casting P-01 into column P-02.",
+        "startFrameStrategy": "manual-figure",
+        "warnings": [
+          "WARNING: Do not apply final torque until ram travel is verified in step 5."
+        ],
+        "allowedPartIds": [
+          "P-01",
+          "P-02",
+          "F-10",
+          "W-10"
+        ]
+      },
+      "framePath": "frames/scene-02.png",
+      "clipPath": "clips/scene-02.mp4",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 0.96,
+        "promptAdherence": 0.98,
+        "visualQuality": 0.95,
+        "partIdentity": 0.97,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.98,
+        "passed": true,
+        "critique": "Frame matches the planned Step 2 scene: base P-01 and column P-02 are shown with two F-10 bolts and two W-10 lock washers installed from below and labeled finger-tight. Required warning about not applying final torque until Step 5/travel check is present. No disallowed or invented parts are visible. Sequence is correct relative to the prior frame showing the column seated in the base."
+      },
+      "motionSource": "kenburns"
+    },
+    {
+      "scene": {
+        "id": "scene-03",
+        "index": 3,
+        "title": "Slide the ram into the column",
+        "narration": "Prepare the ram by wiping the rack clean and applying a thin film of machine oil to the rack teeth. Then lower the ram into the top of the column and continue until the rack becomes visible in the pinion window.",
+        "onScreenCallouts": [
+          "Step 3",
+          "P-03",
+          "Torque: —",
+          "Apply thin film of oil to rack teeth"
+        ],
+        "motionPrompt": "Top-down camera transitions to a front three-quarter view of the column. Hands present the ram above the column, make a brief wiping and oiling motion on the rack teeth, then slide the ram smoothly downward until the rack is visible at the pinion window.",
+        "framePrompt": "Figure 3 style view of ram P-03 entering the top of column P-02, with the rack aligned to become visible at the pinion window.",
+        "startFrameStrategy": "manual-figure",
+        "warnings": [],
+        "allowedPartIds": [
+          "P-02",
+          "P-03"
+        ]
+      },
+      "framePath": "frames/scene-03.png",
+      "clipPath": "clips/scene-03.mp4",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 0.96,
+        "promptAdherence": 0.98,
+        "visualQuality": 0.94,
+        "partIdentity": 0.93,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.95,
+        "passed": true,
+        "critique": "Frame matches the planned scene well: it shows the ram P-03 being lowered into the column, with notes about lightly oiling the rack teeth and ensuring the rack is visible in the pinion window. No warning is required for this scene, so absence of a warning is acceptable. Only allowed scene parts are depicted, with no obvious invented hardware. Visual clarity and labeling are good."
+      },
+      "motionSource": "kenburns"
+    },
+    {
+      "scene": {
+        "id": "scene-04",
+        "index": 4,
+        "title": "Mesh the pinion and fit the handle",
+        "narration": "Insert the pinion shaft through the column boss so its teeth engage the ram rack. Once the mesh is established, fit the handle assembly onto the pinion square and secure it using the specified hex-key-retained connection.",
+        "onScreenCallouts": [
+          "Step 4",
+          "P-05, P-04",
+          "Tool: 4 mm hex key",
+          "Torque: —"
+        ],
+        "motionPrompt": "Camera cuts to a close side view centered on the pinion window and column boss. Hands insert the pinion shaft horizontally until the teeth mesh with the ram rack, then move to the outer end, place the handle assembly onto the square, and tighten the retention point with a hex key motion.",
+        "framePrompt": "Figure 4 style close assembly view showing pinion shaft P-05 entering the column boss and meshing with ram P-03, with handle assembly P-04 positioned on the pinion square.",
+        "startFrameStrategy": "manual-figure",
+        "warnings": [],
+        "allowedPartIds": [
+          "P-02",
+          "P-03",
+          "P-04",
+          "P-05"
+        ]
+      },
+      "framePath": "frames/scene-04.png",
+      "clipPath": "clips/scene-04.mp4",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 0.92,
+        "promptAdherence": 0.95,
+        "visualQuality": 0.94,
+        "partIdentity": 0.93,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.96,
+        "passed": true,
+        "critique": "Frame matches the planned Step 4 well: the column shows the pinion installed and the handle fitted, with labels for P-05 and P-04 and text indicating meshing with the ram rack and retaining the handle on the pinion square. No disallowed or invented parts are visible. Scene progression is consistent with the prior frame showing the ram inserted. Minor issue: the specified tool callout (4 mm hex key) is not visibly called out in the frame text, so adherence is slightly reduced."
+      },
+      "motionSource": "kenburns"
+    },
+    {
+      "scene": {
+        "id": "scene-05",
+        "index": 5,
+        "title": "Verify travel and torque the base bolts",
+        "narration": "Cycle the handle to move the ram through its full travel and confirm the motion is smooth with no binding. After the travel check passes, tighten both base-to-column bolts to final torque.",
+        "onScreenCallouts": [
+          "Step 5",
+          "F-10 ×2",
+          "Torque: 18 N·m",
+          "Warning: Keep fingers clear of ram path"
+        ],
+        "motionPrompt": "Front isometric camera frames the full mechanism. Hands rotate the handle through a complete up-and-down ram cycle, staying clear of the ram path. The camera then drops to the base fasteners while hands apply a torque-wrench motion to both bolts in sequence.",
+        "framePrompt": "Figure 5 style view of assembled base, column, ram, pinion, and handle during a travel check, with emphasis on the two F-10 bolts at the base for final torquing.",
+        "startFrameStrategy": "manual-figure",
+        "warnings": [
+          "WARNING: Keep fingers clear of the ram path while cycling."
+        ],
+        "allowedPartIds": [
+          "P-01",
+          "P-02",
+          "P-03",
+          "P-04",
+          "P-05",
+          "F-10",
+          "W-10"
+        ]
+      },
+      "framePath": "frames/scene-05.png",
+      "clipPath": "clips/scene-05.mp4",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 0.58,
+        "promptAdherence": 0.72,
+        "visualQuality": 0.95,
+        "partIdentity": 0.74,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.7,
+        "passed": true,
+        "critique": "The frame matches the planned Step 5 reasonably well: it shows the press assembly, indicates ram travel with an upward arrow, includes the required warning about keeping fingers clear, and references F-10 torque to 18 N·m. Visual quality is high and no disallowed parts are apparent. However, the depiction is somewhat simplified and does not clearly show both base-to-column bolts being torqued or the handle being actively cycled through full travel. Part labeling is sparse, so identity of all allowed parts is only moderately clear."
+      },
+      "motionSource": "kenburns"
+    },
+    {
+      "scene": {
+        "id": "scene-06",
+        "index": 6,
+        "title": "Fit the rack guard",
+        "narration": "Place the rack guard over the pinion window, align the mounting holes, and install the four socket cap screws. Tighten the screws evenly, then torque all four to specification.",
+        "onScreenCallouts": [
+          "Step 6",
+          "P-06, F-08 ×4",
+          "Torque: 8 N·m",
+          "Tool: Torque wrench 5–25 N·m"
+        ],
+        "motionPrompt": "Use a clean side view locked on the pinion window area only. Show hands place P-06 over the opening, align the mounting holes, start exactly four F-08 screws by hand, tighten them evenly in an alternating pattern, then apply final torque-wrench motions to all four screws to 8 N·m. Keep the sequence strictly limited to Step 6 rack guard installation. Do not show Figure 5 content, do not show cycle ram actions, and do not include F-10, P-03, or any parts outside allowedPartIds. Ensure the visible hardware count remains exactly four F-08 screws and the scene callouts match Step 6.",
+        "framePrompt": "Create only Scene 6 / Step 6: fit rack guard P-06. Match Figure 6, not Figure 5. Show a tight side view centered only on the pinion window installation area. Show rack guard P-06 installed over the pinion window with exactly four F-08 socket cap screws in the four mounting holes. Allowed parts only: P-06 and F-08, with only the necessary visible context of the assembly already present; do not introduce any other hardware or labeled parts. Explicitly exclude F-10, P-03, cycle ram content, and any previous-step or next-step actions. On-screen callouts must match this scene exactly: 'Step 6', 'P-06, F-08 ×4', 'Torque: 8 N·m', and 'Tool: Torque wrench 5–25 N·m'.",
+        "startFrameStrategy": "manual-figure",
+        "warnings": [],
+        "allowedPartIds": [
+          "P-02",
+          "P-05",
+          "P-06",
+          "F-08"
+        ]
+      },
+      "framePath": "frames/scene-06.png",
+      "clipPath": "clips/scene-06.mp4",
+      "attempts": 3,
+      "evaluation": {
+        "similarity": 0.18,
+        "promptAdherence": 0.12,
+        "visualQuality": 0.92,
+        "partIdentity": 0.2,
+        "safetyCoverage": 1,
+        "inventedParts": true,
+        "warningPresent": true,
+        "sequenceCorrect": false,
+        "temporalConsistency": 0,
+        "passed": false,
+        "critique": "The shown frame is primarily Figure 5 ('Cycle ram, then torque F-10 to 18 N·m') rather than the requested Scene 6 ('Fit the rack guard'). It includes disallowed BOM items such as P-03 and F-10, while the allowed scene should show P-06 with four F-08 screws. Although a Figure 6 panel is visible above, the main frame content does not match the planned scene action or sequence. No warning is required for Scene 6, so safety coverage is not an issue, but invented/disallowed parts are present, so the frame fails."
+      },
+      "motionSource": "kenburns"
+    }
+  ],
+  "videoPath": "output.mp4",
+  "vttPath": "chapters.vtt",
+  "captionsPath": "captions.vtt"
+}

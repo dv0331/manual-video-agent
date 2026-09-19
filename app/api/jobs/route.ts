@@ -9,11 +9,16 @@ import { startJob } from "@/lib/agent/run";
 import { serializeJob } from "@/lib/agent/serialize";
 import { createJob, listJobs } from "@/lib/agent/store";
 import { getSample } from "@/lib/sample-manual/catalog";
+import { featuredFromSampleFilm, hydrateSampleFilm, shouldUseSampleFilm } from "@/lib/sample-manual/films";
 
 export async function GET(request: Request) {
   const jobs = await listJobs(24);
   const featured = new URL(request.url).searchParams.get("featured") === "1";
   if (featured) {
+    const cached = featuredFromSampleFilm();
+    if (cached) {
+      return NextResponse.json({ featured: cached });
+    }
     const done = jobs.find((job) => job.status === "completed" && job.videoPath);
     return NextResponse.json({
       featured: done ? serializeJob(done) : null,
@@ -58,6 +63,10 @@ export async function POST(request: Request) {
       sampleId: sample.id,
       provider: resolveProviderName(),
     });
+    if (shouldUseSampleFilm(sample.id)) {
+      const ready = await hydrateSampleFilm(id, sample.id);
+      return NextResponse.json(serializeJob(ready));
+    }
     after(() => {
       startJob(id);
     });

@@ -1,0 +1,110 @@
+[
+  {
+    "sceneId": "scene-01",
+    "attempts": 1,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.95,
+      "promptAdherence": 0.97,
+      "visualQuality": 0.93,
+      "partIdentity": 0.98,
+      "safetyCoverage": 1,
+      "inventedParts": false,
+      "warningPresent": true,
+      "sequenceCorrect": true,
+      "temporalConsistency": 0.96,
+      "passed": true,
+      "critique": "Frame matches the planned step well: base P-01 and column P-02 are shown, with the column being seated into the base socket. The step label and part callout are present, and the warning not to force the fit is included. No extra parts are introduced. Visuals are clear and consistent with an assembly instruction illustration. Minor limitation: the image is a simplified schematic and does not explicitly depict light taps through a wood block, but this is optional/conditional in the narration."
+    }
+  },
+  {
+    "sceneId": "scene-02",
+    "attempts": 1,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.96,
+      "promptAdherence": 0.98,
+      "visualQuality": 0.95,
+      "partIdentity": 0.97,
+      "safetyCoverage": 1,
+      "inventedParts": false,
+      "warningPresent": true,
+      "sequenceCorrect": true,
+      "temporalConsistency": 0.98,
+      "passed": true,
+      "critique": "Frame matches the planned Step 2 scene: base P-01 and column P-02 are shown with two F-10 bolts and two W-10 lock washers installed from below and labeled finger-tight. Required warning about not applying final torque until Step 5/travel check is present. No disallowed or invented parts are visible. Sequence is correct relative to the prior frame showing the column seated in the base."
+    }
+  },
+  {
+    "sceneId": "scene-03",
+    "attempts": 1,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.96,
+      "promptAdherence": 0.98,
+      "visualQuality": 0.94,
+      "partIdentity": 0.93,
+      "safetyCoverage": 1,
+      "inventedParts": false,
+      "warningPresent": true,
+      "sequenceCorrect": true,
+      "temporalConsistency": 0.95,
+      "passed": true,
+      "critique": "Frame matches the planned scene well: it shows the ram P-03 being lowered into the column, with notes about lightly oiling the rack teeth and ensuring the rack is visible in the pinion window. No warning is required for this scene, so absence of a warning is acceptable. Only allowed scene parts are depicted, with no obvious invented hardware. Visual clarity and labeling are good."
+    }
+  },
+  {
+    "sceneId": "scene-04",
+    "attempts": 1,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.92,
+      "promptAdherence": 0.95,
+      "visualQuality": 0.94,
+      "partIdentity": 0.93,
+      "safetyCoverage": 1,
+      "inventedParts": false,
+      "warningPresent": true,
+      "sequenceCorrect": true,
+      "temporalConsistency": 0.96,
+      "passed": true,
+      "critique": "Frame matches the planned Step 4 well: the column shows the pinion installed and the handle fitted, with labels for P-05 and P-04 and text indicating meshing with the ram rack and retaining the handle on the pinion square. No disallowed or invented parts are visible. Scene progression is consistent with the prior frame showing the ram inserted. Minor issue: the specified tool callout (4 mm hex key) is not visibly called out in the frame text, so adherence is slightly reduced."
+    }
+  },
+  {
+    "sceneId": "scene-05",
+    "attempts": 1,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.58,
+      "promptAdherence": 0.72,
+      "visualQuality": 0.95,
+      "partIdentity": 0.74,
+      "safetyCoverage": 1,
+      "inventedParts": false,
+      "warningPresent": true,
+      "sequenceCorrect": true,
+      "temporalConsistency": 0.7,
+      "passed": true,
+      "critique": "The frame matches the planned Step 5 reasonably well: it shows the press assembly, indicates ram travel with an upward arrow, includes the required warning about keeping fingers clear, and references F-10 torque to 18 N·m. Visual quality is high and no disallowed parts are apparent. However, the depiction is somewhat simplified and does not clearly show both base-to-column bolts being torqued or the handle being actively cycled through full travel. Part labeling is sparse, so identity of all allowed parts is only moderately clear."
+    }
+  },
+  {
+    "sceneId": "scene-06",
+    "attempts": 3,
+    "motionSource": "kenburns",
+    "evaluation": {
+      "similarity": 0.18,
+      "promptAdherence": 0.12,
+      "visualQuality": 0.92,
+      "partIdentity": 0.2,
+      "safetyCoverage": 1,
+      "inventedParts": true,
+      "warningPresent": true,
+      "sequenceCorrect": false,
+      "temporalConsistency": 0,
+      "passed": false,
+      "critique": "The shown frame is primarily Figure 5 ('Cycle ram, then torque F-10 to 18 N·m') rather than the requested Scene 6 ('Fit the rack guard'). It includes disallowed BOM items such as P-03 and F-10, while the allowed scene should show P-06 with four F-08 screws. Although a Figure 6 panel is visible above, the main frame content does not match the planned scene action or sequence. No warning is required for Scene 6, so safety coverage is not an issue, but invented/disallowed parts are present, so the frame fails."
+    }
+  }
+]

@@ -1,0 +1,145 @@
+[
+  {
+    "id": "scene-01",
+    "index": 1,
+    "title": "Seat the column in the base",
+    "narration": "Place the base casting on a stable bench, then lower the column into the base socket. Align it carefully and seat it until the dowel engages. If needed, use light taps through a wood block to bring the column fully home without forcing the fit.",
+    "onScreenCallouts": [
+      "Step 1",
+      "P-01, P-02",
+      "Torque: —",
+      "Warning: Do not force the fit"
+    ],
+    "motionPrompt": "Static isometric camera with a slow push-in toward the base socket. Two hands guide the column straight down into the base, pause to align, then apply gentle settling pressure. If needed, one hand steadies the column while the other mimics light mallet-assisted seating through a wood block without obscuring the joint.",
+    "framePrompt": "Figure 1 style assembly view of base casting P-01 on a bench with column P-02 being lowered vertically into the base socket, alignment at the dowel engagement clearly visible.",
+    "startFrameStrategy": "manual-figure",
+    "warnings": [
+      "Do not force the fit."
+    ],
+    "allowedPartIds": [
+      "P-01",
+      "P-02"
+    ],
+    "figurePath": "/workspace/data/jobs/d2df167e-bd36-43fc-b3cf-becfc228a039/figures/fig-01.png"
+  },
+  {
+    "id": "scene-02",
+    "index": 2,
+    "title": "Install base-to-column hardware",
+    "narration": "With the column seated, install the two M10 bolts with lock washers up through the base into the column. Start both fasteners and bring them to finger-tight only so the assembly can still self-align during the travel check later.",
+    "onScreenCallouts": [
+      "Step 2",
+      "F-10 ×2, W-10 ×2",
+      "Torque: Finger-tight only",
+      "Warning: Do not apply final torque until Step 5"
+    ],
+    "motionPrompt": "Camera shifts to a low underside angle of the base, then rotates slightly to show both bolt locations. Hands place one lock washer on each bolt and thread both fasteners upward into the column, stopping at finger-tight.",
+    "framePrompt": "Figure 2 style underside or cutaway view showing two F-10 M10 × 30 hex bolts with W-10 lock washers passing up through base casting P-01 into column P-02.",
+    "startFrameStrategy": "manual-figure",
+    "warnings": [
+      "WARNING: Do not apply final torque until ram travel is verified in step 5."
+    ],
+    "allowedPartIds": [
+      "P-01",
+      "P-02",
+      "F-10",
+      "W-10"
+    ],
+    "figurePath": "/workspace/data/jobs/d2df167e-bd36-43fc-b3cf-becfc228a039/figures/fig-02.png"
+  },
+  {
+    "id": "scene-03",
+    "index": 3,
+    "title": "Slide the ram into the column",
+    "narration": "Prepare the ram by wiping the rack clean and applying a thin film of machine oil to the rack teeth. Then lower the ram into the top of the column and continue until the rack becomes visible in the pinion window.",
+    "onScreenCallouts": [
+      "Step 3",
+      "P-03",
+      "Torque: —",
+      "Apply thin film of oil to rack teeth"
+    ],
+    "motionPrompt": "Top-down camera transitions to a front three-quarter view of the column. Hands present the ram above the column, make a brief wiping and oiling motion on the rack teeth, then slide the ram smoothly downward until the rack is visible at the pinion window.",
+    "framePrompt": "Figure 3 style view of ram P-03 entering the top of column P-02, with the rack aligned to become visible at the pinion window.",
+    "startFrameStrategy": "manual-figure",
+    "warnings": [],
+    "allowedPartIds": [
+      "P-02",
+      "P-03"
+    ],
+    "figurePath": "/workspace/data/jobs/d2df167e-bd36-43fc-b3cf-becfc228a039/figures/fig-03.png"
+  },
+  {
+    "id": "scene-04",
+    "index": 4,
+    "title": "Mesh the pinion and fit the handle",
+    "narration": "Insert the pinion shaft through the column boss so its teeth engage the ram rack. Once the mesh is established, fit the handle assembly onto the pinion square and secure it using the specified hex-key-retained connection.",
+    "onScreenCallouts": [
+      "Step 4",
+      "P-05, P-04",
+      "Tool: 4 mm hex key",
+      "Torque: —"
+    ],
+    "motionPrompt": "Camera cuts to a close side view centered on the pinion window and column boss. Hands insert the pinion shaft horizontally until the teeth mesh with the ram rack, then move to the outer end, place the handle assembly onto the square, and tighten the retention point with a hex key motion.",
+    "framePrompt": "Figure 4 style close assembly view showing pinion shaft P-05 entering the column boss and meshing with ram P-03, with handle assembly P-04 positioned on the pinion square.",
+    "startFrameStrategy": "manual-figure",
+    "warnings": [],
+    "allowedPartIds": [
+      "P-02",
+      "P-03",
+      "P-04",
+      "P-05"
+    ],
+    "figurePath": "/workspace/data/jobs/d2df167e-bd36-43fc-b3cf-becfc228a039/figures/fig-04.png"
+  },
+  {
+    "id": "scene-05",
+    "index": 5,
+    "title": "Verify travel and torque the base bolts",
+    "narration": "Cycle the handle to move the ram through its full travel and confirm the motion is smooth with no binding. After the travel check passes, tighten both base-to-column bolts to final torque.",
+    "onScreenCallouts": [
+      "Step 5",
+      "F-10 ×2",
+      "Torque: 18 N·m",
+      "Warning: Keep fingers clear of ram path"
+    ],
+    "motionPrompt": "Front isometric camera frames the full mechanism. Hands rotate the handle through a complete up-and-down ram cycle, staying clear of the ram path. The camera then drops to the base fasteners while hands apply a torque-wrench motion to both bolts in sequence.",
+    "framePrompt": "Figure 5 style view of assembled base, column, ram, pinion, and handle during a travel check, with emphasis on the two F-10 bolts at the base for final torquing.",
+    "startFrameStrategy": "manual-figure",
+    "warnings": [
+      "WARNING: Keep fingers clear of the ram path while cycling."
+    ],
+    "allowedPartIds": [
+      "P-01",
+      "P-02",
+      "P-03",
+      "P-04",
+      "P-05",
+      "F-10",
+      "W-10"
+    ],
+    "figurePath": "/workspace/data/jobs/d2df167e-bd36-43fc-b3cf-becfc228a039/figures/fig-05.png"
+  },
+  {
+    "id": "scene-06",
+    "index": 6,
+    "title": "Fit the rack guard",
+    "narration": "Place the rack guard over the pinion window, align the mounting holes, and install the four socket cap screws. Tighten the screws evenly, then torque all four to specification.",
+    "onScreenCallouts": [
+      "Step 6",
+      "P-06, F-08 ×4",
+      "Torque: 8 N·m",
+      "Tool: Torque wrench 5–25 N·m"
+    ],
+    "motionPrompt": "Camera moves to a clean side view of the pinion window area. Hands position the rack guard over the opening, start all four screws by hand, then perform alternating tightening motions followed by final torque-wrench motions on each fastener.",
+    "framePrompt": "Figure 6 style assembly view showing rack guard P-06 covering the pinion window and four F-08 M8 × 25 socket cap screws aligned in their mounting positions.",
+    "startFrameStrategy": "manual-figure",
+    "warnings": [],
+    "allowedPartIds": [
+      "P-02",
+      "P-05",
+      "P-06",
+      "F-08"
+    ],
+    "figurePath": "/workspace/data/jobs/d2df167e-bd36-43fc-b3cf-becfc228a039/figures/fig-06.png"
+  }
+]
