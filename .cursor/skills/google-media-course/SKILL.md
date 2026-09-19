@@ -11,7 +11,7 @@ Do **not** rewrite the assembly-video app from a single lesson. Capture each les
 
 | Lesson | Topic | Skill | Status |
 | --- | --- | --- | --- |
-| L1 | (not uploaded) | — | waiting |
+| L1 | (notebook not uploaded) | shared `helper.py` / `requirements.txt` only | waiting for notebook |
 | L2 | Prompt engineering for image generation | `google-media-l2-image-prompting` | captured |
 | L3 | Prompt engineering for video generation | `google-media-l3-video-prompting` | captured |
 | L4 | Evaluation techniques | `google-media-l4-evaluation` | captured |
@@ -20,7 +20,9 @@ Do **not** rewrite the assembly-video app from a single lesson. Capture each les
 | L7 | Gemini CLI authoring (no notebook) | `nano-banana-image-gen`, `adk-agent-creator` | captured (skills only) |
 | L8 | Infographic agent (Gemini CLI result) | `google-media-l8-infographic-agent` | captured |
 
-Uploaded set is **L2–L6 + L8**. L1 was never uploaded. L7 has no notebook — it is the CLI session that produced L8.
+Uploaded set is **L2–L6 + L8**. L1’s notebook is still missing; the shared lab `helper.py` and `requirements.txt` are identical to the copies already in L2–L8. L7 has no notebook — it is the CLI session that produced L8.
+
+A DeepLearning.AI `credentials.json` was also sent. **Do not commit it.** It is a classroom service-account file for project `dlai-gen-media` whose `token_uri` is the internal Jupyter proxy `jupyter-api-proxy.internal.dlai`. That path will not work in this environment. The assembly app already uses the OpenAI US endpoint plus optional `GEMINI_API_KEY`. Do not copy the key into the repo or into `.env*`.
 
 When a new notebook arrives: read it fully, write or update that lesson’s skill, then stop and wait unless the user asks to implement.
 
@@ -34,7 +36,7 @@ When a new notebook arrives: read it fully, write or update that lesson’s skil
 
 ## Shared helper (`helper.py`)
 
-Present in L2 materials but used across later labs:
+Canonical copies: `references/helper.py` and `references/requirements.txt` in this skill folder. Same files shipped with L2–L8. `authenticate()` looks for `GOOGLE_APPLICATION_CREDENTIALS`, then `./credentials.json`, then `../credentials.json`.
 
 - `authenticate()` — service-account file → impersonated 2-hour Vertex token, sets `GOOGLE_GENAI_USE_VERTEXAI=True`
 - `extract_image(response)` — first inline image part → PIL

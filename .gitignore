@@ -34,6 +34,12 @@ yarn-error.log*
 .env*
 !.env.example
 
+# Course / cloud keys — never commit
+credentials.json
+**/credentials.json
+**/service-account*.json
+*-credentials.json
+
 # generated job assets
 /data/jobs
 
