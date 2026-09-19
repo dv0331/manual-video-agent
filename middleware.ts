@@ -14,9 +14,26 @@ function credentialsMatch(header: string | null, token: string) {
   return header.slice(6) === token;
 }
 
+function wantsHtml(request: NextRequest) {
+  return (request.headers.get("accept") ?? "").includes("text/html");
+}
+
+function loginUrl(request: NextRequest) {
+  const next = `${request.nextUrl.pathname}${request.nextUrl.search}`;
+  const url = request.nextUrl.clone();
+  url.pathname = "/login";
+  url.search = next && next !== "/login" ? `?next=${encodeURIComponent(next)}` : "";
+  return url;
+}
+
 export function middleware(request: NextRequest) {
   const token = expectedToken();
   if (!token) {
+    return NextResponse.next();
+  }
+
+  const path = request.nextUrl.pathname;
+  if (path === "/login" || path === "/api/login") {
     return NextResponse.next();
   }
 
@@ -38,13 +55,14 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
-  return new NextResponse("Sign in required", {
-    status: 401,
-    headers: {
-      "WWW-Authenticate": 'Basic realm="Manuals to Assembly Video"',
-      "Cache-Control": "no-store",
-    },
-  });
+  if (wantsHtml(request)) {
+    return NextResponse.redirect(loginUrl(request));
+  }
+
+  return NextResponse.json(
+    { error: "Sign in required" },
+    { status: 401, headers: { "Cache-Control": "no-store" } },
+  );
 }
 
 export const config = {
