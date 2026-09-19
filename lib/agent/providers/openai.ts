@@ -16,6 +16,9 @@ export function hasOpenAIKey() {
   return Boolean(process.env.OPENAI_API_KEY);
 }
 
+/** After one Sora timeout/fail, skip the rest of this process — polls were ~150s and still failed. */
+let soraDisabledForProcess = false;
+
 function baseUrl() {
   return (process.env.OPENAI_BASE_URL ?? "https://us.api.openai.com/v1").replace(/\/$/, "");
 }
@@ -337,7 +340,7 @@ Allowed part IDs: ${scene.allowedPartIds.join(", ")}`;
   },
 
   async generateVideo({ scene, framePath, outputPath, totalScenes }) {
-    if (process.env.USE_SORA === "0") return false;
+    if (process.env.USE_SORA === "0" || soraDisabledForProcess) return false;
     try {
       const seconds = ["4", "8", "12"].includes(process.env.OPENAI_VIDEO_SECONDS ?? "")
         ? (process.env.OPENAI_VIDEO_SECONDS as string)
@@ -363,7 +366,12 @@ A real adult assembling the product in a continuous documentary shot. Keep the m
 
       const finished = await pollVideo(id, 150000);
       if (finished.status !== "completed") {
-        console.warn("Sora did not complete", finished.status, finished.error);
+        soraDisabledForProcess = true;
+        console.warn(
+          "Sora did not complete; skipping it for later scenes and using Ken Burns",
+          finished.status,
+          finished.error,
+        );
         return false;
       }
 
@@ -378,7 +386,8 @@ A real adult assembling the product in a continuous documentary shot. Keep the m
       });
       return true;
     } catch (error) {
-      console.warn("OpenAI Sora generation failed", error);
+      soraDisabledForProcess = true;
+      console.warn("OpenAI Sora generation failed; skipping it for later scenes", error);
       return false;
     }
   },
