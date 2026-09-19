@@ -16,7 +16,8 @@ Do **not** rewrite the assembly-video app from a single lesson. Capture each les
 | L3 | Prompt engineering for video generation | `google-media-l3-video-prompting` | captured |
 | L4 | Evaluation techniques | `google-media-l4-evaluation` | captured |
 | L5 | Image generation agent (ADK tools) | `google-media-l5-image-agent` | captured |
-| L6–L8 | (not uploaded) | — | waiting |
+| L6 | Video production agent (ADK + Veo) | `google-media-l6-video-agent` | captured |
+| L7–L8 | (not uploaded) | — | waiting |
 
 When a new notebook arrives: read it fully, write or update that lesson’s skill, then stop and wait unless the user asks to implement.
 
@@ -24,7 +25,7 @@ When a new notebook arrives: read it fully, write or update that lesson’s skil
 
 - `google-genai` — Gemini generate_content for text and images
 - `google-cloud-aiplatform[evaluation]` — Vertex evaluation (later lessons)
-- `google-adk` — agent toolkit (used in L5: `Agent` + `InMemoryRunner`)
+- `google-adk` — agent toolkit (L5 `InMemoryRunner`; L6 `Runner` + `InMemorySessionService`)
 - `transformers` / `torch` / `SentencePiece` — SigLIP / Gecko eval (L4)
 - `Pillow`, `matplotlib`, `numpy`, `pandas`, `python-dotenv`
 
@@ -39,7 +40,7 @@ Present in L2 materials but used across later labs:
 - `make_display_tool(fn)` — wrap tools and log elapsed seconds
 - `clean(s)` — strip non-printable characters
 
-Do not invent L6–L8 behavior from these helpers. Wait for those notebooks. `make_display_tool` is unused through L5.
+Do not invent L7–L8 behavior from these helpers. Wait for those notebooks. L6 is the first lesson that wraps tools with `make_display_tool`.
 
 ## How this maps to the assembly app (do not implement until asked)
 
@@ -52,3 +53,5 @@ L3: Veo is a **minutes-long** poll (`sleep(15)` until `operation.done`). Course 
 L4: Always compare an **aligned** generation to a **known-bad** image against the same reference prompt. Stack **SigLIP** (fast scalar) → **Gemini judge** (scored criteria + explanation) → **Gecko rubrics** (which prompt elements passed). Final line of the lab: *SigLIP for speed → Gemini/Gecko for depth → Humans for critical decisions.*
 
 L5: First ADK agent. Tools are `brand_analysis` → `generate_design_concepts` (two distinct ideas) → `generate_idea_image` (16:9, guide as style ref) → `evaluate_image` (CRAP + brand, pass at 4.6 in tests / 4.8 in the agent, max 1 prompt-rewrite retry). `InMemoryRunner(app_name="image_agent")`. Lab brand is TuringTaste / `guide.png`. The planner model only orchestrates; the image model draws.
+
+L6: Video agent for a 3-scene RAG explainer. `plan_scenes` runs **offline** (visual, ~20-word / 8s narration, camera enum) and is baked into the system prompt. Agent tools: start frame → Veo image-to-video with `generate_audio=True` and quoted speech + voice profile → `evaluate_scene` on the **MP4** (threshold 3.0, `failure_type` audio vs visual). Audio fail retries video only; visual fail retries image+video. One scene at a time, max 1 retry, then `ffmpeg -c copy`. Orchestrator is `gemini-3.1-pro-preview`. Lab says **~10 min for 3 scenes**.
