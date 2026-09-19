@@ -20,7 +20,7 @@ const steps = [
   {
     n: "04",
     title: "Stitch",
-    body: "Motion clips, burned-in callouts, and chapter markers you can follow at the bench.",
+    body: "Motion clips, spoken step audio, burned-in callouts, and chapter markers.",
   },
 ];
 
@@ -37,7 +37,7 @@ export default function Home() {
         <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
           Open an IKEA sample or drop your own PDF. The agent extracts the
           procedure, then Generate video produces a chaptered how-to of a person
-          fitting the real parts — not a slideshow of the manual pages.
+          fitting the real parts, with spoken instructions for each step.
         </p>
       </section>
 

@@ -5,6 +5,32 @@ import { FONT_BOLD_PATH, FONT_PATH } from "@/lib/agent/paths";
 import type { Scene } from "@/lib/agent/types";
 import { SCENE_SECONDS } from "@/lib/agent/types";
 
+export function hasAudioStream(filePath: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const child = spawn(
+      "ffprobe",
+      [
+        "-v",
+        "error",
+        "-select_streams",
+        "a:0",
+        "-show_entries",
+        "stream=codec_type",
+        "-of",
+        "csv=p=0",
+        filePath,
+      ],
+      { stdio: ["ignore", "pipe", "ignore"] },
+    );
+    let out = "";
+    child.stdout.on("data", (chunk) => {
+      out += chunk.toString();
+    });
+    child.on("error", () => resolve(false));
+    child.on("close", () => resolve(/audio/i.test(out)));
+  });
+}
+
 export function runFfmpeg(args: string[]): Promise<void> {
   return new Promise((resolve, reject) => {
     const child = spawn("ffmpeg", ["-y", ...args], {
@@ -82,6 +108,7 @@ export async function kenBurnsClip(options: {
   scene: Scene;
   totalScenes: number;
   seconds?: number;
+  audioPath?: string;
 }) {
   const seconds = options.seconds ?? SCENE_SECONDS;
   const frames = seconds * 25;
@@ -93,17 +120,20 @@ export async function kenBurnsClip(options: {
     ...overlays,
   ].join(",");
 
+  const audioIn = options.audioPath
+    ? ["-i", options.audioPath]
+    : ["-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=44100"];
+
   await runFfmpeg([
     "-loop",
     "1",
     "-i",
     options.framePath,
-    "-f",
-    "lavfi",
-    "-i",
-    "anullsrc=channel_layout=stereo:sample_rate=44100",
+    ...audioIn,
     "-vf",
     filter,
+    "-af",
+    `apad=whole_dur=${seconds}`,
     "-t",
     String(seconds),
     "-r",
@@ -114,6 +144,10 @@ export async function kenBurnsClip(options: {
     "yuv420p",
     "-c:a",
     "aac",
+    "-ar",
+    "44100",
+    "-ac",
+    "2",
     "-shortest",
     "-movflags",
     "+faststart",
@@ -173,6 +207,69 @@ export async function burnCalloutsOnVideo(options: {
   }
 }
 
+export async function muxNarration(options: {
+  videoPath: string;
+  audioPath: string;
+  outputPath: string;
+  seconds: number;
+}) {
+  const ambient = await hasAudioStream(options.videoPath);
+  if (ambient) {
+    await runFfmpeg([
+      "-i",
+      options.videoPath,
+      "-i",
+      options.audioPath,
+      "-filter_complex",
+      `[0:a]volume=0.18,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[amb];[1:a]volume=1.2,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,apad=whole_dur=${options.seconds}[nar];[amb][nar]amix=inputs=2:duration=first:dropout_transition=0[a]`,
+      "-map",
+      "0:v",
+      "-map",
+      "[a]",
+      "-c:v",
+      "copy",
+      "-c:a",
+      "aac",
+      "-ar",
+      "44100",
+      "-ac",
+      "2",
+      "-t",
+      String(options.seconds),
+      "-movflags",
+      "+faststart",
+      options.outputPath,
+    ]);
+    return;
+  }
+  await runFfmpeg([
+    "-i",
+    options.videoPath,
+    "-i",
+    options.audioPath,
+    "-map",
+    "0:v",
+    "-map",
+    "1:a",
+    "-c:v",
+    "copy",
+    "-c:a",
+    "aac",
+    "-ar",
+    "44100",
+    "-ac",
+    "2",
+    "-af",
+    `apad=whole_dur=${options.seconds}`,
+    "-t",
+    String(options.seconds),
+    "-shortest",
+    "-movflags",
+    "+faststart",
+    options.outputPath,
+  ]);
+}
+
 export async function stitchClips(options: {
   clipPaths: string[];
   outputPath: string;
@@ -198,6 +295,24 @@ export async function stitchClips(options: {
 }
 
 export async function makeSafariPlayable(inputPath: string, outputPath: string) {
+  if (await hasAudioStream(inputPath)) {
+    await runFfmpeg([
+      "-i",
+      inputPath,
+      "-c:v",
+      "copy",
+      "-c:a",
+      "aac",
+      "-ar",
+      "44100",
+      "-ac",
+      "2",
+      "-movflags",
+      "+faststart",
+      outputPath,
+    ]);
+    return;
+  }
   await runFfmpeg([
     "-i",
     inputPath,

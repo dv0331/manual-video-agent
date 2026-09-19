@@ -16,7 +16,8 @@ IKEA remains the rights holder. See `content/sample-manuals/NOTICE.md`.
 2. **Understand** — assembly graph: BOM, tools, sequence, warnings, torque.
 3. **Plan** — each scene is a human performing that step. On-screen text is step index, part IDs, and warnings.
 4. **Generate** — photoreal start frame of a person at the bench (guided by the manual figure). Then Sora-2 motion when an OpenAI key is present; otherwise a Ken Burns move on that same human still.
-5. **Evaluate and stitch** — reject invented hardware, burn callouts, write chapter markers.
+5. **Narrate** — each step is spoken (OpenAI TTS, or local espeak-ng if that fails). Sora workshop sound is ducked under the voice.
+6. **Evaluate and stitch** — reject invented hardware, burn callouts, write chapter markers and captions.
 
 Without an API key the pipeline still produces an MP4 from the extracted figures.
 
@@ -39,6 +40,7 @@ If `OPENAI_API_KEY` is set, the agent uses the US OpenAI endpoint (`https://us.a
 - `gpt-5.4` to understand, plan, and judge
 - `gpt-image-1.5` for a photoreal person assembling each step
 - `sora-2` to animate that still into a short clip (`USE_SORA=0` skips motion generation)
+- `gpt-4o-mini-tts` (then `tts-1`) to speak each assembly step
 
 If only `GEMINI_API_KEY` is set, it falls back to Gemini. Set `USE_VEO=1` to try Veo motion.
 

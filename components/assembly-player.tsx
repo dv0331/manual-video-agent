@@ -8,10 +8,12 @@ import { SCENE_SECONDS } from "@/lib/agent/types";
 export function AssemblyPlayer({
   videoUrl,
   vttUrl,
+  captionsUrl,
   scenes,
 }: {
   videoUrl: string;
   vttUrl?: string;
+  captionsUrl?: string;
   scenes: Scene[];
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -61,9 +63,15 @@ export function AssemblyPlayer({
               setActive(index);
             }}
           >
-            {vttUrl ? <track kind="chapters" src={vttUrl} default /> : null}
+            {vttUrl ? <track kind="chapters" src={vttUrl} /> : null}
+            {captionsUrl ? (
+              <track kind="captions" src={captionsUrl} srcLang="en" label="Narration" default />
+            ) : null}
           </video>
         </div>
+        <p className="text-xs text-muted-foreground">
+          Sound on — each step is spoken. Captions follow the same script.
+        </p>
         <div className="flex flex-wrap items-center gap-3 text-sm">
           <button
             type="button"

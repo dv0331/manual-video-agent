@@ -1,7 +1,8 @@
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { evaluateScene } from "@/lib/agent/evaluate";
-import { kenBurnsClip } from "@/lib/agent/ffmpeg";
+import { kenBurnsClip, muxNarration } from "@/lib/agent/ffmpeg";
+import { demoProvider } from "@/lib/agent/providers/demo";
 import type { MediaProvider } from "@/lib/agent/providers/types";
 import type { AssemblyGraph, Scene, SceneResult } from "@/lib/agent/types";
 import { MAX_RETRIES, SCENE_SECONDS } from "@/lib/agent/types";
@@ -64,6 +65,26 @@ export async function generateScene(options: {
     lastCritique = evaluation.critique;
   }
 
+  const speechDir = path.join(options.jobPath, "speech");
+  await mkdir(speechDir, { recursive: true });
+  const speechPath = path.join(speechDir, `${scene.id}.mp3`);
+  let spoken = await options.provider.generateSpeech({
+    scene,
+    totalScenes: options.totalScenes,
+  });
+  if (!spoken && options.provider.name !== "demo") {
+    spoken = await demoProvider.generateSpeech({
+      scene,
+      totalScenes: options.totalScenes,
+    });
+  }
+  const speechFile = spoken
+    ? path.join(speechDir, `${scene.id}${spoken[0] === 0x52 ? ".wav" : ".mp3"}`)
+    : speechPath;
+  if (spoken) {
+    await writeFile(speechFile, spoken);
+  }
+
   const animated = await options.provider.generateVideo({
     scene,
     framePath,
@@ -75,12 +96,27 @@ export async function generateScene(options: {
     motionSource = options.provider.name === "openai" ? "sora" : "veo";
     durationSeconds = Number(process.env.OPENAI_VIDEO_SECONDS ?? 8);
     if (![4, 8, 12].includes(durationSeconds)) durationSeconds = 8;
+    if (spoken) {
+      const mixed = `${clipPath}.narrated.mp4`;
+      try {
+        await muxNarration({
+          videoPath: clipPath,
+          audioPath: speechFile,
+          outputPath: mixed,
+          seconds: durationSeconds,
+        });
+        await copyFile(mixed, clipPath);
+      } catch (error) {
+        console.warn("Could not mix narration onto the motion clip", error);
+      }
+    }
   } else {
     await kenBurnsClip({
       framePath,
       outputPath: clipPath,
       scene,
       totalScenes: options.totalScenes,
+      audioPath: spoken ? speechFile : undefined,
     });
     motionSource = "kenburns";
     durationSeconds = SCENE_SECONDS;

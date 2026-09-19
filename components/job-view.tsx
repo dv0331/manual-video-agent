@@ -143,6 +143,7 @@ export function JobView({ jobId }: { jobId: string }) {
         <AssemblyPlayer
           videoUrl={job.videoUrl}
           vttUrl={job.vttUrl}
+          captionsUrl={job.captionsUrl}
           scenes={job.scenes ?? []}
         />
       ) : running ? (
@@ -156,7 +157,8 @@ export function JobView({ jobId }: { jobId: string }) {
           <CardContent className="space-y-2 text-sm text-muted-foreground">
             <p>
               The agent is reading the manual, then generating a person
-              assembling each step. This page updates as scenes pass.
+              assembling each step with spoken instructions. This page updates
+              as scenes pass.
             </p>
             {job.graph ? (
               <p>

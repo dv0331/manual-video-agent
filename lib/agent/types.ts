@@ -108,6 +108,7 @@ export interface Job {
   sceneResults?: SceneResult[];
   videoPath?: string;
   vttPath?: string;
+  captionsPath?: string;
   logs: JobLog[];
 }
 

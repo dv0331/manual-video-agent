@@ -107,9 +107,10 @@ export function UploadPanel() {
             </Alert>
           ) : null}
           <p className="text-xs text-muted-foreground">
-            Generate Video asks for a photoreal person performing each step. If
-            motion generation is unavailable, the same human still is animated
-            so you still see assembly, not a pan across the PDF.
+            Generate video asks for a photoreal person performing each step,
+            with spoken instructions. If motion generation is unavailable, the
+            same human still is animated so you still see assembly, not a pan
+            across the PDF.
           </p>
         </CardContent>
       </Card>

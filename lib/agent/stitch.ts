@@ -1,6 +1,7 @@
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { buildChaptersVtt, concatDir, stitchClips } from "@/lib/agent/ffmpeg";
+import { buildCaptionsVtt } from "@/lib/agent/narration";
 import type { Scene, SceneResult } from "@/lib/agent/types";
 
 export async function stitchJob(options: {
@@ -10,6 +11,7 @@ export async function stitchJob(options: {
 }) {
   const videoPath = path.join(options.jobPath, "output.mp4");
   const vttPath = path.join(options.jobPath, "chapters.vtt");
+  const captionsPath = path.join(options.jobPath, "captions.vtt");
   await stitchClips({
     clipPaths: options.results.map((r) => r.clipPath),
     outputPath: videoPath,
@@ -20,6 +22,13 @@ export async function stitchJob(options: {
     buildChaptersVtt(
       options.scenes,
       undefined,
+      options.results.map((r) => r.durationSeconds),
+    ),
+  );
+  await writeFile(
+    captionsPath,
+    buildCaptionsVtt(
+      options.scenes,
       options.results.map((r) => r.durationSeconds),
     ),
   );
@@ -40,5 +49,5 @@ export async function stitchJob(options: {
       2,
     ),
   );
-  return { videoPath, vttPath };
+  return { videoPath, vttPath, captionsPath };
 }

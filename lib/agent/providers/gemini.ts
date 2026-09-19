@@ -191,6 +191,10 @@ Allowed part IDs: ${scene.allowedPartIds.join(", ")}`,
     }
   },
 
+  async generateSpeech({ scene, totalScenes }) {
+    return demoProvider.generateSpeech({ scene, totalScenes });
+  },
+
   async generateVideo({ scene, framePath, outputPath }) {
     if (process.env.USE_VEO !== "1") return false;
     try {

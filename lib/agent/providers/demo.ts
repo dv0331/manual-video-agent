@@ -1,3 +1,8 @@
+import { spawn } from "node:child_process";
+import { readFile, unlink } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { narrationScript } from "@/lib/agent/narration";
 import { SAMPLE_GRAPH, SAMPLE_MANUAL_TEXT } from "@/lib/sample-manual/graph";
 import type { AssemblyGraph, EvaluationScores, Scene } from "@/lib/agent/types";
 import { MAX_SCENES } from "@/lib/agent/types";
@@ -108,6 +113,34 @@ export const demoProvider: MediaProvider = {
   },
   async generateVideo() {
     return false;
+  },
+  async generateSpeech({ scene, totalScenes }) {
+    const text = narrationScript(scene, totalScenes);
+    const wavPath = path.join(tmpdir(), `mtav-${scene.id}-${Date.now()}.wav`);
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const child = spawn(
+          "espeak-ng",
+          ["-v", "en-us", "-s", "148", "-w", wavPath, text],
+          { stdio: ["ignore", "ignore", "pipe"] },
+        );
+        let stderr = "";
+        child.stderr.on("data", (chunk) => {
+          stderr += chunk.toString();
+        });
+        child.on("error", reject);
+        child.on("close", (code) => {
+          if (code === 0) resolve();
+          else reject(new Error(stderr.slice(-400) || `espeak-ng exited ${code}`));
+        });
+      });
+      return await readFile(wavPath);
+    } catch (error) {
+      console.warn("Local narration failed", error);
+      return null;
+    } finally {
+      await unlink(wavPath).catch(() => undefined);
+    }
   },
   async evaluateFrame({ scene, knownPartIds }) {
     const invented = scene.allowedPartIds.some(

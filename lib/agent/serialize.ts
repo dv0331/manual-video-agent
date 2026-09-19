@@ -32,6 +32,7 @@ export function serializeJob(job: Job) {
     logs: job.logs,
     videoUrl: toAsset(job.id, job.videoPath),
     vttUrl: toAsset(job.id, job.vttPath),
+    captionsUrl: toAsset(job.id, job.captionsPath),
     sceneResults: job.sceneResults?.map((result) => serializeResult(job.id, result)),
   };
 }

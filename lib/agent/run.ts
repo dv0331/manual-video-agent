@@ -88,12 +88,12 @@ export async function runJob(
       results.push(result);
       await updateJob(id, {
         sceneResults: results,
-        log: `Scene ${scene.index} ${result.evaluation.passed ? "passed" : "accepted after retries"} (${result.motionSource}, ${result.attempts} attempt${result.attempts === 1 ? "" : "s"})`,
+        log: `Scene ${scene.index} ${result.evaluation.passed ? "passed" : "accepted after retries"} (${result.motionSource}, ${result.attempts} attempt${result.attempts === 1 ? "" : "s"}, narrated)`,
       });
     }
 
     await setStage(id, "stitch", "Stitching clips and writing chapter markers", 92);
-    const { videoPath, vttPath } = await stitchJob({
+    const { videoPath, vttPath, captionsPath } = await stitchJob({
       jobPath: dir,
       scenes,
       results,
@@ -106,8 +106,9 @@ export async function runJob(
       progress: 100,
       videoPath,
       vttPath,
+      captionsPath,
       sceneResults: results,
-      log: "Stitched the chaptered assembly video",
+      log: "Stitched the chaptered assembly video with spoken steps",
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "The agent failed";

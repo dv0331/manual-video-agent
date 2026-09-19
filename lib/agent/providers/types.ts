@@ -23,6 +23,10 @@ export interface MediaProvider {
     outputPath: string;
     totalScenes?: number;
   }): Promise<boolean>;
+  generateSpeech(input: {
+    scene: Scene;
+    totalScenes: number;
+  }): Promise<Buffer | null>;
   evaluateFrame(input: {
     scene: Scene;
     frame: ImageInput;

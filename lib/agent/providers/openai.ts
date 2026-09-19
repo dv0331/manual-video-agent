@@ -2,6 +2,7 @@ import { writeFile } from "node:fs/promises";
 import sharp from "sharp";
 import { burnCalloutsOnVideo } from "@/lib/agent/ffmpeg";
 import { extractJson } from "@/lib/agent/json";
+import { narrationScript } from "@/lib/agent/narration";
 import { withTimeout } from "@/lib/agent/timeout";
 import { MAX_SCENES, type AssemblyGraph, type EvaluationScores, type Scene } from "@/lib/agent/types";
 import { demoProvider } from "@/lib/agent/providers/demo";
@@ -116,6 +117,54 @@ async function downloadVideo(id: string) {
     throw new Error(`OpenAI video download failed (${response.status})`);
   }
   return Buffer.from(await response.arrayBuffer());
+}
+
+async function openaiSpeech(text: string) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) throw new Error("OPENAI_API_KEY is not set");
+  const preferred = process.env.OPENAI_TTS_MODEL ?? "gpt-4o-mini-tts";
+  const voice = process.env.OPENAI_TTS_VOICE ?? "coral";
+  const attempts = [
+    {
+      model: preferred,
+      voice,
+      input: text,
+      instructions:
+        "Speak like a calm assembly instructor at a workbench. Clear, unhurried, no cheerfulness.",
+      response_format: "mp3",
+    },
+    {
+      model: "tts-1",
+      voice: voice === "coral" ? "alloy" : voice,
+      input: text,
+      response_format: "mp3",
+    },
+  ];
+  let lastError: Error | undefined;
+  for (const body of attempts) {
+    try {
+      const response = await withTimeout(
+        fetch(`${baseUrl()}/audio/speech`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }),
+        30000,
+        "OpenAI speech",
+      );
+      if (!response.ok) {
+        const data = (await response.json().catch(() => ({}))) as { error?: { message?: string } };
+        throw new Error(data.error?.message ?? `OpenAI speech failed (${response.status})`);
+      }
+      return Buffer.from(await response.arrayBuffer());
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error("OpenAI speech failed");
+    }
+  }
+  throw lastError ?? new Error("OpenAI speech failed");
 }
 
 function textFromChat(data: Record<string, unknown>) {
@@ -326,6 +375,15 @@ A real adult assembling the product in a continuous documentary shot. Keep the m
     } catch (error) {
       console.warn("OpenAI Sora generation failed", error);
       return false;
+    }
+  },
+
+  async generateSpeech({ scene, totalScenes }) {
+    try {
+      return await openaiSpeech(narrationScript(scene, totalScenes));
+    } catch (error) {
+      console.warn("OpenAI speech failed, using local narration", error);
+      return demoProvider.generateSpeech({ scene, totalScenes });
     }
   },
 
