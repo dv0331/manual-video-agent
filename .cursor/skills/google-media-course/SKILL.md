@@ -17,7 +17,10 @@ Do **not** rewrite the assembly-video app from a single lesson. Capture each les
 | L4 | Evaluation techniques | `google-media-l4-evaluation` | captured |
 | L5 | Image generation agent (ADK tools) | `google-media-l5-image-agent` | captured |
 | L6 | Video production agent (ADK + Veo) | `google-media-l6-video-agent` | captured |
-| L7–L8 | (not uploaded) | — | waiting |
+| L7 | Gemini CLI authoring (no notebook) | `nano-banana-image-gen`, `adk-agent-creator` | captured (skills only) |
+| L8 | Infographic agent (Gemini CLI result) | `google-media-l8-infographic-agent` | captured |
+
+Uploaded set is **L2–L6 + L8**. L1 was never uploaded. L7 has no notebook — it is the CLI session that produced L8.
 
 When a new notebook arrives: read it fully, write or update that lesson’s skill, then stop and wait unless the user asks to implement.
 
@@ -25,7 +28,7 @@ When a new notebook arrives: read it fully, write or update that lesson’s skil
 
 - `google-genai` — Gemini generate_content for text and images
 - `google-cloud-aiplatform[evaluation]` — Vertex evaluation (later lessons)
-- `google-adk` — agent toolkit (L5 `InMemoryRunner`; L6 `Runner` + `InMemorySessionService`)
+- `google-adk` — agent toolkit (L5/L8 `InMemoryRunner` + `LlmAgent`; L6 `Runner` + `InMemorySessionService`)
 - `transformers` / `torch` / `SentencePiece` — SigLIP / Gecko eval (L4)
 - `Pillow`, `matplotlib`, `numpy`, `pandas`, `python-dotenv`
 
@@ -40,7 +43,7 @@ Present in L2 materials but used across later labs:
 - `make_display_tool(fn)` — wrap tools and log elapsed seconds
 - `clean(s)` — strip non-printable characters
 
-Do not invent L7–L8 behavior from these helpers. Wait for those notebooks. L6 is the first lesson that wraps tools with `make_display_tool`.
+L8 does not add helper functions. `make_display_tool` is used in L6; L8 logs with `log_step` into `infographic_agent.log` instead.
 
 ## How this maps to the assembly app (do not implement until asked)
 
@@ -55,3 +58,7 @@ L4: Always compare an **aligned** generation to a **known-bad** image against th
 L5: First ADK agent. Tools are `brand_analysis` → `generate_design_concepts` (two distinct ideas) → `generate_idea_image` (16:9, guide as style ref) → `evaluate_image` (CRAP + brand, pass at 4.6 in tests / 4.8 in the agent, max 1 prompt-rewrite retry). `InMemoryRunner(app_name="image_agent")`. Lab brand is TuringTaste / `guide.png`. The planner model only orchestrates; the image model draws.
 
 L6: Video agent for a 3-scene RAG explainer. `plan_scenes` runs **offline** (visual, ~20-word / 8s narration, camera enum) and is baked into the system prompt. Agent tools: start frame → Veo image-to-video with `generate_audio=True` and quoted speech + voice profile → `evaluate_scene` on the **MP4** (threshold 3.0, `failure_type` audio vs visual). Audio fail retries video only; visual fail retries image+video. One scene at a time, max 1 retry, then `ffmpeg -c copy`. Orchestrator is `gemini-3.1-pro-preview`. Lab says **~10 min for 3 scenes**.
+
+L7: No notebook. Gemini CLI plus course skills `nano-banana-image-gen` and `adk-agent-creator` (`adk create` / `adk run` / `adk web`, Vertex `global`, Flash Image + Flash text).
+
+L8: Runs the CLI-built **infographic** agent. One coarse tool `infographic_workflow(url)`: fetch first 5000 chars → Nano Banana still → Gemini judge (factual / spelling / aesthetics) → `PASS` or append feedback, max 3 attempts, timestamped log. Lab source is the [Lyria 3 Pro prompting guide](https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-lyria-3-pro). First still failed (duplicate sections, treated Lyria as a text LLM); second passed as a music-prompting diagram. Lyria itself is a **music** model (optional later score). L8 does not call it.
