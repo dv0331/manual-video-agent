@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requestIsHttps } from "@/lib/https";
 
 const COOKIE = "mtav_session";
 
@@ -24,7 +25,7 @@ export async function POST(request: Request) {
     value: token,
     httpOnly: true,
     sameSite: "lax",
-    secure: new URL(request.url).protocol === "https:",
+    secure: requestIsHttps(request),
     path: "/",
   });
   return response;

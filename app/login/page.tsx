@@ -43,8 +43,8 @@ function LoginForm() {
         <CardHeader>
           <CardTitle>Sign in</CardTitle>
           <CardDescription>
-            The Cursor browser has no native password prompt. Use the local
-            gate here, then you can open any job.
+            Sign in to watch the assembly films. Use this form on a phone or
+            in a browser that has no password popup.
           </CardDescription>
         </CardHeader>
         <CardContent>

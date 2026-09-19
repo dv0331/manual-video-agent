@@ -50,15 +50,21 @@ If `OPENAI_API_KEY` is set, the agent uses the US OpenAI endpoint (`https://us.a
 
 If only `GEMINI_API_KEY` is set, it falls back to Gemini / optional Veo (`USE_VEO=1`). Classroom DeepLearning.AI service-account files do not work here.
 
-## Deploy
+## Phone / public demo
 
-Do **not** expose this app on a public tunnel. It holds API keys and assembly jobs.
+`http://127.0.0.1:43127` only works on the machine running the app. Phones need a public **https** URL.
+
+1. Set `BASIC_AUTH_USER` and `BASIC_AUTH_PASSWORD` in `.env.local`.
+2. `npm run build && npm run start` (listens on `0.0.0.0:43127`).
+3. In another terminal: `npm run public`. That prints a `https://….trycloudflare.com` link.
+4. Open that link on the phone. Sign in on `/login`.
+
+The Cloudflare URL stays up while this process is running. For a lasting host, run the same Docker image behind HTTPS (Caddy, nginx, or Fly) with a volume on `data/jobs`.
 
 ```bash
-npm run build && npm run start
+docker build -t assemble .
+docker run --env-file .env.local -p 43127:43127 -v assemble-jobs:/app/data/jobs assemble
 ```
-
-Preview stays on [http://127.0.0.1:43127](http://127.0.0.1:43127).
 
 ## Limits
 

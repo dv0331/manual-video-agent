@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { requestIsHttps } from "@/lib/https";
 
 const COOKIE = "mtav_session";
 
@@ -49,7 +50,7 @@ export function middleware(request: NextRequest) {
       value: token,
       httpOnly: true,
       sameSite: "lax",
-      secure: request.nextUrl.protocol === "https:",
+      secure: requestIsHttps(request),
       path: "/",
     });
     return response;

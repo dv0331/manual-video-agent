@@ -16,4 +16,5 @@ ENV NODE_ENV=production
 ENV PORT=43127
 EXPOSE 43127
 
+ENV HOSTNAME=0.0.0.0
 CMD ["npm", "run", "start"]
