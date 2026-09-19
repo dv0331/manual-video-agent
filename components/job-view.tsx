@@ -105,7 +105,13 @@ export function JobView({ jobId }: { jobId: string }) {
           <Badge variant={job.status === "failed" ? "destructive" : "secondary"}>
             {job.status}
           </Badge>
-          <Badge variant="outline">{job.provider === "gemini" ? "Gemini" : "Demo"}</Badge>
+          <Badge variant="outline">
+            {job.provider === "openai"
+              ? "OpenAI"
+              : job.provider === "gemini"
+                ? "Gemini"
+                : "Demo"}
+          </Badge>
         </div>
       </div>
 

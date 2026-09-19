@@ -4,6 +4,7 @@ import path from "node:path";
 import { after } from "next/server";
 import { NextResponse } from "next/server";
 import { jobDir } from "@/lib/agent/paths";
+import { resolveProviderName } from "@/lib/agent/providers";
 import { startJob } from "@/lib/agent/run";
 import { serializeJob } from "@/lib/agent/serialize";
 import { createJob, listJobs } from "@/lib/agent/store";
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
       progress: 0,
       sourceName: "AP-1-ASM-001 Benchtop Arbor Press",
       sourceKind: "sample",
-      provider: process.env.GEMINI_API_KEY ? "gemini" : "demo",
+      provider: resolveProviderName(),
     });
     after(() => {
       startJob(id);
@@ -73,7 +74,7 @@ export async function POST(request: Request) {
     progress: 0,
     sourceName: file.name,
     sourceKind: "upload",
-    provider: process.env.GEMINI_API_KEY ? "gemini" : "demo",
+    provider: resolveProviderName(),
   });
   const ext = mimeType.includes("pdf") || file.name.toLowerCase().endsWith(".pdf")
     ? ".pdf"

@@ -10,7 +10,7 @@ export type AgentStage =
   | "stitch"
   | "done";
 
-export type MediaProviderName = "gemini" | "demo";
+export type MediaProviderName = "openai" | "gemini" | "demo";
 
 export type StartFrameStrategy = "manual-figure" | "generated-isometric";
 

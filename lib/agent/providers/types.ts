@@ -6,7 +6,7 @@ export interface ImageInput {
 }
 
 export interface MediaProvider {
-  name: "gemini" | "demo";
+  name: "openai" | "gemini" | "demo";
   understand(input: {
     text: string;
     images: ImageInput[];
