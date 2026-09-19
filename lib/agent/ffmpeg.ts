@@ -93,15 +93,25 @@ export async function kenBurnsClip(options: {
     "1",
     "-i",
     options.framePath,
+    "-f",
+    "lavfi",
+    "-i",
+    "anullsrc=channel_layout=stereo:sample_rate=44100",
     "-vf",
     filter,
     "-t",
     String(seconds),
     "-r",
     "25",
+    "-c:v",
+    "libx264",
     "-pix_fmt",
     "yuv420p",
-    "-an",
+    "-c:a",
+    "aac",
+    "-shortest",
+    "-movflags",
+    "+faststart",
     options.outputPath,
   ]);
 }
@@ -115,6 +125,7 @@ export async function stitchClips(options: {
     .map((clip) => `file '${clip.replace(/'/g, "'\\''")}'`)
     .join("\n");
   await writeFile(options.listPath, list);
+  const rawPath = `${options.outputPath}.raw.mp4`;
   await runFfmpeg([
     "-f",
     "concat",
@@ -124,7 +135,27 @@ export async function stitchClips(options: {
     options.listPath,
     "-c",
     "copy",
-    options.outputPath,
+    rawPath,
+  ]);
+  await makeSafariPlayable(rawPath, options.outputPath);
+}
+
+export async function makeSafariPlayable(inputPath: string, outputPath: string) {
+  await runFfmpeg([
+    "-i",
+    inputPath,
+    "-f",
+    "lavfi",
+    "-i",
+    "anullsrc=channel_layout=stereo:sample_rate=44100",
+    "-c:v",
+    "copy",
+    "-c:a",
+    "aac",
+    "-shortest",
+    "-movflags",
+    "+faststart",
+    outputPath,
   ]);
 }
 

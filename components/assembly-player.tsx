@@ -16,32 +16,62 @@ export function AssemblyPlayer({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [active, setActive] = useState(0);
+  const [failed, setFailed] = useState(false);
 
   function seekTo(index: number) {
     const video = videoRef.current;
     if (!video) return;
     video.currentTime = index * SCENE_SECONDS + 0.05;
-    void video.play();
+    void video.play().catch(() => setFailed(true));
   }
 
   return (
     <section className="grid gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(16rem,0.9fr)]">
-      <div className="overflow-hidden rounded-xl border border-border/80 bg-black">
-        <video
-          ref={videoRef}
-          className="aspect-video w-full"
-          controls
-          src={videoUrl}
-          onTimeUpdate={(e) => {
-            const index = Math.min(
-              scenes.length - 1,
-              Math.floor(e.currentTarget.currentTime / SCENE_SECONDS),
-            );
-            if (index >= 0) setActive(index);
-          }}
-        >
-          {vttUrl ? <track kind="chapters" src={vttUrl} default /> : null}
-        </video>
+      <div className="space-y-2">
+        <div className="overflow-hidden rounded-xl border border-border/80 bg-black">
+          <video
+            ref={videoRef}
+            className="aspect-video w-full"
+            controls
+            playsInline
+            preload="auto"
+            src={videoUrl}
+            onError={() => setFailed(true)}
+            onTimeUpdate={(e) => {
+              const index = Math.min(
+                scenes.length - 1,
+                Math.floor(e.currentTarget.currentTime / SCENE_SECONDS),
+              );
+              if (index >= 0) setActive(index);
+            }}
+          >
+            {vttUrl ? <track kind="chapters" src={vttUrl} default /> : null}
+          </video>
+        </div>
+        <div className="flex flex-wrap items-center gap-3 text-sm">
+          <button
+            type="button"
+            className="inline-flex min-h-10 items-center rounded-lg bg-primary px-3 font-medium text-primary-foreground"
+            onClick={() => {
+              const video = videoRef.current;
+              if (!video) return;
+              void video.play().catch(() => setFailed(true));
+            }}
+          >
+            Play video
+          </button>
+          <a
+            href={videoUrl}
+            className="text-primary underline-offset-4 hover:underline"
+          >
+            Open MP4
+          </a>
+          {failed ? (
+            <span className="text-destructive">
+              Safari could not start playback. Use Open MP4.
+            </span>
+          ) : null}
+        </div>
       </div>
       <ol className="flex max-h-[28rem] flex-col gap-2 overflow-auto lg:max-h-none">
         {scenes.length ? (

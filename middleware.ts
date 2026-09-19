@@ -1,21 +1,41 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+const COOKIE = "mtav_session";
+
+function expectedToken() {
   const user = process.env.BASIC_AUTH_USER;
   const password = process.env.BASIC_AUTH_PASSWORD;
-  if (!user || !password) {
+  if (!user || !password) return null;
+  return btoa(`${user}:${password}`);
+}
+
+function credentialsMatch(header: string | null, token: string) {
+  if (!header?.startsWith("Basic ")) return false;
+  return header.slice(6) === token;
+}
+
+export function middleware(request: NextRequest) {
+  const token = expectedToken();
+  if (!token) {
     return NextResponse.next();
   }
 
-  const header = request.headers.get("authorization");
-  if (header?.startsWith("Basic ")) {
-    const decoded = atob(header.slice(6));
-    const sep = decoded.indexOf(":");
-    const givenUser = decoded.slice(0, sep);
-    const givenPass = decoded.slice(sep + 1);
-    if (givenUser === user && givenPass === password) {
-      return NextResponse.next();
-    }
+  const cookie = request.cookies.get(COOKIE)?.value;
+  if (cookie === token) {
+    return NextResponse.next();
+  }
+
+  if (credentialsMatch(request.headers.get("authorization"), token)) {
+    const response = NextResponse.next();
+    response.cookies.set({
+      name: COOKIE,
+      value: token,
+      httpOnly: true,
+      sameSite: "lax",
+      secure: request.nextUrl.protocol === "https:",
+      path: "/",
+    });
+    return response;
   }
 
   return new NextResponse("Sign in required", {
