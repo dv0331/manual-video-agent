@@ -1,0 +1,7 @@
+node_modules
+.next
+data/jobs
+.env*
+!.env.example
+agent-tools
+.git
