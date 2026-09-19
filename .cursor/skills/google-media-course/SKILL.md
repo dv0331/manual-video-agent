@@ -14,7 +14,8 @@ Do **not** rewrite the assembly-video app from a single lesson. Capture each les
 | L1 | (not uploaded) | — | waiting |
 | L2 | Prompt engineering for image generation | `google-media-l2-image-prompting` | captured |
 | L3 | Prompt engineering for video generation | `google-media-l3-video-prompting` | captured |
-| L4–L8 | (not uploaded) | — | waiting |
+| L4 | Evaluation techniques | `google-media-l4-evaluation` | captured |
+| L5–L8 | (not uploaded) | — | waiting |
 
 When a new notebook arrives: read it fully, write or update that lesson’s skill, then stop and wait unless the user asks to implement.
 
