@@ -1,9 +1,12 @@
+import { clipNarration } from "@/lib/agent/direction";
 import type { Scene } from "@/lib/agent/types";
 
 export function narrationScript(scene: Scene, totalScenes: number) {
-  const warning = scene.warnings[0] ? ` Warning: ${scene.warnings[0].replace(/\s+/g, " ").trim()}.` : "";
-  const body = scene.narration.replace(/\s+/g, " ").trim();
-  return `Step ${scene.index} of ${totalScenes}. ${scene.title}. ${body}${warning}`;
+  const warning = scene.warnings[0]
+    ? ` Warning: ${clipNarration(scene.warnings[0], 12)}.`
+    : "";
+  const body = clipNarration(`${scene.title}. ${scene.narration}`, 20);
+  return `Step ${scene.index} of ${totalScenes}. ${body}${warning}`;
 }
 
 export function buildCaptionsVtt(

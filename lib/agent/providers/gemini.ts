@@ -112,9 +112,11 @@ ${text.slice(0, 20000)}`,
 Turn this assembly graph into at most ${MAX_SCENES} scenes.
 Dual channel: narration explains; on-screen text is step index, part IDs, torque, and warnings — not a read-aloud.
 Every scene is a real person assembling the product — startFrameStrategy "human-assembly".
-framePrompt is a photoreal documentary still. motionPrompt is a person performing the step. Do not invent hardware.
+narration ~20 words for 8 seconds. cameraMotion one of slow_left_to_right, slow_zoom_in, slow_zoom_out, static.
+Do not invent hardware.
 Return JSON: { "scenes": [{
   "id": string, "index": number, "title": string, "narration": string,
+  "visualDescription": string, "cameraMotion": string, "soundEffects": string,
   "onScreenCallouts": string[], "motionPrompt": string, "framePrompt": string,
   "startFrameStrategy": "human-assembly",
   "warnings": string[], "allowedPartIds": string[]
@@ -203,7 +205,7 @@ Allowed part IDs: ${scene.allowedPartIds.join(", ")}`,
       let operation = await ai.models.generateVideos({
         model: VIDEO_MODEL,
         source: {
-          prompt: `${scene.motionPrompt}. A real person assembling the product. Keep the machine and hardware identical to the start frame. No extra parts.`,
+          prompt: `${scene.motionPrompt}. A real adult assembling the product. Keep the machine and hardware identical to the start frame. No extra parts.`,
           image: {
             imageBytes: bytes.toString("base64"),
             mimeType: "image/png",
@@ -212,12 +214,13 @@ Allowed part IDs: ${scene.allowedPartIds.join(", ")}`,
         config: {
           numberOfVideos: 1,
           aspectRatio: "16:9",
+          personGeneration: "allow_adult",
         },
       });
 
-      const deadline = Date.now() + 90_000;
+      const deadline = Date.now() + 300_000;
       while (!operation.done && Date.now() < deadline) {
-        await new Promise((r) => setTimeout(r, 8000));
+        await new Promise((r) => setTimeout(r, 15000));
         operation = await ai.operations.getVideosOperation({ operation });
       }
       const uri = operation.response?.generatedVideos?.[0]?.video?.uri;
@@ -259,10 +262,15 @@ Return JSON:
   "warningPresent": boolean,
   "sequenceCorrect": boolean,
   "temporalConsistency": number,
+  "narrationAlignment": number,
+  "motionCoherence": number,
+  "cheapGate": number,
+  "failureType": "visual" | "audio" | "none",
   "passed": boolean,
   "critique": string
 }
-Scores are 0-1. Fail if inventedParts is true or a required warning is missing.
+Scores are 0-1. cheapGate is a fast overall alignment score.
+Fail if inventedParts is true or a required warning is missing. Critique must list prompt changes.
 Known BOM IDs: ${knownPartIds.join(", ")}
 Allowed in this scene: ${scene.allowedPartIds.join(", ")}
 Scene: ${JSON.stringify({

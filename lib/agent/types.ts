@@ -19,6 +19,14 @@ export type StartFrameStrategy =
 
 export type MotionSource = "sora" | "veo" | "kenburns";
 
+export type CameraMotion =
+  | "slow_left_to_right"
+  | "slow_zoom_in"
+  | "slow_zoom_out"
+  | "static";
+
+export type FailureType = "visual" | "audio" | "none";
+
 export interface Part {
   id: string;
   name: string;
@@ -59,6 +67,10 @@ export interface Scene {
   warnings: string[];
   allowedPartIds: string[];
   durationSeconds?: number;
+  cameraMotion?: CameraMotion;
+  voiceProfile?: string;
+  soundEffects?: string;
+  visualDescription?: string;
 }
 
 export interface EvaluationScores {
@@ -73,6 +85,10 @@ export interface EvaluationScores {
   temporalConsistency: number;
   passed: boolean;
   critique: string;
+  failureType?: FailureType;
+  narrationAlignment?: number;
+  motionCoherence?: number;
+  cheapGate?: number;
 }
 
 export interface SceneResult {
@@ -120,5 +136,7 @@ export interface IngestResult {
 }
 
 export const MAX_SCENES = 8;
-export const MAX_RETRIES = 2;
+/** L5/L6: rewrite the prompt once, do not triple the stack. */
+export const MAX_RETRIES = 1;
+export const MAX_VIDEO_RETRIES = 1;
 export const SCENE_SECONDS = 8;

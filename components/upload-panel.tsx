@@ -58,8 +58,8 @@ export function UploadPanel() {
         <CardHeader>
           <CardTitle>Drop an instruction manual</CardTitle>
           <CardDescription>
-            PDF or page images. The agent reads the first coherent procedure,
-            plans a person assembling each step, and returns a chaptered video.
+            PDF or page images. The agent plans the reel, shoots a person at
+            each step, speaks the line, judges the take, and returns the movie.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -107,10 +107,9 @@ export function UploadPanel() {
             </Alert>
           ) : null}
           <p className="text-xs text-muted-foreground">
-            Generate video asks for a photoreal person performing each step,
-            with spoken instructions. If motion generation is unavailable, the
-            same human still is animated so you still see assembly, not a pan
-            across the PDF.
+            Each scene is one take: start frame, image-to-video, spoken line,
+            then a judge. Audio fail retries the clip. Visual fail remakes the
+            still. If motion models are down, the same still still moves.
           </p>
         </CardContent>
       </Card>

@@ -1,32 +1,60 @@
+import {
+  STYLE_PREFIX,
+  VOICE_PROFILE,
+  defaultCamera,
+  defaultSound,
+  withDirectionDefaults,
+} from "@/lib/agent/direction";
 import type { AssemblyGraph, Scene } from "@/lib/agent/types";
 
-export function humanFramePrompt(graph: AssemblyGraph, scene: Pick<Scene, "title" | "narration" | "allowedPartIds" | "warnings">) {
+export function humanFramePrompt(
+  graph: AssemblyGraph,
+  scene: Pick<
+    Scene,
+    "title" | "narration" | "allowedPartIds" | "warnings" | "cameraMotion" | "visualDescription"
+  >,
+) {
   const parts = scene.allowedPartIds.length
     ? `Only these parts may appear: ${scene.allowedPartIds.join(", ")}.`
     : "Only the parts named in the instruction may appear.";
-  const warning = scene.warnings[0] ? `Visible caution if relevant: ${scene.warnings[0]}.` : "";
-  return `Photoreal 16:9 documentary still of a real adult assembling "${graph.title}" on a workbench or living-room floor.
+  const warning = scene.warnings[0]
+    ? `Visible caution if relevant: ${scene.warnings[0]}.`
+    : "";
+  const visual = scene.visualDescription || scene.narration;
+  return `${STYLE_PREFIX}
+Product: "${graph.title}".
 The person is performing this exact step: ${scene.title}.
-Action: ${scene.narration}
+Action: ${visual}
 ${parts}
 ${warning}
-Show real hands, real tools named in the step, and the product in a half-built state that matches the step.
-Natural indoor lighting, shallow depth of field, how-to assembly video still — not a drawing, not an exploded CAD view, no invented logos or extra hardware.`;
+Camera: eye-level ${scene.cameraMotion ?? "slow_zoom_in"}.
+Show real hands, real tools named in the step, and the product in a half-built state that matches the step.`;
 }
 
-export function humanMotionPrompt(graph: AssemblyGraph, scene: Pick<Scene, "title" | "narration" | "allowedPartIds">) {
-  return `A real person assembling "${graph.title}".
+export function humanMotionPrompt(
+  graph: AssemblyGraph,
+  scene: Pick<Scene, "title" | "narration" | "allowedPartIds" | "cameraMotion" | "soundEffects">,
+) {
+  const camera = scene.cameraMotion ?? "slow_zoom_in";
+  const sfx = scene.soundEffects || defaultSound(scene.title);
+  return `A real adult assembling "${graph.title}".
 Step: ${scene.title}. ${scene.narration}
-Continuous handheld documentary shot of hands fitting the real parts. Slow, careful assembly motion.
-Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.
+Continuous documentary shot. Camera movement: ${camera}.
+Sound effects: ${sfx}.
+Hands fit only the real parts. Do not add hardware, fasteners, or tools that are not named. No on-screen text, no jump cuts, no cartoon style.
 Allowed parts: ${scene.allowedPartIds.join(", ") || "only those in the instruction"}.`;
 }
 
 export function applyHumanAssemblyDirection(graph: AssemblyGraph, scene: Scene): Scene {
-  return {
+  const directed = withDirectionDefaults({
     ...scene,
     startFrameStrategy: "human-assembly",
-    framePrompt: humanFramePrompt(graph, scene),
-    motionPrompt: humanMotionPrompt(graph, scene),
+    cameraMotion: scene.cameraMotion ?? defaultCamera(scene.index),
+    voiceProfile: scene.voiceProfile || VOICE_PROFILE,
+  });
+  return {
+    ...directed,
+    framePrompt: humanFramePrompt(graph, directed),
+    motionPrompt: humanMotionPrompt(graph, directed),
   };
 }

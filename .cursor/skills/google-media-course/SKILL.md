@@ -5,7 +5,7 @@ description: Index for the Google / DeepLearning.AI media-agents course skills. 
 
 # Google media-agents course
 
-Do **not** rewrite the assembly-video app from a single lesson. Capture each lesson as its own skill first. Apply changes only after the user says the lesson set is ready, or after they explicitly ask to implement.
+Lesson skills are captured (L2–L6, L8). The assembly app now follows that reel: plan → style-referenced still → image-to-video with quoted speech → stacked judge → one rewrite → concat. Classroom `credentials.json` is still not used.
 
 ## Lesson status
 

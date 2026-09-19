@@ -10,8 +10,15 @@ import { serializeJob } from "@/lib/agent/serialize";
 import { createJob, listJobs } from "@/lib/agent/store";
 import { getSample } from "@/lib/sample-manual/catalog";
 
-export async function GET() {
-  const jobs = await listJobs();
+export async function GET(request: Request) {
+  const jobs = await listJobs(24);
+  const featured = new URL(request.url).searchParams.get("featured") === "1";
+  if (featured) {
+    const done = jobs.find((job) => job.status === "completed" && job.videoPath);
+    return NextResponse.json({
+      featured: done ? serializeJob(done) : null,
+    });
+  }
   return NextResponse.json(
     jobs.map((job) => ({
       id: job.id,

@@ -119,7 +119,7 @@ async function downloadVideo(id: string) {
   return Buffer.from(await response.arrayBuffer());
 }
 
-async function openaiSpeech(text: string) {
+async function openaiSpeech(text: string, instructions?: string) {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) throw new Error("OPENAI_API_KEY is not set");
   const preferred = process.env.OPENAI_TTS_MODEL ?? "gpt-4o-mini-tts";
@@ -130,7 +130,8 @@ async function openaiSpeech(text: string) {
       voice,
       input: text,
       instructions:
-        "Speak like a calm assembly instructor at a workbench. Clear, unhurried, no cheerfulness.",
+        instructions ||
+        "Speak like a calm assembly instructor at a workbench. Clear, unhurried, no cheerfulness. Neutral American accent, about 140 words per minute.",
       response_format: "mp3",
     },
     {
@@ -260,13 +261,17 @@ ${text.slice(0, 20000)}`,
       const parsed = await chatJson<{ scenes: Scene[] }>({
         timeoutMs: 30000,
         prompt: `You are a technical-video director for mechanical assembly.
-Turn this assembly graph into at most ${MAX_SCENES} scenes.
+Turn this assembly graph into at most ${MAX_SCENES} scenes for an 8-second-per-scene film.
 Dual channel: narration explains; on-screen text is step index, part IDs, torque, and warnings — not a read-aloud.
 Every scene is a real person assembling the product — startFrameStrategy "human-assembly".
-framePrompt is a photoreal documentary still of hands and the product at that step.
-motionPrompt is a Sora shot of a human performing the step. Do not invent hardware.
+narration must be ~20 words spoken in 8 seconds.
+cameraMotion must be one of: slow_left_to_right, slow_zoom_in, slow_zoom_out, static.
+visualDescription is a clean bench layout for that step.
+soundEffects names workshop sounds only (no music).
+Do not invent hardware.
 Return JSON: { "scenes": [{
   "id": string, "index": number, "title": string, "narration": string,
+  "visualDescription": string, "cameraMotion": string, "soundEffects": string,
   "onScreenCallouts": string[], "motionPrompt": string, "framePrompt": string,
   "startFrameStrategy": "human-assembly",
   "warnings": string[], "allowedPartIds": string[]
@@ -346,7 +351,7 @@ Allowed part IDs: ${scene.allowedPartIds.join(", ")}`;
       form.set(
         "prompt",
         `${scene.motionPrompt}
-A real adult assembling the product in a continuous documentary shot. Keep the machine and hardware identical to the start frame. No extra parts, no on-screen text.`,
+A real adult assembling the product in a continuous documentary shot. Keep the machine and hardware identical to the start frame. person_generation allow_adult. No extra parts, no on-screen text.`,
       );
       form.set("size", "1280x720");
       form.set("seconds", seconds);
@@ -380,7 +385,10 @@ A real adult assembling the product in a continuous documentary shot. Keep the m
 
   async generateSpeech({ scene, totalScenes }) {
     try {
-      return await openaiSpeech(narrationScript(scene, totalScenes));
+      return await openaiSpeech(
+        narrationScript(scene, totalScenes),
+        scene.voiceProfile,
+      );
     } catch (error) {
       console.warn("OpenAI speech failed, using local narration", error);
       return demoProvider.generateSpeech({ scene, totalScenes });
@@ -405,11 +413,17 @@ Return JSON:
   "inventedParts": boolean,
   "warningPresent": boolean,
   "sequenceCorrect": boolean,
-  "temporalConsistency": number,
+      "temporalConsistency": number,
+  "narrationAlignment": number,
+  "motionCoherence": number,
+  "cheapGate": number,
+  "failureType": "visual" | "audio" | "none",
   "passed": boolean,
   "critique": string
 }
-Scores are 0-1. Fail if inventedParts is true or a required warning is missing.
+Scores are 0-1. cheapGate is a fast overall alignment score (SigLIP-style).
+failureType is visual if parts/style are wrong, audio if the planned spoken line could not match this still, none if it passes.
+Fail if inventedParts is true or a required warning is missing. Always explain the critique so the next prompt can be rewritten.
 Known BOM IDs: ${knownPartIds.join(", ")}
 Allowed in this scene: ${scene.allowedPartIds.join(", ")}
 Scene: ${JSON.stringify({

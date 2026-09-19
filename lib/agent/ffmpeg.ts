@@ -2,8 +2,23 @@ import { spawn } from "node:child_process";
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { FONT_BOLD_PATH, FONT_PATH } from "@/lib/agent/paths";
-import type { Scene } from "@/lib/agent/types";
+import type { CameraMotion, Scene } from "@/lib/agent/types";
 import { SCENE_SECONDS } from "@/lib/agent/types";
+
+function cameraZoompan(motion: CameraMotion | undefined, frames: number) {
+  const common = `d=${frames}:s=1280x720:fps=25`;
+  switch (motion) {
+    case "slow_zoom_out":
+      return `zoompan=z='if(eq(on,0),1.12,max(zoom-0.0007,1.0))':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':${common}`;
+    case "slow_left_to_right":
+      return `zoompan=z='1.08':x='(iw-iw/zoom)*on/${Math.max(frames - 1, 1)}':y='ih/2-(ih/zoom/2)':${common}`;
+    case "static":
+      return `zoompan=z='1':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':${common}`;
+    case "slow_zoom_in":
+    default:
+      return `zoompan=z='min(zoom+0.0007,1.12)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':${common}`;
+  }
+}
 
 export function mediaDuration(filePath: string): Promise<number> {
   return new Promise((resolve, reject) => {
@@ -136,7 +151,7 @@ export async function kenBurnsClip(options: {
 
   const filter = [
     `scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720`,
-    `zoompan=z='min(zoom+0.0007,1.12)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${frames}:s=1280x720:fps=25`,
+    cameraZoompan(options.scene.cameraMotion, frames),
     ...overlays,
   ].join(",");
 

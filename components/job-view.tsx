@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { AssemblyPlayer } from "@/components/assembly-player";
+import { ProductionReel } from "@/components/production-reel";
 import { Storyboard } from "@/components/storyboard";
 import type { SerializedJob } from "@/lib/agent/serialize";
 
@@ -115,9 +116,16 @@ export function JobView({ jobId }: { jobId: string }) {
         </div>
       </div>
 
+      <ProductionReel job={job} />
+
       <div className="space-y-2">
         <Progress value={job.progress} />
-        <p className="font-mono text-xs text-muted-foreground">{job.progress}% complete</p>
+        <p className="font-mono text-xs text-muted-foreground">
+          {job.progress}% · {job.stageLabel}
+          {job.progress >= 60 && job.progress < 90
+            ? " — mid-reel, not the credits"
+            : ""}
+        </p>
       </div>
 
       {job.status === "failed" ? (
@@ -156,9 +164,8 @@ export function JobView({ jobId }: { jobId: string }) {
           </CardHeader>
           <CardContent className="space-y-2 text-sm text-muted-foreground">
             <p>
-              The agent is reading the manual, then generating a person
-              assembling each step with spoken instructions. This page updates
-              as scenes pass.
+              One scene at a time: still, motion, spoken line, judge. This
+              page updates as each take passes. Minutes per scene is expected.
             </p>
             {job.graph ? (
               <p>

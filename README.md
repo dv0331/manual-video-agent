@@ -1,8 +1,10 @@
-# Manuals to Assembly Video
+# Assemble — manuals to an assembly film
 
-Upload an instruction manual. The agent extracts the first coherent procedure and builds a chaptered video of **a person assembling the product** — IKEA furniture, a mechanical kit, or a PDF you drop in.
+The goal is a **chaptered movie** of a person assembling the real parts. The homepage plays that goal first, then the reel that gets you there.
 
-Sample inputs shipped in the repo:
+Open an IKEA sample or drop your own PDF. The agent extracts the procedure and cuts a how-to of a person fitting those parts, with a spoken line on every step.
+
+Sample inputs in the repo:
 
 - **IKEA KALLAX** — official published assembly instructions
 - **IKEA BEKVÄM** and **IKEA LACK** — from the IKEA 3D Assembly Dataset
@@ -10,16 +12,18 @@ Sample inputs shipped in the repo:
 
 IKEA remains the rights holder. See `content/sample-manuals/NOTICE.md`.
 
-## What the agent does
+## The reel (course-aligned)
 
-1. **Ingest** — keep the PDF and rasterize pages (IKEA pages stay as the part reference).
-2. **Understand** — assembly graph: BOM, tools, sequence, warnings, torque.
-3. **Plan** — each scene is a human performing that step. On-screen text is step index, part IDs, and warnings.
-4. **Generate** — photoreal start frame of a person at the bench (guided by the manual figure). Then Sora-2 motion when an OpenAI key is present; otherwise a Ken Burns move on that same human still.
-5. **Narrate** — each step is spoken (OpenAI TTS, or local espeak-ng if that fails). Sora workshop sound is ducked under the voice.
-6. **Evaluate and stitch** — reject invented hardware, burn callouts, write chapter markers and captions.
+Practices from the Google / DeepLearning.AI media-agents lessons (L2–L6, L8):
 
-Without an API key the pipeline still produces an MP4 from the extracted figures.
+1. **Ingest** — keep the PDF; rasterize pages as the part reference.
+2. **Plan** — each scene is ~20 words for 8 seconds, a camera move (`slow_zoom_in` / `slow_zoom_out` / `slow_left_to_right` / `static`), and workshop sound. One shared workshop look.
+3. **Start frame** — 16:9 still of an adult at the bench, guided by the manual figure (style reference, not a pixel overlay).
+4. **Image-to-video + voice** — quoted narration and a locked voice profile. Audio fail retries the clip and reuses the still. Visual fail remakes the still.
+5. **Judge** — cheap alignment gate, then a scored critique. One prompt rewrite. Warnings stay human-visible.
+6. **Cut** — concat clips, captions, chapter markers.
+
+A six-step job is minutes per scene. Progress around 63% is scene 4 of 6, not the credits.
 
 ## Run locally
 
@@ -29,35 +33,30 @@ npm run sample-manual
 npm run dev
 ```
 
-Open [http://127.0.0.1:43127](http://127.0.0.1:43127). Open a sample PDF, then **Generate video**, or drop your own manual.
+Open [http://127.0.0.1:43127](http://127.0.0.1:43127). Watch the opening reel, then **Make this film**.
 
 ### Optional models
 
-Copy `.env.example` to `.env.local`. **Do not commit that file.**
+Copy `.env.example` to `.env.local`. **Do not commit that file or `credentials.json`.**
 
 If `OPENAI_API_KEY` is set, the agent uses the US OpenAI endpoint (`https://us.api.openai.com/v1` by default):
 
-- `gpt-5.4` to understand, plan, and judge
-- `gpt-image-1.5` for a photoreal person assembling each step
-- `sora-2` to animate that still into a short clip (`USE_SORA=0` skips motion generation)
-- `gpt-4o-mini-tts` (then `tts-1`) to speak each assembly step
+- text model to understand, plan, and judge
+- image model for the start frame
+- Sora to animate that still (`USE_SORA=0` skips motion)
+- TTS for the spoken line (espeak-ng if TTS fails)
 
-If only `GEMINI_API_KEY` is set, it falls back to Gemini. Set `USE_VEO=1` to try Veo motion.
+If only `GEMINI_API_KEY` is set, it falls back to Gemini / optional Veo (`USE_VEO=1`). Classroom DeepLearning.AI service-account files do not work here.
 
 ## Deploy
 
-Do **not** expose this app on a public tunnel. It holds API keys and assembly jobs. Run it on this machine or a private container host:
+Do **not** expose this app on a public tunnel. It holds API keys and assembly jobs.
 
 ```bash
 npm run build && npm run start
 ```
 
-Preview stays on [http://127.0.0.1:43127](http://127.0.0.1:43127). For a private container:
-
-```bash
-docker build -t manuals-to-video .
-docker run --rm -p 127.0.0.1:43127:43127 --env-file .env.local manuals-to-video
-```
+Preview stays on [http://127.0.0.1:43127](http://127.0.0.1:43127).
 
 ## Limits
 

@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Manuals to Assembly Video",
+  title: "Assemble — the assembly film",
   description:
-    "Upload an instruction manual. The agent extracts the procedure and builds a video of a person assembling the product, step by step.",
+    "The goal is a chaptered movie of a person assembling the real parts. Open a manual; the agent plans, shoots, judges, and cuts the reel.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -30,13 +30,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
             <Link href="/" className="flex items-baseline gap-3">
               <span className="font-mono text-[11px] tracking-[0.22em] text-primary">
-                ASSEMBLE / MEDIA
+                ASSEMBLE
               </span>
-              <span className="text-sm font-medium">Manuals to Assembly Video</span>
+              <span className="text-sm font-medium">The assembly film</span>
             </Link>
-            <p className="hidden text-xs text-muted-foreground sm:block">
-              A person assembling the product. No invented hardware.
-            </p>
+            <a
+              href="/#make-the-film"
+              className="hidden text-xs text-muted-foreground hover:text-foreground sm:block"
+            >
+              Goal first. Then the reel that gets you there.
+            </a>
           </div>
         </header>
         {children}

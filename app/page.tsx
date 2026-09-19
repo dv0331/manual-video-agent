@@ -1,58 +1,66 @@
+import { CinematicGoal } from "@/components/cinematic-goal";
 import { RecentJobs } from "@/components/recent-jobs";
 import { UploadPanel } from "@/components/upload-panel";
 
-const steps = [
+const beats = [
   {
     n: "01",
-    title: "Ingest",
-    body: "Read the PDF — IKEA pages, manufacturing manuals, or a kit you upload.",
+    title: "Ingest the manual",
+    body: "PDF pages stay the part reference. Nothing is invented from memory.",
   },
   {
     n: "02",
-    title: "Understand",
-    body: "Build an assembly graph: BOM, tools, sequence, warnings.",
+    title: "Plan the reel",
+    body: "Eight-second scenes, ~20-word lines, a camera move, workshop sound.",
   },
   {
     n: "03",
-    title: "Human assembly",
-    body: "Each scene is a person performing the step. Frames stay faithful to the manual parts.",
+    title: "Still, then motion",
+    body: "Style-referenced start frame. Image-to-video with a quoted spoken line.",
   },
   {
     n: "04",
-    title: "Stitch",
-    body: "Motion clips, spoken step audio, burned-in callouts, and chapter markers.",
+    title: "Judge and cut",
+    body: "Cheap gate, scored critique, one rewrite. Audio fail retries the clip only.",
   },
 ];
 
 export default function Home() {
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 py-10 sm:px-6">
-      <section className="max-w-3xl space-y-4">
-        <p className="font-mono text-xs tracking-[0.2em] text-primary">
-          HUMAN ASSEMBLY AGENT
-        </p>
-        <h1 className="text-3xl font-semibold tracking-tight text-pretty sm:text-5xl">
-          Turn an instruction manual into a video of someone assembling the product.
-        </h1>
-        <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-          Open an IKEA sample or drop your own PDF. The agent extracts the
-          procedure, then Generate video produces a chaptered how-to of a person
-          fitting the real parts, with spoken instructions for each step.
-        </p>
-      </section>
+    <main className="flex flex-1 flex-col">
+      <CinematicGoal />
 
-      <UploadPanel />
-      <RecentJobs />
+      <div
+        id="make-the-film"
+        className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-12 sm:px-6"
+      >
+        <section className="max-w-3xl space-y-3">
+          <p className="font-mono text-xs tracking-[0.2em] text-primary">
+            MAKE THE FILM
+          </p>
+          <h2 className="text-3xl font-semibold tracking-tight text-pretty sm:text-4xl">
+            Open a sample, or drop your own manual.
+          </h2>
+          <p className="text-base leading-7 text-muted-foreground sm:text-lg">
+            The agent walks the same reel you just watched: plan, still, spoken
+            motion, judge, stitch. A six-step job is minutes per scene — 63%
+            means the fourth scene, not the credits.
+          </p>
+        </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {steps.map((step) => (
-          <div key={step.n} className="rounded-xl border border-border/80 bg-card p-4">
-            <p className="font-mono text-xs text-primary">{step.n}</p>
-            <h2 className="mt-2 text-sm font-medium">{step.title}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">{step.body}</p>
-          </div>
-        ))}
-      </section>
+        <UploadPanel />
+        <RecentJobs />
+
+        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {beats.map((step) => (
+            <div key={step.n} className="rounded-xl border border-border/80 bg-card p-4">
+              <p className="font-mono text-xs text-primary">{step.n}</p>
+              <h3 className="mt-2 text-sm font-medium">{step.title}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">{step.body}</p>
+            </div>
+          ))}
+        </section>
+      </div>
     </main>
   );
 }

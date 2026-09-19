@@ -2,6 +2,7 @@ import { spawn } from "node:child_process";
 import { readFile, unlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { defaultCamera, defaultSound } from "@/lib/agent/direction";
 import { narrationScript } from "@/lib/agent/narration";
 import { SAMPLE_GRAPH, SAMPLE_MANUAL_TEXT } from "@/lib/sample-manual/graph";
 import type { AssemblyGraph, EvaluationScores, Scene } from "@/lib/agent/types";
@@ -89,6 +90,9 @@ function scenesFromGraph(graph: AssemblyGraph): Scene[] {
       startFrameStrategy: "human-assembly",
       warnings: step.warnings,
       allowedPartIds: [...new Set(allowed)],
+      cameraMotion: defaultCamera(step.index),
+      soundEffects: defaultSound(step.title),
+      visualDescription: step.instruction,
     };
   });
 }
@@ -162,6 +166,10 @@ export const demoProvider: MediaProvider = {
       critique: invented
         ? "Scene mentions a part ID that is not in the extracted BOM."
         : "Source-faithful figure and callouts match the planned step.",
+      failureType: invented ? "visual" : "none",
+      narrationAlignment: 0.9,
+      motionCoherence: 0.82,
+      cheapGate: invented ? 0.18 : 0.86,
     };
     return scores;
   },

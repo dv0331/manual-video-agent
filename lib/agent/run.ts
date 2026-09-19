@@ -4,6 +4,7 @@ import { ingestSource } from "@/lib/agent/ingest";
 import { jobDir } from "@/lib/agent/paths";
 import { planStoryboard } from "@/lib/agent/plan";
 import { generateScene } from "@/lib/agent/generate";
+import { logProduction } from "@/lib/agent/production-log";
 import { getMediaProvider } from "@/lib/agent/providers";
 import { stitchJob } from "@/lib/agent/stitch";
 import { failJob, setStage, updateJob } from "@/lib/agent/store";
@@ -31,6 +32,7 @@ export async function runJob(
     const { loadJob } = await import("@/lib/agent/store");
     const current = await loadJob(id);
     if (!current) throw new Error("Job disappeared");
+    await logProduction(dir, `Starting production for ${current.sourceName}`);
     let sourceFile = file;
     if (!sourceFile && current.sourceKind === "upload") {
       const { readFile } = await import("node:fs/promises");
@@ -68,12 +70,13 @@ export async function runJob(
     await updateJob(id, { scenes });
 
     const results: SceneResult[] = [];
+    await logProduction(dir, `Plan locked: ${scenes.length} scenes, one at a time, no batching`);
     for (const [i, scene] of scenes.entries()) {
       const pct = 40 + Math.round((i / Math.max(scenes.length, 1)) * 45);
       await setStage(
         id,
         "generate",
-        `Generating and evaluating scene ${i + 1} of ${scenes.length}`,
+        `Scene ${i + 1} of ${scenes.length}: still → motion → spoken line → judge`,
         pct,
         { sceneResults: results },
       );
@@ -84,11 +87,15 @@ export async function runJob(
         jobPath: dir,
         previousFramePath: results.at(-1)?.framePath,
         totalScenes: scenes.length,
+        onBeat: async (label) => {
+          await updateJob(id, { stageLabel: label, log: label });
+        },
       });
       results.push(result);
+      const kind = result.evaluation.failureType ?? "none";
       await updateJob(id, {
         sceneResults: results,
-        log: `Scene ${scene.index} ${result.evaluation.passed ? "passed" : "accepted after retries"} (${result.motionSource}, ${result.attempts} attempt${result.attempts === 1 ? "" : "s"}, narrated)`,
+        log: `Scene ${scene.index} ${result.evaluation.passed ? "PASS" : "accepted"} (${kind}, ${result.motionSource}, ${result.attempts} still, narrated)`,
       });
     }
 
@@ -108,7 +115,7 @@ export async function runJob(
       vttPath,
       captionsPath,
       sceneResults: results,
-      log: "Stitched the chaptered assembly video with spoken steps",
+      log: "Cut the chaptered assembly film with spoken steps",
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "The agent failed";

@@ -39,14 +39,16 @@ export function Storyboard({ results }: { results: Result[] }) {
                   {String(result.scene.index).padStart(2, "0")} · {result.scene.title}
                 </h3>
                 <Badge variant={result.evaluation.passed ? "secondary" : "destructive"}>
-                  {result.evaluation.passed ? "pass" : "retry"}
+                  {result.evaluation.passed
+                    ? "pass"
+                    : result.evaluation.failureType ?? "retry"}
                 </Badge>
               </div>
               <p className="text-xs text-muted-foreground">{result.evaluation.critique}</p>
               <dl className="grid grid-cols-2 gap-x-3 gap-y-1 font-mono text-[11px] text-muted-foreground">
-                <div>sim {result.evaluation.similarity.toFixed(2)}</div>
-                <div>parts {result.evaluation.partIdentity.toFixed(2)}</div>
-                <div>safety {result.evaluation.safetyCoverage.toFixed(2)}</div>
+                <div>gate {(result.evaluation.cheapGate ?? result.evaluation.similarity ?? 0).toFixed(2)}</div>
+                <div>parts {(result.evaluation.partIdentity ?? 0).toFixed(2)}</div>
+                <div>{result.scene.cameraMotion ?? "camera"}</div>
                 <div>
                   {result.motionSource} · {result.attempts}×
                 </div>
