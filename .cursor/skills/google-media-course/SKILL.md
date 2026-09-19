@@ -47,3 +47,5 @@ The current job is slow because each scene runs **serially**: image generate →
 L2: structured image prompts, keyword expansion, style-reference still, 16:9 image config.
 
 L3: Veo is a **minutes-long** poll (`sleep(15)` until `operation.done`). Course path is **image-to-video with audio**, not a text-only clip. Start frame from L2, then `generate_videos` with `generate_audio=True`, `person_generation="allow_adult"`, 8s / 16:9 / 720p. Video prompt slots include **camera movement, sound effects, and dialogue**. A one-line motion prompt is the “simple” anti-pattern.
+
+L4: Always compare an **aligned** generation to a **known-bad** image against the same reference prompt. Stack **SigLIP** (fast scalar) → **Gemini judge** (scored criteria + explanation) → **Gecko rubrics** (which prompt elements passed). Final line of the lab: *SigLIP for speed → Gemini/Gecko for depth → Humans for critical decisions.*
