@@ -1,10 +1,10 @@
-import { copyFile, mkdir, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { evaluateScene } from "@/lib/agent/evaluate";
 import { kenBurnsClip } from "@/lib/agent/ffmpeg";
 import type { MediaProvider } from "@/lib/agent/providers/types";
 import type { AssemblyGraph, Scene, SceneResult } from "@/lib/agent/types";
-import { MAX_RETRIES } from "@/lib/agent/types";
+import { MAX_RETRIES, SCENE_SECONDS } from "@/lib/agent/types";
 
 export async function generateScene(options: {
   provider: MediaProvider;
@@ -32,20 +32,22 @@ export async function generateScene(options: {
       scene = await options.provider.enhancePrompt(scene, lastCritique);
     }
 
-    if (scene.figurePath && scene.startFrameStrategy === "manual-figure") {
+    const reference = scene.figurePath
+      ? {
+          mimeType: "image/png",
+          base64: (await readFile(scene.figurePath)).toString("base64"),
+        }
+      : undefined;
+    const generated = await options.provider.generateFrame({
+      scene,
+      reference,
+    });
+    if (generated) {
+      await writeFile(framePath, generated);
+    } else if (scene.figurePath) {
       await copyFile(scene.figurePath, framePath);
     } else {
-      const generated = await options.provider.generateFrame({
-        scene,
-        reference: undefined,
-      });
-      if (generated) {
-        await writeFile(framePath, generated);
-      } else if (scene.figurePath) {
-        await copyFile(scene.figurePath, framePath);
-      } else {
-        throw new Error(`No figure available for ${scene.title}`);
-      }
+      throw new Error(`No figure available for ${scene.title}`);
     }
 
     evaluation = await evaluateScene({
@@ -62,13 +64,17 @@ export async function generateScene(options: {
     lastCritique = evaluation.critique;
   }
 
-  const veo = await options.provider.generateVideo({
+  const animated = await options.provider.generateVideo({
     scene,
     framePath,
     outputPath: clipPath,
+    totalScenes: options.totalScenes,
   });
-  if (veo) {
-    motionSource = "veo";
+  let durationSeconds = SCENE_SECONDS;
+  if (animated) {
+    motionSource = options.provider.name === "openai" ? "sora" : "veo";
+    durationSeconds = Number(process.env.OPENAI_VIDEO_SECONDS ?? 8);
+    if (![4, 8, 12].includes(durationSeconds)) durationSeconds = 8;
   } else {
     await kenBurnsClip({
       framePath,
@@ -77,15 +83,17 @@ export async function generateScene(options: {
       totalScenes: options.totalScenes,
     });
     motionSource = "kenburns";
+    durationSeconds = SCENE_SECONDS;
   }
 
   return {
-    scene,
+    scene: { ...scene, durationSeconds },
     framePath,
     clipPath,
     attempts,
     evaluation,
     motionSource,
+    durationSeconds,
   };
 }
 

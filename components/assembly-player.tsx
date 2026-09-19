@@ -18,10 +18,18 @@ export function AssemblyPlayer({
   const [active, setActive] = useState(0);
   const [failed, setFailed] = useState(false);
 
+  function durations() {
+    return scenes.map((scene) => scene.durationSeconds ?? SCENE_SECONDS);
+  }
+
+  function offsetAt(index: number) {
+    return durations().slice(0, index).reduce((sum, n) => sum + n, 0);
+  }
+
   function seekTo(index: number) {
     const video = videoRef.current;
     if (!video) return;
-    video.currentTime = index * SCENE_SECONDS + 0.05;
+    video.currentTime = offsetAt(index) + 0.05;
     void video.play().catch(() => setFailed(true));
   }
 
@@ -38,11 +46,19 @@ export function AssemblyPlayer({
             src={videoUrl}
             onError={() => setFailed(true)}
             onTimeUpdate={(e) => {
-              const index = Math.min(
-                scenes.length - 1,
-                Math.floor(e.currentTarget.currentTime / SCENE_SECONDS),
-              );
-              if (index >= 0) setActive(index);
+              const t = e.currentTarget.currentTime;
+              let cursor = 0;
+              let index = 0;
+              const lengths = durations();
+              for (let i = 0; i < lengths.length; i++) {
+                cursor += lengths[i];
+                if (t < cursor) {
+                  index = i;
+                  break;
+                }
+                index = i;
+              }
+              setActive(index);
             }}
           >
             {vttUrl ? <track kind="chapters" src={vttUrl} default /> : null}

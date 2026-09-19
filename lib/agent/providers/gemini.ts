@@ -111,12 +111,12 @@ ${text.slice(0, 20000)}`,
         contents: `You are a technical-video director for mechanical assembly.
 Turn this assembly graph into at most ${MAX_SCENES} scenes.
 Dual channel: narration explains; on-screen text is step index, part IDs, torque, and warnings — not a read-aloud.
-Prefer startFrameStrategy "manual-figure". Use "generated-isometric" only if a step has no figure.
-motionPrompt describes camera and hands only. Do not add hardware.
+Every scene is a real person assembling the product — startFrameStrategy "human-assembly".
+framePrompt is a photoreal documentary still. motionPrompt is a person performing the step. Do not invent hardware.
 Return JSON: { "scenes": [{
   "id": string, "index": number, "title": string, "narration": string,
   "onScreenCallouts": string[], "motionPrompt": string, "framePrompt": string,
-  "startFrameStrategy": "manual-figure" | "generated-isometric",
+  "startFrameStrategy": "human-assembly",
   "warnings": string[], "allowedPartIds": string[]
 }] }
 Graph:
@@ -168,7 +168,7 @@ Critique: ${critique}`,
       const ai = client();
       const parts: Array<Record<string, unknown>> = [
         {
-          text: `Generate a 16:9 technical assembly frame for a mechanical manual.
+          text: `Generate a photoreal 16:9 how-to still of a real person assembling the product.
 Stay faithful to the reference figure if provided. Do not invent fasteners or extra parts.
 ${scene.framePrompt}
 Callouts allowed: ${scene.onScreenCallouts.join(", ")}
@@ -199,7 +199,7 @@ Allowed part IDs: ${scene.allowedPartIds.join(", ")}`,
       let operation = await ai.models.generateVideos({
         model: VIDEO_MODEL,
         source: {
-          prompt: `${scene.motionPrompt}. Keep the machine and hardware identical to the start frame. No extra parts.`,
+          prompt: `${scene.motionPrompt}. A real person assembling the product. Keep the machine and hardware identical to the start frame. No extra parts.`,
           image: {
             imageBytes: bytes.toString("base64"),
             mimeType: "image/png",

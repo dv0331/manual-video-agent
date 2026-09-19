@@ -155,9 +155,8 @@ export function JobView({ jobId }: { jobId: string }) {
           </CardHeader>
           <CardContent className="space-y-2 text-sm text-muted-foreground">
             <p>
-              The agent is reading the manual, planning scenes, and evaluating
-              each frame before it stitches the video. This page updates as
-              scenes pass.
+              The agent is reading the manual, then generating a person
+              assembling each step. This page updates as scenes pass.
             </p>
             {job.graph ? (
               <p>

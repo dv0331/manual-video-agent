@@ -79,9 +79,9 @@ function scenesFromGraph(graph: AssemblyGraph): Scene[] {
         ...step.fasteners,
         step.torque ? `Torque ${step.torque}` : "",
       ].filter((v): v is string => Boolean(v)),
-      motionPrompt: `Slow workshop camera on the ${step.title.toLowerCase()}. Hands only move the parts named in the manual. No extra hardware.`,
-      framePrompt: `Technical assembly illustration for: ${step.instruction}`,
-      startFrameStrategy: "manual-figure",
+      motionPrompt: `A real person assembling ${graph.title}: ${step.instruction} Documentary workshop shot. Hands only move the parts named in the manual.`,
+      framePrompt: `Photoreal 16:9 photo of a person assembling ${graph.title}. ${step.instruction}`,
+      startFrameStrategy: "human-assembly",
       warnings: step.warnings,
       allowedPartIds: [...new Set(allowed)],
     };

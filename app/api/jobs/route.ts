@@ -8,6 +8,7 @@ import { resolveProviderName } from "@/lib/agent/providers";
 import { startJob } from "@/lib/agent/run";
 import { serializeJob } from "@/lib/agent/serialize";
 import { createJob, listJobs } from "@/lib/agent/store";
+import { getSample } from "@/lib/sample-manual/catalog";
 
 export async function GET() {
   const jobs = await listJobs();
@@ -25,7 +26,7 @@ export async function GET() {
 }
 
 export const runtime = "nodejs";
-export const maxDuration = 300;
+export const maxDuration = 800;
 
 export async function POST(request: Request) {
   const contentType = request.headers.get("content-type") ?? "";
@@ -33,10 +34,11 @@ export async function POST(request: Request) {
   const createdAt = new Date().toISOString();
 
   if (contentType.includes("application/json")) {
-    const body = (await request.json()) as { source?: string };
+    const body = (await request.json()) as { source?: string; sampleId?: string };
     if (body.source !== "sample") {
       return NextResponse.json({ error: "Unknown source" }, { status: 400 });
     }
+    const sample = getSample(body.sampleId);
     const job = await createJob({
       id,
       createdAt,
@@ -44,8 +46,9 @@ export async function POST(request: Request) {
       stage: "queued",
       stageLabel: "Queued",
       progress: 0,
-      sourceName: "AP-1-ASM-001 Benchtop Arbor Press",
+      sourceName: sample.title,
       sourceKind: "sample",
+      sampleId: sample.id,
       provider: resolveProviderName(),
     });
     after(() => {

@@ -47,23 +47,15 @@ function wrapLine(text: string, max = 72) {
   return lines.slice(0, 2).join("\n");
 }
 
-export async function kenBurnsClip(options: {
-  framePath: string;
-  outputPath: string;
-  scene: Scene;
-  totalScenes: number;
-  seconds?: number;
-}) {
-  const seconds = options.seconds ?? SCENE_SECONDS;
-  const frames = seconds * 25;
+function calloutOverlays(scene: Scene, totalScenes: number) {
   const title = escapeDrawtext(
-    `STEP ${String(options.scene.index).padStart(2, "0")} / ${String(options.totalScenes).padStart(2, "0")}  ·  ${options.scene.title}`,
+    `STEP ${String(scene.index).padStart(2, "0")} / ${String(totalScenes).padStart(2, "0")}  ·  ${scene.title}`,
   );
   const callouts = escapeDrawtext(
-    wrapLine(options.scene.onScreenCallouts.join("   ·   ") || options.scene.narration, 78),
+    wrapLine(scene.onScreenCallouts.join("   ·   ") || scene.narration, 78),
   );
-  const warning = options.scene.warnings[0]
-    ? escapeDrawtext(`WARNING  ${wrapLine(options.scene.warnings[0], 70)}`)
+  const warning = scene.warnings[0]
+    ? escapeDrawtext(`WARNING  ${wrapLine(scene.warnings[0], 70)}`)
     : "";
 
   const overlays = [
@@ -81,6 +73,19 @@ export async function kenBurnsClip(options: {
       `drawtext=fontfile=${FONT_BOLD_PATH}:fontsize=18:fontcolor=white:x=36:y=98:text='${warning}'`,
     );
   }
+  return overlays;
+}
+
+export async function kenBurnsClip(options: {
+  framePath: string;
+  outputPath: string;
+  scene: Scene;
+  totalScenes: number;
+  seconds?: number;
+}) {
+  const seconds = options.seconds ?? SCENE_SECONDS;
+  const frames = seconds * 25;
+  const overlays = calloutOverlays(options.scene, options.totalScenes);
 
   const filter = [
     `scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720`,
@@ -114,6 +119,58 @@ export async function kenBurnsClip(options: {
     "+faststart",
     options.outputPath,
   ]);
+}
+
+export async function burnCalloutsOnVideo(options: {
+  inputPath: string;
+  outputPath: string;
+  scene: Scene;
+  totalScenes: number;
+}) {
+  const overlays = calloutOverlays(options.scene, options.totalScenes);
+  const filter = [
+    `scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720`,
+    ...overlays,
+  ].join(",");
+  try {
+    await runFfmpeg([
+      "-i",
+      options.inputPath,
+      "-vf",
+      filter,
+      "-c:v",
+      "libx264",
+      "-pix_fmt",
+      "yuv420p",
+      "-c:a",
+      "aac",
+      "-movflags",
+      "+faststart",
+      options.outputPath,
+    ]);
+    return;
+  } catch {
+    await runFfmpeg([
+      "-i",
+      options.inputPath,
+      "-f",
+      "lavfi",
+      "-i",
+      "anullsrc=channel_layout=stereo:sample_rate=44100",
+      "-vf",
+      filter,
+      "-c:v",
+      "libx264",
+      "-pix_fmt",
+      "yuv420p",
+      "-c:a",
+      "aac",
+      "-shortest",
+      "-movflags",
+      "+faststart",
+      options.outputPath,
+    ]);
+  }
 }
 
 export async function stitchClips(options: {
@@ -159,11 +216,18 @@ export async function makeSafariPlayable(inputPath: string, outputPath: string) 
   ]);
 }
 
-export function buildChaptersVtt(scenes: Scene[], seconds = SCENE_SECONDS) {
+export function buildChaptersVtt(
+  scenes: Scene[],
+  seconds = SCENE_SECONDS,
+  durations?: number[],
+) {
   const lines = ["WEBVTT", ""];
+  let cursor = 0;
   scenes.forEach((scene, i) => {
-    const start = formatVtt(i * seconds);
-    const end = formatVtt((i + 1) * seconds);
+    const length = durations?.[i] ?? scene.durationSeconds ?? seconds;
+    const start = formatVtt(cursor);
+    cursor += length;
+    const end = formatVtt(cursor);
     lines.push(`${start} --> ${end}`, `Step ${scene.index} — ${scene.title}`, "");
   });
   return lines.join("\n");

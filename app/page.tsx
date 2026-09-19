@@ -5,7 +5,7 @@ const steps = [
   {
     n: "01",
     title: "Ingest",
-    body: "Rasterize pages, pull figures, and keep the source text.",
+    body: "Read the PDF — IKEA pages, manufacturing manuals, or a kit you upload.",
   },
   {
     n: "02",
@@ -14,13 +14,13 @@ const steps = [
   },
   {
     n: "03",
-    title: "Plan and evaluate",
-    body: "Storyboard scenes, score frames, and retry anything that invents hardware.",
+    title: "Human assembly",
+    body: "Each scene is a person performing the step. Frames stay faithful to the manual parts.",
   },
   {
     n: "04",
     title: "Stitch",
-    body: "Animate each figure, burn callouts, and chapter the video.",
+    body: "Motion clips, burned-in callouts, and chapter markers you can follow at the bench.",
   },
 ];
 
@@ -29,16 +29,15 @@ export default function Home() {
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 py-10 sm:px-6">
       <section className="max-w-3xl space-y-4">
         <p className="font-mono text-xs tracking-[0.2em] text-primary">
-          MECHANICAL ASSEMBLY AGENT
+          HUMAN ASSEMBLY AGENT
         </p>
         <h1 className="text-3xl font-semibold tracking-tight text-pretty sm:text-5xl">
-          Turn an instruction manual into a step-by-step assembly video.
+          Turn an instruction manual into a video of someone assembling the product.
         </h1>
         <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-          Mechanical engineers should not have to reconstruct a machine from
-          prose. Upload the manual. The agent extracts the procedure from the
-          figures you already have, evaluates every scene, and returns a
-          chaptered video you can follow at the bench.
+          Open an IKEA sample or drop your own PDF. The agent extracts the
+          procedure, then Generate video produces a chaptered how-to of a person
+          fitting the real parts — not a slideshow of the manual pages.
         </p>
       </section>
 

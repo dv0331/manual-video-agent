@@ -12,7 +12,12 @@ export type AgentStage =
 
 export type MediaProviderName = "openai" | "gemini" | "demo";
 
-export type StartFrameStrategy = "manual-figure" | "generated-isometric";
+export type StartFrameStrategy =
+  | "human-assembly"
+  | "manual-figure"
+  | "generated-isometric";
+
+export type MotionSource = "sora" | "veo" | "kenburns";
 
 export interface Part {
   id: string;
@@ -53,6 +58,7 @@ export interface Scene {
   figurePath?: string;
   warnings: string[];
   allowedPartIds: string[];
+  durationSeconds?: number;
 }
 
 export interface EvaluationScores {
@@ -75,7 +81,8 @@ export interface SceneResult {
   clipPath: string;
   attempts: number;
   evaluation: EvaluationScores;
-  motionSource: "veo" | "kenburns";
+  motionSource: MotionSource;
+  durationSeconds: number;
 }
 
 export interface JobLog {
@@ -93,6 +100,7 @@ export interface Job {
   progress: number;
   sourceName: string;
   sourceKind: "sample" | "upload";
+  sampleId?: string;
   provider: MediaProviderName;
   error?: string;
   graph?: AssemblyGraph;

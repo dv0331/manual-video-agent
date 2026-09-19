@@ -54,12 +54,13 @@ export async function runJob(
     const ingest = await ingestSource({
       jobPath: dir,
       kind: current.sourceKind,
+      sampleId: current.sampleId,
       file: sourceFile,
     });
     await writeFile(path.join(dir, "extracted.txt"), ingest.text);
 
     await setStage(id, "understand", "Building the assembly graph from the source", 22);
-    const graph = await understandManual(provider, ingest);
+    const graph = await understandManual(provider, ingest, current.sampleId);
     await updateJob(id, { graph });
 
     await setStage(id, "plan", "Planning a multi-scene storyboard", 34);

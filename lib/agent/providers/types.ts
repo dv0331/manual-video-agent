@@ -21,6 +21,7 @@ export interface MediaProvider {
     scene: Scene;
     framePath: string;
     outputPath: string;
+    totalScenes?: number;
   }): Promise<boolean>;
   evaluateFrame(input: {
     scene: Scene;

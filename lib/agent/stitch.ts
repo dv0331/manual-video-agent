@@ -15,7 +15,14 @@ export async function stitchJob(options: {
     outputPath: videoPath,
     listPath: concatDir(options.jobPath),
   });
-  await writeFile(vttPath, buildChaptersVtt(options.scenes));
+  await writeFile(
+    vttPath,
+    buildChaptersVtt(
+      options.scenes,
+      undefined,
+      options.results.map((r) => r.durationSeconds),
+    ),
+  );
   await writeFile(
     path.join(options.jobPath, "storyboard.json"),
     JSON.stringify(options.scenes, null, 2),

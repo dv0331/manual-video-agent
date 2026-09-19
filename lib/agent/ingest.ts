@@ -1,8 +1,9 @@
-import { copyFile, mkdir, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
-import { SAMPLE_MANUAL_TEXT } from "@/lib/sample-manual/graph";
+import { rasterizePdf } from "@/lib/agent/rasterize";
 import type { IngestResult } from "@/lib/agent/types";
+import { getSample } from "@/lib/sample-manual/catalog";
 
 async function renderTextPage(text: string, dest: string, title: string) {
   const lines = text
@@ -41,9 +42,26 @@ async function extractPdf(buffer: Buffer): Promise<{ text: string; pageTexts: st
   return { text: pageTexts.join("\n\n"), pageTexts };
 }
 
+async function copyPngDir(srcDir: string, destDir: string, prefix: string) {
+  const names = (await readdir(srcDir))
+    .filter((name) => name.toLowerCase().endsWith(".png"))
+    .sort();
+  const dests: string[] = [];
+  for (const [i, name] of names.entries()) {
+    const dest = path.join(
+      destDir,
+      `${prefix}-${String(i + 1).padStart(prefix === "fig" ? 2 : 3, "0")}.png`,
+    );
+    await copyFile(path.join(srcDir, name), dest);
+    dests.push(dest);
+  }
+  return dests;
+}
+
 export async function ingestSource(options: {
   jobPath: string;
   kind: "sample" | "upload";
+  sampleId?: string;
   file?: { name: string; buffer: Buffer; mimeType: string };
 }): Promise<IngestResult> {
   const pagesDir = path.join(options.jobPath, "pages");
@@ -52,34 +70,33 @@ export async function ingestSource(options: {
   await mkdir(figuresDir, { recursive: true });
 
   if (options.kind === "sample") {
-    const sampleDir = path.join(process.cwd(), "content", "sample-manual");
-    const figureNames = [
-      "fig-01.png",
-      "fig-02.png",
-      "fig-03.png",
-      "fig-04.png",
-      "fig-05.png",
-      "fig-06.png",
-    ];
-    const figureImages: string[] = [];
-    const pageImages: string[] = [];
-    for (const [i, name] of figureNames.entries()) {
-      const destFig = path.join(figuresDir, name);
-      const destPage = path.join(pagesDir, `page-${String(i + 1).padStart(3, "0")}.png`);
-      await copyFile(path.join(sampleDir, "figures", name), destFig);
-      await copyFile(path.join(sampleDir, "figures", name), destPage);
-      figureImages.push(destFig);
-      pageImages.push(destPage);
+    const sample = getSample(options.sampleId);
+    const figureImages = sample.figuresDir
+      ? await copyPngDir(sample.figuresDir, figuresDir, "fig")
+      : [];
+    const pageImages = sample.pagesDir
+      ? await copyPngDir(sample.pagesDir, pagesDir, "page")
+      : [];
+    if (!pageImages.length && figureImages.length) {
+      for (const [i, fig] of figureImages.entries()) {
+        const dest = path.join(pagesDir, `page-${String(i + 1).padStart(3, "0")}.png`);
+        await copyFile(fig, dest);
+        pageImages.push(dest);
+      }
     }
-    await copyFile(
-      path.join(sampleDir, "AP-1-ASM-001.pdf"),
-      path.join(options.jobPath, "source.pdf"),
-    );
+    if (!figureImages.length && pageImages.length) {
+      for (const [i, page] of pageImages.slice(0, 8).entries()) {
+        const dest = path.join(figuresDir, `fig-${String(i + 1).padStart(2, "0")}.png`);
+        await copyFile(page, dest);
+        figureImages.push(dest);
+      }
+    }
+    await copyFile(sample.pdfPath, path.join(options.jobPath, "source.pdf"));
     return {
       pageImages,
       figureImages,
-      text: SAMPLE_MANUAL_TEXT,
-      pageTexts: SAMPLE_MANUAL_TEXT.split(/Step \d+/).map((s) => s.trim()),
+      text: sample.text,
+      pageTexts: sample.graph.steps.map((step) => `Step ${step.index} — ${step.title}. ${step.instruction}`),
     };
   }
 
@@ -108,25 +125,28 @@ export async function ingestSource(options: {
     throw new Error("Upload a PDF or an image of the instruction manual.");
   }
 
-  await writeFile(path.join(options.jobPath, "source.pdf"), options.file.buffer);
+  const sourcePdf = path.join(options.jobPath, "source.pdf");
+  await writeFile(sourcePdf, options.file.buffer);
   const extracted = await extractPdf(options.file.buffer);
-  const pageImages: string[] = [];
+  let pageImages: string[] = [];
   const figureImages: string[] = [];
-  const pages = extracted.pageTexts.length ? extracted.pageTexts : [extracted.text];
 
-  for (const [i, pageText] of pages.slice(0, 12).entries()) {
-    const dest = path.join(pagesDir, `page-${String(i + 1).padStart(3, "0")}.png`);
-    await renderTextPage(
-      pageText || extracted.text,
-      dest,
-      `Manual page ${i + 1}`,
-    );
-    pageImages.push(dest);
-    if (i < 8) {
-      const fig = path.join(figuresDir, `fig-${String(i + 1).padStart(2, "0")}.png`);
-      await copyFile(dest, fig);
-      figureImages.push(fig);
+  try {
+    pageImages = await rasterizePdf(sourcePdf, pagesDir, 12);
+  } catch (error) {
+    console.warn("PDF rasterize failed, drawing text pages", error);
+    const pages = extracted.pageTexts.length ? extracted.pageTexts : [extracted.text];
+    for (const [i, pageText] of pages.slice(0, 12).entries()) {
+      const dest = path.join(pagesDir, `page-${String(i + 1).padStart(3, "0")}.png`);
+      await renderTextPage(pageText || extracted.text, dest, `Manual page ${i + 1}`);
+      pageImages.push(dest);
     }
+  }
+
+  for (const [i, page] of pageImages.slice(0, 8).entries()) {
+    const fig = path.join(figuresDir, `fig-${String(i + 1).padStart(2, "0")}.png`);
+    await copyFile(page, fig);
+    figureImages.push(fig);
   }
 
   return {

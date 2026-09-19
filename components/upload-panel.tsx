@@ -5,11 +5,12 @@ import { useState } from "react";
 import { AlertCircle, FileUp, LoaderCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { SAMPLE_CARDS } from "@/lib/sample-manual/cards";
 
 export function UploadPanel() {
   const router = useRouter();
   const [dragOver, setDragOver] = useState(false);
-  const [busy, setBusy] = useState<"upload" | "sample" | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
 
@@ -36,14 +37,14 @@ export function UploadPanel() {
     }
   }
 
-  async function onSample() {
+  async function onSample(sampleId: string) {
     setError(null);
-    setBusy("sample");
+    setBusy(sampleId);
     try {
       await createJob({
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ source: "sample" }),
+        body: JSON.stringify({ source: "sample", sampleId }),
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not start the sample job");
@@ -52,14 +53,13 @@ export function UploadPanel() {
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+    <div className="space-y-8">
       <Card className="border-border/80">
         <CardHeader>
           <CardTitle>Drop an instruction manual</CardTitle>
           <CardDescription>
-            PDF or page images. The agent reads the first coherent procedure, up
-            to eight scenes, and builds a chaptered assembly video from the
-            figures in the source.
+            PDF or page images. The agent reads the first coherent procedure,
+            plans a person assembling each step, and returns a chaptered video.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -107,39 +107,59 @@ export function UploadPanel() {
             </Alert>
           ) : null}
           <p className="text-xs text-muted-foreground">
-            The agent will not invent fasteners, torque, or tools. If a step
-            has no figure, it says so instead of drawing extra hardware.
+            Generate Video asks for a photoreal person performing each step. If
+            motion generation is unavailable, the same human still is animated
+            so you still see assembly, not a pan across the PDF.
           </p>
         </CardContent>
       </Card>
 
-      <Card className="overflow-hidden border-border/80">
-        <div className="aspect-16/9 bg-[url('/sample-manual/fig-01.png')] bg-cover bg-center" />
-        <CardHeader>
-          <CardTitle>Try the AP-1 arbor press</CardTitle>
-          <CardDescription>
-            Six illustrated steps, two safety warnings, and real torque values
-            from an original kit manual. No upload required.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <button
-            type="button"
-            onClick={() => void onSample()}
-            disabled={busy !== null}
-            className="inline-flex min-h-11 min-w-48 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:pointer-events-none disabled:opacity-50"
-          >
-            {busy === "sample" ? <LoaderCircle className="size-4 animate-spin" /> : null}
-            Generate sample video
-          </button>
-          <a
-            href="/sample-manual/AP-1-ASM-001.pdf"
-            className="text-sm text-primary underline-offset-4 hover:underline"
-          >
-            Open the sample PDF
-          </a>
-        </CardContent>
-      </Card>
+      <section className="space-y-3">
+        <div>
+          <h2 className="text-lg font-semibold tracking-tight">Sample manuals</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Official IKEA assembly PDFs plus the original AP-1 kit. Open a
+            manual, then generate a video of a person assembling it.
+          </p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {SAMPLE_CARDS.map((sample) => (
+            <Card key={sample.id} className="overflow-hidden border-border/80">
+              <div
+                className="aspect-16/9 bg-muted bg-cover bg-center"
+                style={{ backgroundImage: `url('${sample.thumb}')` }}
+              />
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">{sample.title}</CardTitle>
+                <CardDescription>{sample.subtitle}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <button
+                  type="button"
+                  onClick={() => void onSample(sample.id)}
+                  disabled={busy !== null}
+                  className="inline-flex min-h-11 min-w-44 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:pointer-events-none disabled:opacity-50"
+                >
+                  {busy === sample.id ? <LoaderCircle className="size-4 animate-spin" /> : null}
+                  Generate video
+                </button>
+                <a
+                  href={sample.pdfPublicPath}
+                  className="text-sm text-primary underline-offset-4 hover:underline"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open the PDF
+                </a>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <p className="text-xs text-muted-foreground">
+          IKEA pages are sample inputs from published instructions and the IKEA
+          3D Assembly Dataset. IKEA remains the rights holder.
+        </p>
+      </section>
     </div>
   );
 }
