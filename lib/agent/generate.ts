@@ -91,42 +91,44 @@ export async function generateScene(options: {
     }
   }
 
+  let durationSeconds = Math.max(SCENE_SECONDS, Math.ceil(speechSeconds + 0.4));
+  await kenBurnsClip({
+    framePath,
+    outputPath: clipPath,
+    scene,
+    totalScenes: options.totalScenes,
+    seconds: durationSeconds,
+    audioPath: spoken ? speechFile : undefined,
+  });
+  motionSource = "kenburns";
+
+  const soraPath = `${clipPath}.sora-raw.mp4`;
   const animated = await options.provider.generateVideo({
     scene,
     framePath,
-    outputPath: clipPath,
+    outputPath: soraPath,
     totalScenes: options.totalScenes,
   });
-  let durationSeconds = SCENE_SECONDS;
   if (animated) {
     motionSource = options.provider.name === "openai" ? "sora" : "veo";
-    durationSeconds = Number(process.env.OPENAI_VIDEO_SECONDS ?? 8);
-    if (![4, 8, 12].includes(durationSeconds)) durationSeconds = 8;
-    if (spoken) {
-      const mixed = `${clipPath}.narrated.mp4`;
-      try {
+    const motionSeconds = Number(process.env.OPENAI_VIDEO_SECONDS ?? 8);
+    durationSeconds = [4, 8, 12].includes(motionSeconds) ? motionSeconds : 8;
+    try {
+      if (spoken) {
         await muxNarration({
-          videoPath: clipPath,
+          videoPath: soraPath,
           audioPath: speechFile,
-          outputPath: mixed,
+          outputPath: clipPath,
           seconds: durationSeconds,
         });
-        await copyFile(mixed, clipPath);
-      } catch (error) {
-        console.warn("Could not mix narration onto the motion clip", error);
+      } else {
+        await copyFile(soraPath, clipPath);
       }
+    } catch (error) {
+      console.warn("Could not mix narration onto the motion clip; keeping spoken still", error);
+      motionSource = "kenburns";
+      durationSeconds = Math.max(SCENE_SECONDS, Math.ceil(speechSeconds + 0.4));
     }
-  } else {
-    durationSeconds = Math.max(SCENE_SECONDS, Math.ceil(speechSeconds + 0.4));
-    await kenBurnsClip({
-      framePath,
-      outputPath: clipPath,
-      scene,
-      totalScenes: options.totalScenes,
-      seconds: durationSeconds,
-      audioPath: spoken ? speechFile : undefined,
-    });
-    motionSource = "kenburns";
   }
 
   return {

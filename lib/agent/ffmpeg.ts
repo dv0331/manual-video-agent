@@ -298,6 +298,35 @@ export async function muxNarration(options: {
   ]);
 }
 
+export async function replaceAudioTrack(options: {
+  videoPath: string;
+  audioPath: string;
+  outputPath: string;
+}) {
+  await runFfmpeg([
+    "-i",
+    options.videoPath,
+    "-i",
+    options.audioPath,
+    "-map",
+    "0:v:0",
+    "-map",
+    "1:a:0",
+    "-c:v",
+    "copy",
+    "-c:a",
+    "aac",
+    "-ar",
+    "44100",
+    "-ac",
+    "2",
+    "-shortest",
+    "-movflags",
+    "+faststart",
+    options.outputPath,
+  ]);
+}
+
 export async function stitchClips(options: {
   clipPaths: string[];
   outputPath: string;

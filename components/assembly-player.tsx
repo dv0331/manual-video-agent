@@ -46,6 +46,10 @@ export function AssemblyPlayer({
             playsInline
             preload="auto"
             src={videoUrl}
+            onPlay={(e) => {
+              e.currentTarget.muted = false;
+              e.currentTarget.volume = 1;
+            }}
             onError={() => setFailed(true)}
             onTimeUpdate={(e) => {
               const t = e.currentTarget.currentTime;
@@ -79,6 +83,8 @@ export function AssemblyPlayer({
             onClick={() => {
               const video = videoRef.current;
               if (!video) return;
+              video.muted = false;
+              video.volume = 1;
               void video.play().catch(() => setFailed(true));
             }}
           >
