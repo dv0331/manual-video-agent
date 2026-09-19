@@ -15,7 +15,8 @@ Do **not** rewrite the assembly-video app from a single lesson. Capture each les
 | L2 | Prompt engineering for image generation | `google-media-l2-image-prompting` | captured |
 | L3 | Prompt engineering for video generation | `google-media-l3-video-prompting` | captured |
 | L4 | Evaluation techniques | `google-media-l4-evaluation` | captured |
-| L5–L8 | (not uploaded) | — | waiting |
+| L5 | Image generation agent (ADK tools) | `google-media-l5-image-agent` | captured |
+| L6–L8 | (not uploaded) | — | waiting |
 
 When a new notebook arrives: read it fully, write or update that lesson’s skill, then stop and wait unless the user asks to implement.
 
@@ -23,8 +24,8 @@ When a new notebook arrives: read it fully, write or update that lesson’s skil
 
 - `google-genai` — Gemini generate_content for text and images
 - `google-cloud-aiplatform[evaluation]` — Vertex evaluation (later lessons)
-- `google-adk` — agent toolkit (later lessons)
-- `transformers` / `torch` / `SentencePiece` — likely SigLIP / Gecko eval
+- `google-adk` — agent toolkit (used in L5: `Agent` + `InMemoryRunner`)
+- `transformers` / `torch` / `SentencePiece` — SigLIP / Gecko eval (L4)
 - `Pillow`, `matplotlib`, `numpy`, `pandas`, `python-dotenv`
 
 ## Shared helper (`helper.py`)
@@ -38,7 +39,7 @@ Present in L2 materials but used across later labs:
 - `make_display_tool(fn)` — wrap tools and log elapsed seconds
 - `clean(s)` — strip non-printable characters
 
-Do not invent L4+ behavior from these helpers. Wait for those notebooks.
+Do not invent L6–L8 behavior from these helpers. Wait for those notebooks. `make_display_tool` is unused through L5.
 
 ## How this maps to the assembly app (do not implement until asked)
 
@@ -49,3 +50,5 @@ L2: structured image prompts, keyword expansion, style-reference still, 16:9 ima
 L3: Veo is a **minutes-long** poll (`sleep(15)` until `operation.done`). Course path is **image-to-video with audio**, not a text-only clip. Start frame from L2, then `generate_videos` with `generate_audio=True`, `person_generation="allow_adult"`, 8s / 16:9 / 720p. Video prompt slots include **camera movement, sound effects, and dialogue**. A one-line motion prompt is the “simple” anti-pattern.
 
 L4: Always compare an **aligned** generation to a **known-bad** image against the same reference prompt. Stack **SigLIP** (fast scalar) → **Gemini judge** (scored criteria + explanation) → **Gecko rubrics** (which prompt elements passed). Final line of the lab: *SigLIP for speed → Gemini/Gecko for depth → Humans for critical decisions.*
+
+L5: First ADK agent. Tools are `brand_analysis` → `generate_design_concepts` (two distinct ideas) → `generate_idea_image` (16:9, guide as style ref) → `evaluate_image` (CRAP + brand, pass at 4.6 in tests / 4.8 in the agent, max 1 prompt-rewrite retry). `InMemoryRunner(app_name="image_agent")`. Lab brand is TuringTaste / `guide.png`. The planner model only orchestrates; the image model draws.
