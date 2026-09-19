@@ -1,7 +1,7 @@
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { evaluateScene } from "@/lib/agent/evaluate";
-import { kenBurnsClip, muxNarration } from "@/lib/agent/ffmpeg";
+import { kenBurnsClip, mediaDuration, muxNarration } from "@/lib/agent/ffmpeg";
 import { demoProvider } from "@/lib/agent/providers/demo";
 import type { MediaProvider } from "@/lib/agent/providers/types";
 import type { AssemblyGraph, Scene, SceneResult } from "@/lib/agent/types";
@@ -81,8 +81,14 @@ export async function generateScene(options: {
   const speechFile = spoken
     ? path.join(speechDir, `${scene.id}${spoken[0] === 0x52 ? ".wav" : ".mp3"}`)
     : speechPath;
+  let speechSeconds = 0;
   if (spoken) {
     await writeFile(speechFile, spoken);
+    try {
+      speechSeconds = await mediaDuration(speechFile);
+    } catch {
+      speechSeconds = 0;
+    }
   }
 
   const animated = await options.provider.generateVideo({
@@ -111,15 +117,16 @@ export async function generateScene(options: {
       }
     }
   } else {
+    durationSeconds = Math.max(SCENE_SECONDS, Math.ceil(speechSeconds + 0.4));
     await kenBurnsClip({
       framePath,
       outputPath: clipPath,
       scene,
       totalScenes: options.totalScenes,
+      seconds: durationSeconds,
       audioPath: spoken ? speechFile : undefined,
     });
     motionSource = "kenburns";
-    durationSeconds = SCENE_SECONDS;
   }
 
   return {

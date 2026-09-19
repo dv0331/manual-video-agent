@@ -5,6 +5,26 @@ import { FONT_BOLD_PATH, FONT_PATH } from "@/lib/agent/paths";
 import type { Scene } from "@/lib/agent/types";
 import { SCENE_SECONDS } from "@/lib/agent/types";
 
+export function mediaDuration(filePath: string): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const child = spawn(
+      "ffprobe",
+      ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", filePath],
+      { stdio: ["ignore", "pipe", "pipe"] },
+    );
+    let out = "";
+    child.stdout.on("data", (chunk) => {
+      out += chunk.toString();
+    });
+    child.on("error", reject);
+    child.on("close", (code) => {
+      const value = Number.parseFloat(out.trim());
+      if (code === 0 && Number.isFinite(value)) resolve(value);
+      else reject(new Error(`Could not read duration for ${filePath}`));
+    });
+  });
+}
+
 export function hasAudioStream(filePath: string): Promise<boolean> {
   return new Promise((resolve) => {
     const child = spawn(
@@ -214,6 +234,14 @@ export async function muxNarration(options: {
   seconds: number;
 }) {
   const ambient = await hasAudioStream(options.videoPath);
+  let spoken = options.seconds;
+  try {
+    spoken = await mediaDuration(options.audioPath);
+  } catch {
+    spoken = options.seconds;
+  }
+  const tempo = spoken > options.seconds + 0.2 ? spoken / options.seconds : 1;
+  const speed = tempo === 1 ? "" : `atempo=${Math.min(tempo, 2).toFixed(3)},`;
   if (ambient) {
     await runFfmpeg([
       "-i",
@@ -221,7 +249,7 @@ export async function muxNarration(options: {
       "-i",
       options.audioPath,
       "-filter_complex",
-      `[0:a]volume=0.18,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[amb];[1:a]volume=1.2,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,apad=whole_dur=${options.seconds}[nar];[amb][nar]amix=inputs=2:duration=first:dropout_transition=0[a]`,
+      `[0:a]volume=0.18,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[amb];[1:a]volume=1.2,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,${speed}apad=whole_dur=${options.seconds}[nar];[amb][nar]amix=inputs=2:duration=first:dropout_transition=0[a]`,
       "-map",
       "0:v",
       "-map",
