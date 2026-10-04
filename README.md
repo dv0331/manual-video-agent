@@ -59,7 +59,18 @@ If only `GEMINI_API_KEY` is set, it falls back to Gemini / optional Veo (`USE_VE
 3. In another terminal: `npm run public`. That prints a `https://….trycloudflare.com` link.
 4. Open that link on the phone. Sign in on `/login`.
 
-The Cloudflare URL stays up while this process is running. For a lasting host, run the same Docker image behind HTTPS (Caddy, nginx, or Fly) with a volume on `data/jobs`.
+The Cloudflare URL stays up while this process is running.
+
+## Render
+
+This app is a Docker web service (`render.yaml`). It needs ffmpeg, a disk for `data/jobs`, and a process that does not sleep mid-generate.
+
+1. In **your** Cursor agent box, run `/add-plugin render`, pick a scope, then **Authenticate**.
+2. Put the repo on GitHub or GitLab (Render cannot pull this cloud workspace alone).
+3. In the Render dashboard: **New → Blueprint** and select the repo. Set `OPENAI_API_KEY` when asked.
+4. Sign in on `https://assemble.onrender.com` (or the URL Render prints) with user `shop` and the generated `BASIC_AUTH_PASSWORD`.
+
+Starter plan stays online. The free web plan sleeps and will cut a generate job.
 
 ```bash
 docker build -t assemble .

@@ -1,0 +1,39 @@
+# Blueprint for Render. Connect a GitHub/GitLab repo, then New > Blueprint.
+# Free web services sleep and will kill an in-flight generate. Starter stays up.
+# https://dashboard.render.com/select-repo?type=blueprint
+
+services:
+  - type: web
+    name: assemble
+    runtime: docker
+    plan: starter
+    region: oregon
+    healthCheckPath: /login
+    autoDeployTrigger: commit
+    disk:
+      name: assemble-jobs
+      mountPath: /app/data
+      sizeGB: 10
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: OPENAI_BASE_URL
+        value: https://us.api.openai.com/v1
+      - key: USE_SORA
+        value: "1"
+      - key: SORA_WAIT
+        value: "0"
+      - key: OPENAI_IMAGE_QUALITY
+        value: low
+      - key: SCENE_CONCURRENCY
+        value: "8"
+      - key: SAMPLE_FILM_REGEN
+        value: "0"
+      - key: BASIC_AUTH_USER
+        value: shop
+      - key: BASIC_AUTH_PASSWORD
+        generateValue: true
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
