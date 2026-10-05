@@ -3,9 +3,18 @@ import { readdir } from "node:fs/promises";
 import path from "node:path";
 
 export async function rasterizePdf(pdfPath: string, destDir: string, maxPages = 12): Promise<string[]> {
-  const script = path.join(process.cwd(), "scripts", "rasterize-pdf.py");
   await new Promise<void>((resolve, reject) => {
-    const child = spawn("python3", [script, pdfPath, destDir, String(maxPages)], {
+    const child = spawn("pdftoppm", [
+      "-png",
+      "-r",
+      "110",
+      "-f",
+      "1",
+      "-l",
+      String(maxPages),
+      pdfPath,
+      path.join(destDir, "page"),
+    ], {
       stdio: ["ignore", "pipe", "pipe"],
     });
     let stderr = "";
@@ -21,5 +30,6 @@ export async function rasterizePdf(pdfPath: string, destDir: string, maxPages = 
   const names = (await readdir(destDir))
     .filter((name) => name.endsWith(".png"))
     .sort();
+  if (!names.length) throw new Error("pdftoppm produced no pages");
   return names.map((name) => path.join(destDir, name));
 }

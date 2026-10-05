@@ -16,7 +16,15 @@ export function withJobTrace<T>(jobPath: string, fn: () => Promise<T>): Promise<
 }
 
 export function errorText(error: unknown) {
-  return error instanceof Error ? error.message : String(error);
+  const raw = error instanceof Error ? error.message : String(error);
+  const message = raw.replace(/sk-[A-Za-z0-9*_\-]{6,}/g, "sk-…redacted");
+  if (/incorrect api key/i.test(message)) {
+    return "OpenAI rejected the API key. The request reached OpenAI; the key is not valid. Create a new one at platform.openai.com/api-keys.";
+  }
+  if (/api key has expired/i.test(message)) {
+    return "OpenAI says this API key has expired. Create a new one at platform.openai.com/api-keys.";
+  }
+  return message;
 }
 
 async function writeTrace(jobPath: string, message: string) {
@@ -40,7 +48,7 @@ export async function trace(message: string) {
 
 export async function traceFailure(scope: string, error: unknown, fallback: string) {
   const message = `${scope} failed: ${errorText(error)} — ${fallback}`;
-  console.warn(message, error);
+  console.warn(message);
   await trace(message);
 }
 

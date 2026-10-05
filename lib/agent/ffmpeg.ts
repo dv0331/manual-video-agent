@@ -140,15 +140,11 @@ export async function kenBurnsClip(options: {
 }) {
   const seconds = options.seconds ?? SCENE_SECONDS;
   const overlays = calloutOverlays(options.scene, options.totalScenes);
-  // zoompan renders every frame in software and can sit for tens of minutes
-  // on a small instance. A crop slide plus ultrafast x264 finishes in seconds.
-  const dur = Math.max(seconds, 0.4);
-  const slide =
-    options.scene.cameraMotion === "static"
-      ? "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720"
-      : `scale=1600:900:force_original_aspect_ratio=increase,crop=1600:900,crop=1280:720:x='(in_w-out_w)*t/${dur}':y='(in_h-out_h)/2'`;
-
-  const filter = [slide, ...overlays].join(",");
+  // Fit the whole page in frame. A zoom crop sliced diagrams and text into a
+  // jumble, and zoompan was too slow on a small instance.
+  const frame =
+    "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=0x12140f,setsar=1";
+  const filter = [frame, ...overlays].join(",");
 
   const audioIn = options.audioPath
     ? ["-i", options.audioPath]
