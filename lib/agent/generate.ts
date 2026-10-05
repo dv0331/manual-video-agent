@@ -5,6 +5,8 @@ import { evaluateClip, evaluateScene } from "@/lib/agent/evaluate";
 import { kenBurnsClip, mediaDuration, muxNarration } from "@/lib/agent/ffmpeg";
 import { mapLimit } from "@/lib/agent/pool";
 import { logProduction } from "@/lib/agent/production-log";
+import { trace, traceFailure } from "@/lib/agent/trace";
+import { FAST_CLIP_SECONDS, fastCut } from "@/lib/agent/fast";
 import { demoProvider } from "@/lib/agent/providers/demo";
 import type { MediaProvider } from "@/lib/agent/providers/types";
 import type { AssemblyGraph, EvaluationScores, Scene, SceneResult } from "@/lib/agent/types";
@@ -38,6 +40,7 @@ export async function generateAllScenes(options: {
     const framePath = path.join(framesDir, `${scene.id}.png`);
     const clipPath = path.join(clipsDir, `${scene.id}.mp4`);
     const previousFigure = options.scenes[index - 1]?.figurePath;
+    await trace(`Scene ${scene.index} still, voice, and judge starting`);
     const [evaluation, speech] = await Promise.all([
       generateStill({
         provider: options.provider,
@@ -46,8 +49,20 @@ export async function generateAllScenes(options: {
         jobPath: options.jobPath,
         previousFramePath: previousFigure,
         framePath,
+      }).then(async (result) => {
+        await trace(
+          `Scene ${scene.index} still ${result.passed ? "passed" : "failed"} judge (${result.failureType})`,
+        );
+        return result;
       }),
-      writeSpeech(options.provider, options.jobPath, scene, options.scenes.length),
+      writeSpeech(options.provider, options.jobPath, scene, options.scenes.length).then(
+        async (result) => {
+          await trace(
+            `Scene ${scene.index} voice ${result.path ? `ready ${result.seconds.toFixed(1)}s` : "missing"}`,
+          );
+          return result;
+        },
+      ),
     ]);
     finishedStills += 1;
     await options.onScene?.(
@@ -68,7 +83,7 @@ export async function generateAllScenes(options: {
   const retries = drafts.filter(
     (draft) => !draft.evaluation.passed && draft.evaluation.failureType === "visual",
   );
-  if (retries.length && MAX_RETRIES > 0) {
+  if (!fastCut() && retries.length && MAX_RETRIES > 0) {
     await options.onScene?.(
       finishedStills,
       options.scenes.length,
@@ -97,7 +112,12 @@ export async function generateAllScenes(options: {
     });
   }
 
-  const results = await mapLimit(drafts, IMAGE_CONCURRENCY, async (draft) =>
+  await trace(
+    fastCut()
+      ? `Fast cut: encoding ${drafts.length} clip${drafts.length === 1 ? "" : "s"} in ${FAST_CLIP_SECONDS}s, target under 60s`
+      : `Encoding ${drafts.length} clip${drafts.length === 1 ? "" : "s"} (progress stays at 90 until stitch)`,
+  );
+  const results = await mapLimit(drafts, fastCut() ? 2 : IMAGE_CONCURRENCY, async (draft) =>
     finishClip(options.provider, options.jobPath, options.scenes.length, draft),
   );
 
@@ -129,11 +149,18 @@ async function finishClip(
   draft: Draft,
 ): Promise<SceneResult> {
   let { scene, evaluation } = draft;
-  let durationSeconds = Math.max(SCENE_SECONDS, Math.ceil(draft.speech.seconds + 0.4));
+  let durationSeconds = fastCut()
+    ? FAST_CLIP_SECONDS
+    : Math.max(SCENE_SECONDS, Math.ceil(draft.speech.seconds + 0.4));
   let motionSource: SceneResult["motionSource"] = "kenburns";
   let videoAttempts = 0;
+  const videoPasses = fastCut() ? 1 : MAX_VIDEO_RETRIES + 1;
 
-  for (videoAttempts = 1; videoAttempts <= MAX_VIDEO_RETRIES + 1; videoAttempts++) {
+  for (videoAttempts = 1; videoAttempts <= videoPasses; videoAttempts++) {
+    await trace(
+      `Scene ${scene.index} Ken Burns encode starting (${durationSeconds}s, attempt ${videoAttempts})`,
+    );
+    const encodeStarted = Date.now();
     await kenBurnsClip({
       framePath: draft.framePath,
       outputPath: draft.clipPath,
@@ -143,8 +170,12 @@ async function finishClip(
       audioPath: draft.speech.path,
     });
     motionSource = "kenburns";
+    await trace(
+      `Scene ${scene.index} Ken Burns encode finished in ${Math.round((Date.now() - encodeStarted) / 1000)}s`,
+    );
 
     if (process.env.SORA_WAIT === "1") {
+      await trace(`Scene ${scene.index} waiting on motion model`);
       const soraPath = `${draft.clipPath}.sora-raw.mp4`;
       const animated = await provider.generateVideo({
         scene: { ...scene, motionPrompt: motionPromptWithAudio(scene) },
@@ -168,7 +199,11 @@ async function finishClip(
             await copyFile(soraPath, draft.clipPath);
           }
         } catch (error) {
-          console.warn("Could not mix narration onto the motion clip; keeping spoken still", error);
+          await traceFailure(
+            `Scene ${scene.index} narration mix`,
+            error,
+            "keeping the spoken still",
+          );
           motionSource = "kenburns";
           durationSeconds = Math.max(SCENE_SECONDS, Math.ceil(draft.speech.seconds + 0.4));
         }
@@ -217,6 +252,24 @@ async function generateStill(options: {
   previousFramePath?: string;
   framePath: string;
 }): Promise<EvaluationScores> {
+  if (fastCut()) {
+    if (!options.scene.figurePath) {
+      throw new Error(`No figure available for ${options.scene.title}`);
+    }
+    await copyFile(options.scene.figurePath, options.framePath);
+    await trace(`Scene ${options.scene.index} manual figure, skip image model and judge`);
+    const evaluation = await demoProvider.evaluateFrame({
+      scene: options.scene,
+      frame: { mimeType: "image/png", base64: "" },
+      knownPartIds: options.graph.parts.map((part) => part.id),
+    });
+    await logProduction(
+      options.jobPath,
+      `Scene ${options.scene.index} still fast ${evaluation.passed ? "PASS" : "FAIL"} ${evaluation.critique}`,
+    );
+    return evaluation;
+  }
+
   const reference = options.scene.figurePath
     ? {
         mimeType: "image/png",
@@ -258,8 +311,9 @@ async function writeSpeech(
   const speechDir = path.join(jobPath, "speech");
   await mkdir(speechDir, { recursive: true });
   const speechPath = path.join(speechDir, `${scene.id}.mp3`);
-  let spoken = await provider.generateSpeech({ scene, totalScenes });
-  if (!spoken && provider.name !== "demo") {
+  const speaker = fastCut() ? demoProvider : provider;
+  let spoken = await speaker.generateSpeech({ scene, totalScenes });
+  if (!spoken && speaker.name !== "demo") {
     spoken = await demoProvider.generateSpeech({ scene, totalScenes });
   }
   const speechFile = spoken

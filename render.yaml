@@ -23,6 +23,8 @@ services:
         value: "1"
       - key: SORA_WAIT
         value: "0"
+      - key: FAST_CUT
+        value: "1"
       - key: OPENAI_IMAGE_QUALITY
         value: low
       - key: SCENE_CONCURRENCY

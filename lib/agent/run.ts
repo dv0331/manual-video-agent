@@ -8,6 +8,8 @@ import { logProduction } from "@/lib/agent/production-log";
 import { getMediaProvider } from "@/lib/agent/providers";
 import { stitchJob } from "@/lib/agent/stitch";
 import { failJob, loadJob, setStage, updateJob } from "@/lib/agent/store";
+import { fastCut } from "@/lib/agent/fast";
+import { startTraceHeartbeat, trace, withJobTrace } from "@/lib/agent/trace";
 import { understandManual } from "@/lib/agent/understand";
 import { hydrateSampleFilm, shouldUseSampleFilm } from "@/lib/sample-manual/films";
 
@@ -24,6 +26,23 @@ export async function runJob(
   file?: { name: string; buffer: Buffer; mimeType: string },
 ) {
   const dir = jobDir(id);
+  const stopHeartbeat = startTraceHeartbeat(dir);
+  try {
+    await withJobTrace(dir, () => runJobBody(id, dir, file));
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "The agent failed";
+    await trace(`Stopped: ${message}`).catch(() => undefined);
+    await failJob(id, message);
+  } finally {
+    stopHeartbeat();
+  }
+}
+
+async function runJobBody(
+  id: string,
+  dir: string,
+  file?: { name: string; buffer: Buffer; mimeType: string },
+) {
   try {
     const existing = await loadJob(id);
     if (existing && shouldUseSampleFilm(existing.sampleId)) {
@@ -33,8 +52,14 @@ export async function runJob(
 
     const provider = getMediaProvider();
     await updateJob(id, { provider: provider.name, status: "running" });
+    await trace(
+      fastCut()
+        ? `Provider ${provider.name}. Fast cut on — finish in under 60s`
+        : `Provider ${provider.name}`,
+    );
 
     await setStage(id, "ingest", "Reading the manual and pulling figures", 8);
+    await trace("Reading the manual and pulling figures");
     const current = await loadJob(id);
     if (!current) throw new Error("Job disappeared");
     await logProduction(dir, `Starting production for ${current.sourceName}`);
@@ -67,10 +92,12 @@ export async function runJob(
     await writeFile(path.join(dir, "extracted.txt"), ingest.text);
 
     await setStage(id, "understand", "Building the assembly graph from the source", 22);
+    await trace("Building the assembly graph from the source");
     const graph = await understandManual(provider, ingest, current.sampleId);
     await updateJob(id, { graph });
 
     await setStage(id, "plan", "Planning a multi-scene storyboard", 34);
+    await trace("Planning a multi-scene storyboard");
     const scenes = await planStoryboard(provider, graph, ingest);
     await updateJob(id, { scenes });
 
@@ -84,6 +111,7 @@ export async function runJob(
       `Shooting all ${scenes.length} scenes at once`,
       42,
     );
+    await trace(`Shooting all ${scenes.length} scenes at once`);
     const results = await generateAllScenes({
       provider,
       scenes,
@@ -91,6 +119,7 @@ export async function runJob(
       jobPath: dir,
       onScene: async (done, total, label) => {
         const pct = 42 + Math.round((done / Math.max(total, 1)) * 48);
+        await trace(label);
         await updateJob(id, {
           stage: "generate",
           stageLabel: label,
@@ -105,6 +134,7 @@ export async function runJob(
     });
 
     await setStage(id, "stitch", "Stitching clips and writing chapter markers", 92);
+    await trace("Stitching clips and writing chapter markers");
     const { videoPath, vttPath, captionsPath } = await stitchJob({
       jobPath: dir,
       scenes,
@@ -122,8 +152,10 @@ export async function runJob(
       sceneResults: results,
       log: "Cut the chaptered assembly film with spoken steps",
     });
+    await trace("Assembly video ready");
   } catch (error) {
     const message = error instanceof Error ? error.message : "The agent failed";
+    await trace(`Stopped: ${message}`);
     await failJob(id, message);
   }
 }

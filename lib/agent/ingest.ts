@@ -2,6 +2,7 @@ import { copyFile, mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 import { rasterizePdf } from "@/lib/agent/rasterize";
+import { traceFailure } from "@/lib/agent/trace";
 import type { IngestResult } from "@/lib/agent/types";
 import { getSample } from "@/lib/sample-manual/catalog";
 
@@ -134,7 +135,7 @@ export async function ingestSource(options: {
   try {
     pageImages = await rasterizePdf(sourcePdf, pagesDir, 12);
   } catch (error) {
-    console.warn("PDF rasterize failed, drawing text pages", error);
+    await traceFailure("PDF rasterize", error, "drawing text pages");
     const pages = extracted.pageTexts.length ? extracted.pageTexts : [extracted.text];
     for (const [i, pageText] of pages.slice(0, 12).entries()) {
       const dest = path.join(pagesDir, `page-${String(i + 1).padStart(3, "0")}.png`);

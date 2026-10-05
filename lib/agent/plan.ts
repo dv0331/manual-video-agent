@@ -1,4 +1,6 @@
 import { applyHumanAssemblyDirection } from "@/lib/agent/human-assembly";
+import { fastCut } from "@/lib/agent/fast";
+import { traceFailure } from "@/lib/agent/trace";
 import { sleep } from "@/lib/agent/pool";
 import { demoProvider } from "@/lib/agent/providers/demo";
 import type { MediaProvider } from "@/lib/agent/providers/types";
@@ -25,12 +27,12 @@ export async function planStoryboard(
   const llm = provider
     .plan(graph)
     .then((scenes) => (scenes.length ? attachFigures(graph, ingest, scenes) : fallback))
-    .catch((error) => {
-      console.warn("Director plan timed out or failed; using graph-faithful scenes", error);
+    .catch(async (error) => {
+      await traceFailure("Director plan", error, "using graph-faithful scenes");
       return fallback;
     });
 
-  const raced = await Promise.race([llm, sleep(6000).then(() => null)]);
+  const raced = await Promise.race([llm, sleep(fastCut() ? 4000 : 6000).then(() => null)]);
   if (raced && raced.length) return raced;
 
   const late = await Promise.race([llm, sleep(1).then(() => fallback)]);

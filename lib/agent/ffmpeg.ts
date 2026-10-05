@@ -2,23 +2,8 @@ import { spawn } from "node:child_process";
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { FONT_BOLD_PATH, FONT_PATH } from "@/lib/agent/paths";
-import type { CameraMotion, Scene } from "@/lib/agent/types";
+import type { Scene } from "@/lib/agent/types";
 import { SCENE_SECONDS } from "@/lib/agent/types";
-
-function cameraZoompan(motion: CameraMotion | undefined, frames: number) {
-  const common = `d=${frames}:s=1280x720:fps=25`;
-  switch (motion) {
-    case "slow_zoom_out":
-      return `zoompan=z='if(eq(on,0),1.12,max(zoom-0.0007,1.0))':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':${common}`;
-    case "slow_left_to_right":
-      return `zoompan=z='1.08':x='(iw-iw/zoom)*on/${Math.max(frames - 1, 1)}':y='ih/2-(ih/zoom/2)':${common}`;
-    case "static":
-      return `zoompan=z='1':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':${common}`;
-    case "slow_zoom_in":
-    default:
-      return `zoompan=z='min(zoom+0.0007,1.12)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':${common}`;
-  }
-}
 
 export function mediaDuration(filePath: string): Promise<number> {
   return new Promise((resolve, reject) => {
@@ -66,17 +51,25 @@ export function hasAudioStream(filePath: string): Promise<boolean> {
   });
 }
 
-export function runFfmpeg(args: string[]): Promise<void> {
+export function runFfmpeg(args: string[], timeoutMs = 25_000): Promise<void> {
   return new Promise((resolve, reject) => {
     const child = spawn("ffmpeg", ["-y", ...args], {
       stdio: ["ignore", "pipe", "pipe"],
     });
     let stderr = "";
+    const timer = setTimeout(() => {
+      child.kill("SIGKILL");
+      reject(new Error(`ffmpeg timed out after ${timeoutMs / 1000}s`));
+    }, timeoutMs);
     child.stderr.on("data", (chunk) => {
       stderr += chunk.toString();
     });
-    child.on("error", reject);
+    child.on("error", (error) => {
+      clearTimeout(timer);
+      reject(error);
+    });
     child.on("close", (code) => {
+      clearTimeout(timer);
       if (code === 0) resolve();
       else reject(new Error(stderr.slice(-1200) || `ffmpeg exited ${code}`));
     });
@@ -146,14 +139,16 @@ export async function kenBurnsClip(options: {
   audioPath?: string;
 }) {
   const seconds = options.seconds ?? SCENE_SECONDS;
-  const frames = seconds * 25;
   const overlays = calloutOverlays(options.scene, options.totalScenes);
+  // zoompan renders every frame in software and can sit for tens of minutes
+  // on a small instance. A crop slide plus ultrafast x264 finishes in seconds.
+  const dur = Math.max(seconds, 0.4);
+  const slide =
+    options.scene.cameraMotion === "static"
+      ? "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720"
+      : `scale=1600:900:force_original_aspect_ratio=increase,crop=1600:900,crop=1280:720:x='(in_w-out_w)*t/${dur}':y='(in_h-out_h)/2'`;
 
-  const filter = [
-    `scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720`,
-    cameraZoompan(options.scene.cameraMotion, frames),
-    ...overlays,
-  ].join(",");
+  const filter = [slide, ...overlays].join(",");
 
   const audioIn = options.audioPath
     ? ["-i", options.audioPath]
@@ -172,9 +167,15 @@ export async function kenBurnsClip(options: {
     "-t",
     String(seconds),
     "-r",
-    "25",
+    "12",
     "-c:v",
     "libx264",
+    "-preset",
+    "ultrafast",
+    "-tune",
+    "stillimage",
+    "-threads",
+    "1",
     "-pix_fmt",
     "yuv420p",
     "-c:a",

@@ -11,9 +11,24 @@ import { AssemblyPlayer } from "@/components/assembly-player";
 import { ProductionReel } from "@/components/production-reel";
 import { Storyboard } from "@/components/storyboard";
 import type { SerializedJob } from "@/lib/agent/serialize";
+import type { TraceHeartbeat, TraceLine } from "@/lib/agent/trace";
+
+type JobPayload = SerializedJob & {
+  traces?: TraceLine[];
+  heartbeat?: TraceHeartbeat | null;
+  stalled?: boolean;
+};
+
+function ageLabel(iso?: string) {
+  if (!iso) return "unknown";
+  const sec = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 1000));
+  if (!Number.isFinite(sec)) return "unknown";
+  if (sec < 60) return `${sec}s ago`;
+  return `${Math.round(sec / 60)} min ago`;
+}
 
 export function JobView({ jobId }: { jobId: string }) {
-  const [job, setJob] = useState<SerializedJob | null>(null);
+  const [job, setJob] = useState<JobPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [retrying, setRetrying] = useState(false);
 
@@ -22,7 +37,7 @@ export function JobView({ jobId }: { jobId: string }) {
     async function tick() {
       try {
         const response = await fetch(`/api/jobs/${jobId}`, { cache: "no-store" });
-        const data = (await response.json()) as SerializedJob & { error?: string };
+        const data = (await response.json()) as JobPayload & { error?: string };
         if (!response.ok) {
           throw new Error(data.error ?? "Job not found");
         }
@@ -51,7 +66,7 @@ export function JobView({ jobId }: { jobId: string }) {
     setRetrying(true);
     try {
       const response = await fetch(`/api/jobs/${jobId}/retry`, { method: "POST" });
-      const data = (await response.json()) as SerializedJob & { error?: string };
+      const data = (await response.json()) as JobPayload & { error?: string };
       if (!response.ok) throw new Error(data.error ?? "Retry failed");
       setJob(data);
     } catch (err) {
@@ -122,11 +137,54 @@ export function JobView({ jobId }: { jobId: string }) {
         <Progress value={job.progress} />
         <p className="font-mono text-xs text-muted-foreground">
           {job.progress}% · {job.stageLabel}
-          {job.progress >= 60 && job.progress < 90
+          {job.heartbeat
+            ? ` — ${job.heartbeat.step} (${job.heartbeat.elapsedSec}s on this step, beat ${ageLabel(job.heartbeat.at)})`
+            : ""}
+          {job.progress >= 60 && job.progress < 90 && !job.heartbeat
             ? " — mid-reel, not the credits"
             : ""}
         </p>
       </div>
+
+      {job.stalled ? (
+        <Alert variant="destructive">
+          <AlertCircle />
+          <AlertTitle>Worker stopped</AlertTitle>
+          <AlertDescription className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <span>
+              No trace for {ageLabel(job.heartbeat?.at ?? job.traces?.at(-1)?.at ?? job.updatedAt)}.
+              The bar stays at {job.progress}% because the process died after the last update
+              {job.traces?.length ? `: ${job.traces.at(-1)?.message}` : `: ${job.stageLabel}`}.
+            </span>
+            <button
+              type="button"
+              onClick={() => void retry()}
+              disabled={retrying}
+              className="inline-flex min-h-9 items-center justify-center gap-2 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50"
+            >
+              {retrying ? <LoaderCircle className="size-4 animate-spin" /> : null}
+              Retry
+            </button>
+          </AlertDescription>
+        </Alert>
+      ) : null}
+
+      {job.traces?.length ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Live trace</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ol className="max-h-64 space-y-1 overflow-auto font-mono text-xs text-muted-foreground">
+              {job.traces.map((line) => (
+                <li key={line.at + line.message}>
+                  <span className="text-foreground/70">{line.at.slice(11, 19)}</span> {line.message}
+                </li>
+              ))}
+            </ol>
+          </CardContent>
+        </Card>
+      ) : null}
 
       {job.status === "failed" ? (
         <Alert variant="destructive">

@@ -7,6 +7,8 @@ import { withTimeout } from "@/lib/agent/timeout";
 import { MAX_SCENES, type AssemblyGraph, type EvaluationScores, type Scene } from "@/lib/agent/types";
 import { demoProvider } from "@/lib/agent/providers/demo";
 import type { ImageInput, MediaProvider } from "@/lib/agent/providers/types";
+import { fastCut } from "@/lib/agent/fast";
+import { trace, traceFailure } from "@/lib/agent/trace";
 
 const TEXT_MODEL = process.env.OPENAI_TEXT_MODEL ?? "gpt-5.4";
 const IMAGE_MODEL = process.env.OPENAI_IMAGE_MODEL ?? "gpt-image-1.5";
@@ -84,7 +86,7 @@ async function generateImageEdit(prompt: string, reference: ImageInput) {
     if (!first?.b64_json) return null;
     return Buffer.from(first.b64_json, "base64");
   } catch (error) {
-    console.warn("OpenAI image edit failed, falling back to text generation", error);
+    await traceFailure("OpenAI image edit", error, "falling back to text generation");
     return null;
   }
 }
@@ -95,11 +97,16 @@ async function pollVideo(id: string, timeoutMs: number) {
   const deadline = Date.now() + timeoutMs;
   let last: Record<string, unknown> = {};
   while (Date.now() < deadline) {
-    const response = await fetch(`${baseUrl()}/videos/${id}`, {
-      headers: { Authorization: `Bearer ${apiKey}` },
-    });
+    const response = await withTimeout(
+      fetch(`${baseUrl()}/videos/${id}`, {
+        headers: { Authorization: `Bearer ${apiKey}` },
+      }),
+      20000,
+      `OpenAI video poll ${id}`,
+    );
     last = (await response.json()) as Record<string, unknown>;
     const status = last.status as string | undefined;
+    await trace(`Sora ${id.slice(0, 8)} status=${status ?? "pending"}`);
     if (status === "completed" || status === "failed" || status === "cancelled") {
       return last;
     }
@@ -218,7 +225,7 @@ export const openaiProvider: MediaProvider = {
   async understand({ text, images }) {
     try {
       const graph = await chatJson<AssemblyGraph>({
-        timeoutMs: 40000,
+        timeoutMs: fastCut() ? 7000 : 40000,
         images,
         prompt: `You extract assembly procedures from instruction manuals for mechanical engineers.
 Return JSON with this shape:
@@ -256,7 +263,7 @@ ${text.slice(0, 20000)}`,
       graph.notes = graph.notes ?? [];
       return graph;
     } catch (error) {
-      console.warn("OpenAI understand failed, using demo parser", error);
+      await traceFailure("OpenAI understand", error, "using demo parser");
       return demoProvider.understand({ text, images });
     }
   },
@@ -287,7 +294,7 @@ ${JSON.stringify(graph)}`,
       if (!parsed.scenes?.length) return demoProvider.plan(graph);
       return parsed.scenes.slice(0, MAX_SCENES);
     } catch (error) {
-      console.warn("OpenAI plan failed, using demo planner", error);
+      await traceFailure("OpenAI plan", error, "using demo planner");
       return demoProvider.plan(graph);
     }
   },
@@ -334,7 +341,7 @@ Allowed part IDs: ${scene.allowedPartIds.join(", ")}`;
       if (!first?.b64_json) return null;
       return Buffer.from(first.b64_json, "base64");
     } catch (error) {
-      console.warn("OpenAI image generation failed", error);
+      await traceFailure("OpenAI image generation", error, "no generated frame");
       return null;
     }
   },
@@ -360,6 +367,7 @@ A real adult assembling the product in a continuous documentary shot. Keep the m
       form.set("seconds", seconds);
       form.set("input_reference", new Blob([new Uint8Array(jpeg)], { type: "image/jpeg" }), "frame.jpg");
 
+      await trace(`Sora create starting model=${VIDEO_MODEL} seconds=${seconds}`);
       const created = await openaiForm("/videos", form, 45000);
       const id = created.id as string | undefined;
       if (!id) return false;
@@ -367,10 +375,10 @@ A real adult assembling the product in a continuous documentary shot. Keep the m
       const finished = await pollVideo(id, 150000);
       if (finished.status !== "completed") {
         soraDisabledForProcess = true;
-        console.warn(
-          "Sora did not complete; skipping it for later scenes and using Ken Burns",
-          finished.status,
-          finished.error,
+        await traceFailure(
+          "Sora",
+          new Error(`${String(finished.status)} ${JSON.stringify(finished.error ?? "")}`),
+          "skipping it for later scenes and using Ken Burns",
         );
         return false;
       }
@@ -387,7 +395,7 @@ A real adult assembling the product in a continuous documentary shot. Keep the m
       return true;
     } catch (error) {
       soraDisabledForProcess = true;
-      console.warn("OpenAI Sora generation failed; skipping it for later scenes", error);
+      await traceFailure("OpenAI Sora", error, "skipping it for later scenes");
       return false;
     }
   },
@@ -399,7 +407,7 @@ A real adult assembling the product in a continuous documentary shot. Keep the m
         scene.voiceProfile,
       );
     } catch (error) {
-      console.warn("OpenAI speech failed, using local narration", error);
+      await traceFailure("OpenAI speech", error, "using local narration");
       return demoProvider.generateSpeech({ scene, totalScenes });
     }
   },
@@ -461,7 +469,7 @@ Scene: ${JSON.stringify({
           (scores.partIdentity ?? 0) >= 0.55,
       };
     } catch (error) {
-      console.warn("OpenAI judge failed, using heuristic scores", error);
+      await traceFailure("OpenAI judge", error, "using heuristic scores");
       return demoProvider.evaluateFrame({
         scene,
         frame,
