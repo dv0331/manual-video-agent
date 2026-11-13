@@ -123,6 +123,7 @@ export async function saveSampleFilm(jobId: string, sampleId: string) {
       ...result,
       framePath: frameRel,
       clipPath: clipRel,
+      stillPath: undefined,
       scene: { ...result.scene, figurePath: undefined },
     });
   }

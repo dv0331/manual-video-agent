@@ -55,7 +55,7 @@ export function JobView({ jobId }: { jobId: string }) {
     const timer = setInterval(() => {
       if (job?.status === "completed" || job?.status === "failed") return;
       void tick();
-    }, 1500);
+    }, 3000);
     return () => {
       cancelled = true;
       clearInterval(timer);

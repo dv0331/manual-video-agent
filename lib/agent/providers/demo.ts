@@ -119,8 +119,10 @@ export const demoProvider: MediaProvider = {
     return false;
   },
   async generateSpeech({ scene, totalScenes }) {
-    const text = narrationScript(scene, totalScenes);
-    const wavPath = path.join(tmpdir(), `mtav-${scene.id}-${Date.now()}.wav`);
+    return this.speak!(narrationScript(scene, totalScenes));
+  },
+  async speak(text) {
+    const wavPath = path.join(tmpdir(), `mtav-${process.pid}-${Date.now()}-${Math.random().toString(36).slice(2)}.wav`);
     try {
       await new Promise<void>((resolve, reject) => {
         const child = spawn(

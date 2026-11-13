@@ -42,6 +42,8 @@ credentials.json
 
 # generated job assets
 /data/jobs
+# films saved at runtime (each keeps its source PDF)
+/data/library
 
 
 # vercel

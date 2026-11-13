@@ -63,7 +63,11 @@ export function startTraceHeartbeat(jobPath: string) {
       step: current.step,
       elapsedSec: Math.round((Date.now() - current.started) / 1000),
     };
-    console.log(`[trace] ${beat.at} heartbeat · ${beat.step} · ${beat.elapsedSec}s`);
+    const memory = process.memoryUsage();
+    const mb = (bytes: number) => Math.round(bytes / 1048576);
+    console.log(
+      `[trace] ${beat.at} heartbeat · ${beat.step} · ${beat.elapsedSec}s · rss ${mb(memory.rss)} MB, heap ${mb(memory.heapUsed)} MB, buffers ${mb(memory.arrayBuffers)} MB`,
+    );
     void writeFile(path.join(jobPath, "heartbeat.json"), JSON.stringify(beat)).catch(
       () => undefined,
     );

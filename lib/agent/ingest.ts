@@ -1,10 +1,12 @@
 import { copyFile, mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
-import { rasterizePdf } from "@/lib/agent/rasterize";
-import { traceFailure } from "@/lib/agent/trace";
+import { pdfPageCount, pdfPageTexts, rasterizePdf } from "@/lib/agent/rasterize";
+import { trace, traceFailure } from "@/lib/agent/trace";
 import type { IngestResult } from "@/lib/agent/types";
 import { getSample } from "@/lib/sample-manual/catalog";
+
+const MAX_PAGES = Number(process.env.MAX_PAGES ?? 32);
 
 async function renderTextPage(text: string, dest: string, title: string) {
   const lines = text
@@ -35,11 +37,20 @@ function escapeXml(value: string) {
     .replace(/"/g, "&quot;");
 }
 
-async function extractPdf(buffer: Buffer): Promise<{ text: string; pageTexts: string[] }> {
-  const { extractText, getDocumentProxy } = await import("unpdf");
-  const pdf = await getDocumentProxy(new Uint8Array(buffer));
-  const result = await extractText(pdf, { mergePages: false });
-  const pageTexts = Array.isArray(result.text) ? result.text : [result.text];
+/**
+ * Poppler reads the text layer in a child process. pdf.js (the fallback) costs
+ * about eight times the CPU and holds the event loop while it parses.
+ */
+async function extractPdf(pdfPath: string, buffer: Buffer): Promise<{ text: string; pageTexts: string[] }> {
+  let pageTexts: string[];
+  try {
+    pageTexts = await pdfPageTexts(pdfPath);
+  } catch {
+    const { extractText, getDocumentProxy } = await import("unpdf");
+    const pdf = await getDocumentProxy(new Uint8Array(buffer));
+    const result = await extractText(pdf, { mergePages: false });
+    pageTexts = Array.isArray(result.text) ? result.text : [result.text];
+  }
   return { text: pageTexts.join("\n\n"), pageTexts };
 }
 
@@ -112,11 +123,13 @@ export async function ingestSource(options: {
 
   if (isImage) {
     const dest = path.join(pagesDir, "page-001.png");
-    await sharp(options.file.buffer).png().toFile(dest);
-    await copyFile(dest, path.join(figuresDir, "fig-01.png"));
+    await sharp(options.file.buffer)
+      .resize(1400, 1400, { fit: "inside", withoutEnlargement: true })
+      .png()
+      .toFile(dest);
     return {
       pageImages: [dest],
-      figureImages: [path.join(figuresDir, "fig-01.png")],
+      figureImages: [],
       text: "",
       pageTexts: [],
     };
@@ -128,31 +141,33 @@ export async function ingestSource(options: {
 
   const sourcePdf = path.join(options.jobPath, "source.pdf");
   await writeFile(sourcePdf, options.file.buffer);
-  const extracted = await extractPdf(options.file.buffer);
+  const [extracted, pageCount] = await Promise.all([
+    extractPdf(sourcePdf, options.file.buffer).catch(async (error) => {
+      await traceFailure("PDF text layer", error, "reading the drawings only");
+      return { text: "", pageTexts: [] as string[] };
+    }),
+    pdfPageCount(sourcePdf),
+  ]);
   let pageImages: string[] = [];
-  const figureImages: string[] = [];
+  if (pageCount > MAX_PAGES) {
+    await trace(`Manual has ${pageCount} pages; reading the first ${MAX_PAGES}`);
+  }
 
   try {
-    pageImages = await rasterizePdf(sourcePdf, pagesDir, 12);
+    pageImages = await rasterizePdf(sourcePdf, pagesDir, MAX_PAGES);
   } catch (error) {
     await traceFailure("PDF rasterize", error, "drawing text pages");
     const pages = extracted.pageTexts.length ? extracted.pageTexts : [extracted.text];
-    for (const [i, pageText] of pages.slice(0, 12).entries()) {
+    for (const [i, pageText] of pages.slice(0, MAX_PAGES).entries()) {
       const dest = path.join(pagesDir, `page-${String(i + 1).padStart(3, "0")}.png`);
       await renderTextPage(pageText || extracted.text, dest, `Manual page ${i + 1}`);
       pageImages.push(dest);
     }
   }
 
-  for (const [i, page] of pageImages.slice(0, 8).entries()) {
-    const fig = path.join(figuresDir, `fig-${String(i + 1).padStart(2, "0")}.png`);
-    await copyFile(page, fig);
-    figureImages.push(fig);
-  }
-
   return {
     pageImages,
-    figureImages,
+    figureImages: [],
     text: extracted.text,
     pageTexts: extracted.pageTexts,
   };

@@ -1,9 +1,22 @@
 import { spawn } from "node:child_process";
-import { writeFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
+import { unlink, writeFile } from "node:fs/promises";
+import os from "node:os";
 import path from "node:path";
-import { FONT_BOLD_PATH, FONT_PATH } from "@/lib/agent/paths";
-import type { Scene } from "@/lib/agent/types";
+import sharp from "sharp";
+import { stepLabel } from "@/lib/agent/storyboard";
+import type { CameraMotion, Scene } from "@/lib/agent/types";
 import { SCENE_SECONDS } from "@/lib/agent/types";
+
+export const VIDEO_WIDTH = 1280;
+export const VIDEO_HEIGHT = 720;
+export const VIDEO_FPS = Number(process.env.VIDEO_FPS ?? 25);
+const VIDEO_CRF = String(process.env.VIDEO_CRF ?? 21);
+/** A held picture is coded once, so it can afford far more bits than a moving frame. */
+const STILL_CRF = String(process.env.VIDEO_STILL_CRF ?? 16);
+/** Seconds of quiet before and after each spoken line. */
+export const LEAD_SECONDS = 0.5;
+export const TAIL_SECONDS = 0.8;
 
 export function mediaDuration(filePath: string): Promise<number> {
   return new Promise((resolve, reject) => {
@@ -25,35 +38,9 @@ export function mediaDuration(filePath: string): Promise<number> {
   });
 }
 
-export function hasAudioStream(filePath: string): Promise<boolean> {
-  return new Promise((resolve) => {
-    const child = spawn(
-      "ffprobe",
-      [
-        "-v",
-        "error",
-        "-select_streams",
-        "a:0",
-        "-show_entries",
-        "stream=codec_type",
-        "-of",
-        "csv=p=0",
-        filePath,
-      ],
-      { stdio: ["ignore", "pipe", "ignore"] },
-    );
-    let out = "";
-    child.stdout.on("data", (chunk) => {
-      out += chunk.toString();
-    });
-    child.on("error", () => resolve(false));
-    child.on("close", () => resolve(/audio/i.test(out)));
-  });
-}
-
-export function runFfmpeg(args: string[], timeoutMs = 25_000): Promise<void> {
+export function runFfmpeg(args: string[], timeoutMs = 240_000): Promise<void> {
   return new Promise((resolve, reject) => {
-    const child = spawn("ffmpeg", ["-y", ...args], {
+    const child = spawn("ffmpeg", ["-hide_banner", "-y", ...args], {
       stdio: ["ignore", "pipe", "pipe"],
     });
     let stderr = "";
@@ -62,7 +49,7 @@ export function runFfmpeg(args: string[], timeoutMs = 25_000): Promise<void> {
       reject(new Error(`ffmpeg timed out after ${timeoutMs / 1000}s`));
     }, timeoutMs);
     child.stderr.on("data", (chunk) => {
-      stderr += chunk.toString();
+      stderr = (stderr + chunk.toString()).slice(-4000);
     });
     child.on("error", (error) => {
       clearTimeout(timer);
@@ -76,328 +63,480 @@ export function runFfmpeg(args: string[], timeoutMs = 25_000): Promise<void> {
   });
 }
 
-function escapeDrawtext(value: string) {
-  return value
-    .replace(/\\/g, "\\\\")
-    .replace(/'/g, "\u2019")
-    .replace(/:/g, "\\:")
-    .replace(/%/g, "\\%");
+/** Tightest cgroup v2 CPU quota on this process's cgroup or any parent. */
+function cgroupCpuLimit() {
+  let rel = "/";
+  try {
+    const line = readFileSync("/proc/self/cgroup", "utf8")
+      .split("\n")
+      .find((entry) => entry.startsWith("0::"));
+    if (line) rel = line.slice(3).trim() || "/";
+  } catch {
+    // Not Linux, or no cgroup v2.
+  }
+  let tightest = Infinity;
+  for (;;) {
+    try {
+      const [quota, period] = readFileSync(path.posix.join("/sys/fs/cgroup", rel, "cpu.max"), "utf8")
+        .trim()
+        .split(/\s+/);
+      const limit = Number(quota) / Number(period);
+      if (quota !== "max" && Number.isFinite(limit) && limit > 0) tightest = Math.min(tightest, limit);
+    } catch {
+      // No cpu.max at this level.
+    }
+    if (rel === "/") break;
+    rel = path.posix.dirname(rel);
+  }
+  return tightest;
 }
 
-function wrapLine(text: string, max = 72) {
-  const words = text.split(/\s+/);
+let cachedBudget: number | undefined;
+
+/**
+ * CPUs this process may actually use. Render and Docker cap CPU with cgroups,
+ * which `os.availableParallelism()` does not see.
+ */
+export function cpuBudget() {
+  cachedBudget ??= Math.min(os.availableParallelism(), cgroupCpuLimit());
+  return cachedBudget;
+}
+
+if (cpuBudget() < 1) sharp.concurrency(1);
+const memoryLimit = process.constrainedMemory();
+// libvips keeps up to 50 MB of decoded images for reuse, which a 512 MB instance cannot spare.
+if (memoryLimit > 0 && memoryLimit < 1024 ** 3) sharp.cache(false);
+
+export type MotionMode = "kenburns" | "still";
+
+/**
+ * Eased camera motion costs about 1.25 CPU-seconds per second of film; below
+ * four CPUs it would outlast the photos by minutes, so smaller hosts hold
+ * each scene's picture instead.
+ */
+export function motionMode(): MotionMode {
+  const forced = process.env.VIDEO_MOTION;
+  if (forced === "still" || forced === "kenburns") return forced;
+  return cpuBudget() < 4 ? "still" : "kenburns";
+}
+
+function escapeXml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/** Rough DejaVu Sans advance width; enough to size chips and wrap lines. */
+function textWidth(text: string, size: number, bold = false, letterSpacing = 0) {
+  let em = 0;
+  for (const ch of text) {
+    if (ch === " ") em += 0.32;
+    else if (/[A-Z]/.test(ch)) em += 0.72;
+    else if (/[0-9]/.test(ch)) em += 0.64;
+    else if (/[a-z]/.test(ch)) em += /[ilj]/.test(ch) ? 0.28 : /[mw]/.test(ch) ? 0.9 : 0.6;
+    else em += 0.45;
+  }
+  return em * size * (bold ? 1.08 : 1) + letterSpacing * text.length;
+}
+
+function wrap(text: string, size: number, maxWidth: number, maxLines: number, bold = false) {
+  const words = text.replace(/\s+/g, " ").trim().split(" ");
   const lines: string[] = [];
-  let current = "";
+  let line = "";
   for (const word of words) {
-    const next = current ? `${current} ${word}` : word;
-    if (next.length > max) {
-      if (current) lines.push(current);
-      current = word;
+    const next = line ? `${line} ${word}` : word;
+    if (line && textWidth(next, size, bold) > maxWidth) {
+      lines.push(line);
+      line = word;
     } else {
-      current = next;
+      line = next;
     }
   }
-  if (current) lines.push(current);
-  return lines.slice(0, 2).join("\n");
+  if (line) lines.push(line);
+  if (lines.length > maxLines) {
+    const kept = lines.slice(0, maxLines);
+    kept[maxLines - 1] = `${kept[maxLines - 1].replace(/[\s,.;:]+$/, "")}…`;
+    return kept;
+  }
+  return lines;
 }
 
-function calloutOverlays(scene: Scene, totalScenes: number) {
-  const title = escapeDrawtext(
-    `STEP ${String(scene.index).padStart(2, "0")} / ${String(totalScenes).padStart(2, "0")}  ·  ${scene.title}`,
-  );
-  const callouts = escapeDrawtext(
-    wrapLine(scene.onScreenCallouts.join("   ·   ") || scene.narration, 78),
-  );
-  const warning = scene.warnings[0]
-    ? escapeDrawtext(`WARNING  ${wrapLine(scene.warnings[0], 70)}`)
-    : "";
+export function sceneBadge(scene: Pick<Scene, "steps" | "index">, kind: "assembly" | "guide") {
+  const steps = [...(scene.steps ?? [])].sort((a, b) => a - b);
+  if (!steps.length) {
+    if (kind === "guide") return `PART ${scene.index}`;
+    return scene.index === 1 ? "BEFORE YOU START" : "GOOD TO KNOW";
+  }
+  if (steps.length === 1) return `STEP ${steps[0]}`;
+  const contiguous = steps.every((n, i) => i === 0 || n === steps[i - 1] + 1);
+  return contiguous ? `STEPS ${steps[0]}–${steps.at(-1)}` : `STEPS ${steps.join(", ")}`;
+}
 
-  const overlays = [
-    `drawbox=x=0:y=0:w=iw:h=86:color=black@0.62:t=fill`,
-    `drawtext=fontfile=${FONT_BOLD_PATH}:fontsize=28:fontcolor=0xF2C14E:x=36:y=28:text='${title}'`,
-    `drawbox=x=0:y=ih-92:w=iw:h=92:color=black@0.58:t=fill`,
-    `drawtext=fontfile=${FONT_PATH}:fontsize=22:fontcolor=white:x=36:y=h-68:line_spacing=8:text='${callouts}'`,
-  ];
+export interface OverlaySpec {
+  badge: string;
+  build?: string;
+  title: string;
+  counter: string;
+  callouts: string[];
+  warning?: string;
+  insetPath?: string;
+  insetLabel?: string;
+}
 
-  if (warning) {
-    overlays.splice(
-      2,
-      0,
-      `drawbox=x=0:y=86:w=iw:h=46:color=0xC45C26@0.88:t=fill`,
-      `drawtext=fontfile=${FONT_BOLD_PATH}:fontsize=18:fontcolor=white:x=36:y=98:text='${warning}'`,
+const ACCENT = "#F2C14E";
+const FONT = "DejaVu Sans, sans-serif";
+
+/** One transparent 1280×720 layer with every label for the clip. */
+export async function renderOverlay(spec: OverlaySpec, outputPath: string) {
+  const W = VIDEO_WIDTH;
+  const H = VIDEO_HEIGHT;
+  const parts: string[] = [];
+  parts.push(
+    `<defs><linearGradient id="top" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0.72"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>` +
+      `<linearGradient id="bottom" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.6"/></linearGradient></defs>`,
+    `<rect x="0" y="0" width="${W}" height="190" fill="url(#top)"/>`,
+    `<rect x="0" y="${H - 170}" width="${W}" height="170" fill="url(#bottom)"/>`,
+  );
+
+  const badgeWidth = Math.round(textWidth(spec.badge, 19, true, 1) + 30);
+  parts.push(
+    `<rect x="40" y="32" rx="8" ry="8" width="${badgeWidth}" height="36" fill="${ACCENT}"/>`,
+    `<text x="${40 + 15}" y="57" font-family="${FONT}" font-size="19" font-weight="700" letter-spacing="1" fill="#14160f">${escapeXml(spec.badge)}</text>`,
+  );
+  if (spec.build) {
+    parts.push(
+      `<text x="${40 + badgeWidth + 16}" y="57" font-family="${FONT}" font-size="18" font-weight="700" letter-spacing="1.5" fill="#ffffff" fill-opacity="0.85">${escapeXml(spec.build.toUpperCase())}</text>`,
     );
   }
-  return overlays;
+  parts.push(
+    `<text x="${W - 40}" y="57" text-anchor="end" font-family="${FONT}" font-size="19" fill="#ffffff" fill-opacity="0.75">${escapeXml(spec.counter)}</text>`,
+  );
+
+  const titleLines = wrap(spec.title, 34, W - 120, 2, true);
+  titleLines.forEach((line, i) => {
+    const y = 112 + i * 42;
+    parts.push(
+      `<text x="42" y="${y + 2}" font-family="${FONT}" font-size="34" font-weight="700" fill="#000" fill-opacity="0.45">${escapeXml(line)}</text>`,
+      `<text x="40" y="${y}" font-family="${FONT}" font-size="34" font-weight="700" fill="#ffffff">${escapeXml(line)}</text>`,
+    );
+  });
+
+  const insetBox = { width: 0, height: 0 };
+  let inset: Buffer | undefined;
+  if (spec.insetPath) {
+    try {
+      const fitted = await sharp(spec.insetPath)
+        .flatten({ background: "#ffffff" })
+        .resize(300, 220, { fit: "inside", withoutEnlargement: false })
+        .png()
+        .toBuffer({ resolveWithObject: true });
+      inset = fitted.data;
+      insetBox.width = fitted.info.width;
+      insetBox.height = fitted.info.height;
+    } catch {
+      inset = undefined;
+    }
+  }
+  const insetLeft = W - 40 - insetBox.width - 16;
+  const insetTop = H - 40 - insetBox.height - 16;
+  if (inset) {
+    parts.push(
+      `<rect x="${insetLeft - 2}" y="${insetTop - 2}" rx="12" ry="12" width="${insetBox.width + 20}" height="${insetBox.height + 20}" fill="#000" fill-opacity="0.35"/>`,
+      `<rect x="${insetLeft}" y="${insetTop}" rx="10" ry="10" width="${insetBox.width + 16}" height="${insetBox.height + 16}" fill="#ffffff"/>`,
+    );
+    if (spec.insetLabel) {
+      const label = spec.insetLabel.toUpperCase();
+      const labelWidth = Math.round(textWidth(label, 14, true, 1.5) + 20);
+      parts.push(
+        `<rect x="${insetLeft}" y="${insetTop - 34}" rx="6" ry="6" width="${labelWidth}" height="26" fill="#000" fill-opacity="0.62"/>`,
+        `<text x="${insetLeft + 10}" y="${insetTop - 16}" font-family="${FONT}" font-size="14" font-weight="700" letter-spacing="1.5" fill="#ffffff">${escapeXml(label)}</text>`,
+      );
+    }
+  }
+
+  const rightEdge = inset ? insetLeft - 24 : W - 40;
+  let cursorY = H - 40;
+  if (spec.callouts.length) {
+    let x = 40;
+    const chips: string[] = [];
+    for (const callout of spec.callouts) {
+      const width = Math.round(textWidth(callout, 21) + 28);
+      if (x + width > rightEdge) break;
+      chips.push(
+        `<rect x="${x}" y="${cursorY - 40}" rx="8" ry="8" width="${width}" height="40" fill="#14160f" fill-opacity="0.78"/>`,
+        `<text x="${x + 14}" y="${cursorY - 13}" font-family="${FONT}" font-size="21" fill="#ffffff">${escapeXml(callout)}</text>`,
+      );
+      x += width + 10;
+    }
+    parts.push(...chips);
+    cursorY -= 52;
+  }
+  if (spec.warning) {
+    const maxWidth = Math.min(rightEdge - 40, 760);
+    const lines = wrap(`CAUTION  ${spec.warning}`, 19, maxWidth - 32, 2, true);
+    const height = 18 + lines.length * 26;
+    const width = Math.round(Math.max(...lines.map((line) => textWidth(line, 19, true))) + 32);
+    parts.push(
+      `<rect x="40" y="${cursorY - height}" rx="8" ry="8" width="${Math.min(width, maxWidth)}" height="${height}" fill="#C45C26" fill-opacity="0.92"/>`,
+    );
+    lines.forEach((line, i) => {
+      parts.push(
+        `<text x="56" y="${cursorY - height + 32 + i * 26}" font-family="${FONT}" font-size="19" font-weight="700" fill="#ffffff">${escapeXml(line)}</text>`,
+      );
+    });
+  }
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${parts.join("")}</svg>`;
+  const layer = sharp(Buffer.from(svg));
+  const composed = inset
+    ? layer.composite([{ input: inset, left: insetLeft + 8, top: insetTop + 8 }])
+    : layer;
+  await composed.png({ compressionLevel: 2 }).toFile(outputPath);
 }
 
-export async function kenBurnsClip(options: {
-  framePath: string;
-  outputPath: string;
-  scene: Scene;
-  totalScenes: number;
-  seconds?: number;
-  audioPath?: string;
-}) {
-  const seconds = options.seconds ?? SCENE_SECONDS;
-  const overlays = calloutOverlays(options.scene, options.totalScenes);
-  // Fit the whole page in frame. A zoom crop sliced diagrams and text into a
-  // jumble, and zoompan was too slow on a small instance.
-  const frame =
-    "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:color=0x12140f,setsar=1";
-  const filter = [frame, ...overlays].join(",");
-
-  const audioIn = options.audioPath
-    ? ["-i", options.audioPath]
-    : ["-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=44100"];
-
-  await runFfmpeg([
-    "-loop",
-    "1",
-    "-i",
-    options.framePath,
-    ...audioIn,
-    "-vf",
-    filter,
-    "-af",
-    `apad=whole_dur=${seconds}`,
-    "-t",
-    String(seconds),
-    "-r",
-    "12",
-    "-c:v",
-    "libx264",
-    "-preset",
-    "ultrafast",
-    "-tune",
-    "stillimage",
-    "-threads",
-    "1",
-    "-pix_fmt",
-    "yuv420p",
-    "-c:a",
-    "aac",
-    "-ar",
-    "44100",
-    "-ac",
-    "2",
-    "-shortest",
-    "-movflags",
-    "+faststart",
-    options.outputPath,
-  ]);
+/** Manual drawing centred on a white 16:9 card, used when no photo could be made. */
+export async function drawingCard(drawingPath: string, outputPath: string) {
+  const fitted = await sharp(drawingPath)
+    .flatten({ background: "#ffffff" })
+    .resize(1440, 640, { fit: "inside" })
+    .toBuffer({ resolveWithObject: true });
+  await sharp({
+    create: { width: 1536, height: 864, channels: 3, background: "#f6f4ef" },
+  })
+    .composite([
+      {
+        input: fitted.data,
+        left: Math.round((1536 - fitted.info.width) / 2),
+        top: Math.round((864 - fitted.info.height) / 2) + 60,
+      },
+    ])
+    .png({ compressionLevel: 1 })
+    .toFile(outputPath);
 }
 
-export async function burnCalloutsOnVideo(options: {
-  inputPath: string;
-  outputPath: string;
-  scene: Scene;
-  totalScenes: number;
-}) {
-  const overlays = calloutOverlays(options.scene, options.totalScenes);
-  const filter = [
-    `scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720`,
-    ...overlays,
-  ].join(",");
-  try {
-    await runFfmpeg([
-      "-i",
-      options.inputPath,
-      "-vf",
-      filter,
-      "-c:v",
-      "libx264",
-      "-pix_fmt",
-      "yuv420p",
-      "-c:a",
-      "aac",
-      "-movflags",
-      "+faststart",
-      options.outputPath,
-    ]);
-    return;
-  } catch {
-    await runFfmpeg([
-      "-i",
-      options.inputPath,
-      "-f",
-      "lavfi",
-      "-i",
-      "anullsrc=channel_layout=stereo:sample_rate=44100",
-      "-vf",
-      filter,
-      "-c:v",
-      "libx264",
-      "-pix_fmt",
-      "yuv420p",
-      "-c:a",
-      "aac",
-      "-shortest",
-      "-movflags",
-      "+faststart",
-      options.outputPath,
-    ]);
+function motionExpressions(motion: CameraMotion | undefined, frames: number) {
+  const d = Math.max(frames - 1, 1);
+  const e = `((on/${d})*(on/${d})*(3-2*(on/${d})))`;
+  const center = { x: "(iw-iw/zoom)/2", y: "(ih-ih/zoom)/2" };
+  switch (motion) {
+    case "slow_zoom_out":
+      return { z: `1.10-0.10*${e}`, ...center };
+    case "slow_left_to_right":
+      return { z: "1.10", x: `(0.12+0.76*${e})*(iw-iw/zoom)`, y: center.y };
+    case "slow_right_to_left":
+      return { z: "1.10", x: `(0.88-0.76*${e})*(iw-iw/zoom)`, y: center.y };
+    case "static":
+      return { z: `1+0.04*${e}`, ...center };
+    default:
+      return { z: `1+0.10*${e}`, ...center };
   }
 }
 
-export async function muxNarration(options: {
-  videoPath: string;
-  audioPath: string;
+/** Scene length on the frame grid; the voice track uses the same value so picture and sound line up. */
+export function clipSeconds(seconds: number) {
+  return Math.max(2, Math.round(seconds * VIDEO_FPS) / VIDEO_FPS);
+}
+
+/** Eased camera move over the photo, labels on top. Picture only; the voice is laid in at the stitch. */
+export async function renderSceneClip(options: {
+  framePath: string;
+  overlayPath: string;
   outputPath: string;
   seconds: number;
+  motion?: CameraMotion;
+  threads?: number;
 }) {
-  const ambient = await hasAudioStream(options.videoPath);
-  let spoken = options.seconds;
+  const seconds = clipSeconds(options.seconds);
+  const frames = Math.round(seconds * VIDEO_FPS);
+  const threads = String(Math.max(1, Math.floor(options.threads ?? cpuBudget())));
+  const canvasPath = `${options.outputPath}.canvas.jpg`;
+  await sharp(options.framePath)
+    .resize(VIDEO_WIDTH * 2, VIDEO_HEIGHT * 2, { fit: "cover", kernel: "lanczos3" })
+    .jpeg({ quality: 95, chromaSubsampling: "4:4:4" })
+    .toFile(canvasPath);
+
+  const m = motionExpressions(options.motion, frames);
+  const fades = `fade=t=in:st=0:d=0.35,fade=t=out:st=${Math.max(seconds - 0.4, 0).toFixed(2)}:d=0.4`;
+  const filter = `[0:v]zoompan=z='${m.z}':x='${m.x}':y='${m.y}':d=${frames}:s=${VIDEO_WIDTH}x${VIDEO_HEIGHT}:fps=${VIDEO_FPS},setsar=1[bg];[bg][1:v]overlay=0:0:format=auto,${fades},format=yuv420p[v]`;
   try {
-    spoken = await mediaDuration(options.audioPath);
-  } catch {
-    spoken = options.seconds;
-  }
-  const tempo = spoken > options.seconds + 0.2 ? spoken / options.seconds : 1;
-  const speed = tempo === 1 ? "" : `atempo=${Math.min(tempo, 2).toFixed(3)},`;
-  if (ambient) {
     await runFfmpeg([
       "-i",
-      options.videoPath,
+      canvasPath,
+      "-i",
+      options.overlayPath,
+      "-filter_complex",
+      filter,
+      "-filter_complex_threads",
+      threads,
+      "-map",
+      "[v]",
+      "-an",
+      "-t",
+      seconds.toFixed(3),
+      "-r",
+      String(VIDEO_FPS),
+      "-c:v",
+      "libx264",
+      "-preset",
+      "veryfast",
+      "-crf",
+      VIDEO_CRF,
+      "-pix_fmt",
+      "yuv420p",
+      "-profile:v",
+      "high",
+      "-g",
+      String(VIDEO_FPS * 2),
+      "-threads",
+      threads,
+      "-movflags",
+      "+faststart",
+      options.outputPath,
+    ]);
+  } finally {
+    await unlink(canvasPath).catch(() => undefined);
+  }
+  return { seconds };
+}
+
+/** The scene's finished picture: the photo at 720p with its labels burned in. */
+export async function renderStill(options: { framePath: string; overlayPath: string; outputPath: string }) {
+  await sharp(options.framePath)
+    .resize(VIDEO_WIDTH, VIDEO_HEIGHT, { fit: "cover", kernel: "lanczos3" })
+    .composite([{ input: options.overlayPath, left: 0, top: 0 }])
+    .jpeg({ quality: 95, chromaSubsampling: "4:4:4" })
+    .toFile(options.outputPath);
+}
+
+function concatEntry(filePath: string) {
+  return `file '${filePath.replace(/'/g, "'\\''")}'`;
+}
+
+function subtitleArgs(subtitlesPath?: string) {
+  return subtitlesPath
+    ? {
+        input: ["-i", subtitlesPath],
+        map: ["-map", "2:s"],
+        codec: ["-c:s", "mov_text", "-metadata:s:s:0", "language=eng"],
+      }
+    : { input: [], map: [], codec: [] };
+}
+
+/**
+ * A still-frame film in one pass: each scene's picture is a single keyframe
+ * held for the scene's length (variable frame rate), so the encoder codes a
+ * dozen frames instead of thousands of copies. The voice is copied.
+ */
+export async function encodeStillFilm(options: {
+  stills: Array<{ path: string; seconds: number }>;
+  audioPath: string;
+  outputPath: string;
+  listPath: string;
+  subtitlesPath?: string;
+}) {
+  const last = options.stills.at(-1);
+  if (!last) throw new Error("No scenes to encode");
+  const list = [
+    "ffconcat version 1.0",
+    ...options.stills.flatMap((still) => [concatEntry(still.path), `duration ${still.seconds.toFixed(3)}`]),
+    // The concat demuxer drops the last entry's duration unless another entry follows it.
+    concatEntry(last.path),
+  ];
+  await writeFile(options.listPath, `${list.join("\n")}\n`);
+  const subtitles = subtitleArgs(options.subtitlesPath);
+  await runFfmpeg(
+    [
+      "-f",
+      "concat",
+      "-safe",
+      "0",
+      "-i",
+      options.listPath,
       "-i",
       options.audioPath,
-      "-filter_complex",
-      `[0:a]volume=0.18,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[amb];[1:a]volume=1.2,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,${speed}apad=whole_dur=${options.seconds}[nar];[amb][nar]amix=inputs=2:duration=first:dropout_transition=0[a]`,
+      ...subtitles.input,
       "-map",
       "0:v",
       "-map",
-      "[a]",
+      "1:a",
+      ...subtitles.map,
+      "-vf",
+      "format=yuv420p,setsar=1",
+      "-fps_mode",
+      "vfr",
       "-c:v",
-      "copy",
+      "libx264",
+      "-preset",
+      "veryfast",
+      "-tune",
+      "stillimage",
+      "-crf",
+      STILL_CRF,
+      "-profile:v",
+      "high",
+      "-g",
+      "1",
+      "-threads",
+      String(Math.max(1, Math.floor(cpuBudget()))),
       "-c:a",
-      "aac",
-      "-ar",
-      "44100",
-      "-ac",
-      "2",
-      "-t",
-      String(options.seconds),
+      "copy",
+      ...subtitles.codec,
       "-movflags",
       "+faststart",
       options.outputPath,
-    ]);
-    return;
-  }
-  await runFfmpeg([
-    "-i",
-    options.videoPath,
-    "-i",
-    options.audioPath,
-    "-map",
-    "0:v",
-    "-map",
-    "1:a",
-    "-c:v",
-    "copy",
-    "-c:a",
-    "aac",
-    "-ar",
-    "44100",
-    "-ac",
-    "2",
-    "-af",
-    `apad=whole_dur=${options.seconds}`,
-    "-t",
-    String(options.seconds),
-    "-shortest",
-    "-movflags",
-    "+faststart",
-    options.outputPath,
-  ]);
+    ],
+    180_000,
+  );
 }
 
-export async function replaceAudioTrack(options: {
-  videoPath: string;
-  audioPath: string;
-  outputPath: string;
-}) {
-  await runFfmpeg([
-    "-i",
-    options.videoPath,
-    "-i",
-    options.audioPath,
-    "-map",
-    "0:v:0",
-    "-map",
-    "1:a:0",
-    "-c:v",
-    "copy",
-    "-c:a",
-    "aac",
-    "-ar",
-    "44100",
-    "-ac",
-    "2",
-    "-shortest",
-    "-movflags",
-    "+faststart",
-    options.outputPath,
-  ]);
-}
-
+/** Every stream is copied: the clips' picture, the encoded voice track, and soft subtitles. */
 export async function stitchClips(options: {
   clipPaths: string[];
+  audioPath: string;
   outputPath: string;
   listPath: string;
+  subtitlesPath?: string;
 }) {
-  const list = options.clipPaths
-    .map((clip) => `file '${clip.replace(/'/g, "'\\''")}'`)
-    .join("\n");
-  await writeFile(options.listPath, list);
-  const rawPath = `${options.outputPath}.raw.mp4`;
-  await runFfmpeg([
-    "-f",
-    "concat",
-    "-safe",
-    "0",
-    "-i",
-    options.listPath,
-    "-c",
-    "copy",
-    rawPath,
-  ]);
-  await makeSafariPlayable(rawPath, options.outputPath);
-}
-
-export async function makeSafariPlayable(inputPath: string, outputPath: string) {
-  if (await hasAudioStream(inputPath)) {
-    await runFfmpeg([
+  await writeFile(options.listPath, options.clipPaths.map(concatEntry).join("\n"));
+  const subtitles = subtitleArgs(options.subtitlesPath);
+  await runFfmpeg(
+    [
+      "-f",
+      "concat",
+      "-safe",
+      "0",
       "-i",
-      inputPath,
+      options.listPath,
+      "-i",
+      options.audioPath,
+      ...subtitles.input,
+      "-map",
+      "0:v",
+      "-map",
+      "1:a",
+      ...subtitles.map,
       "-c:v",
       "copy",
       "-c:a",
-      "aac",
-      "-ar",
-      "44100",
-      "-ac",
-      "2",
+      "copy",
+      ...subtitles.codec,
       "-movflags",
       "+faststart",
-      outputPath,
-    ]);
-    return;
-  }
-  await runFfmpeg([
-    "-i",
-    inputPath,
-    "-f",
-    "lavfi",
-    "-i",
-    "anullsrc=channel_layout=stereo:sample_rate=44100",
-    "-c:v",
-    "copy",
-    "-c:a",
-    "aac",
-    "-shortest",
-    "-movflags",
-    "+faststart",
-    outputPath,
-  ]);
+      options.outputPath,
+    ],
+    180_000,
+  );
+}
+
+export function formatTimestamp(totalSeconds: number, separator = ".") {
+  const ms = Math.max(0, Math.round(totalSeconds * 1000));
+  const h = Math.floor(ms / 3_600_000);
+  const m = Math.floor((ms % 3_600_000) / 60_000);
+  const s = Math.floor((ms % 60_000) / 1000);
+  const pad = (n: number, width = 2) => String(n).padStart(width, "0");
+  return `${pad(h)}:${pad(m)}:${pad(s)}${separator}${pad(ms % 1000, 3)}`;
 }
 
 export function buildChaptersVtt(
@@ -409,20 +548,13 @@ export function buildChaptersVtt(
   let cursor = 0;
   scenes.forEach((scene, i) => {
     const length = durations?.[i] ?? scene.durationSeconds ?? seconds;
-    const start = formatVtt(cursor);
+    const start = formatTimestamp(cursor);
     cursor += length;
-    const end = formatVtt(cursor);
-    lines.push(`${start} --> ${end}`, `Step ${scene.index} — ${scene.title}`, "");
+    const end = formatTimestamp(cursor);
+    const label = scene.steps?.length ? `${stepLabel(scene.steps)} — ${scene.title}` : scene.title;
+    lines.push(`${start} --> ${end}`, label, "");
   });
   return lines.join("\n");
-}
-
-function formatVtt(totalSeconds: number) {
-  const h = Math.floor(totalSeconds / 3600);
-  const m = Math.floor((totalSeconds % 3600) / 60);
-  const s = totalSeconds % 60;
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${pad(h)}:${pad(m)}:${pad(s)}.000`;
 }
 
 export function concatDir(jobPath: string) {

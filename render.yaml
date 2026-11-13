@@ -18,17 +18,15 @@ services:
       - key: NODE_ENV
         value: production
       - key: OPENAI_BASE_URL
-        value: https://us.api.openai.com/v1
-      - key: USE_SORA
-        value: "1"
-      - key: SORA_WAIT
-        value: "0"
-      - key: FAST_CUT
-        value: "1"
+        value: https://api.openai.com/v1
       - key: OPENAI_IMAGE_QUALITY
-        value: low
+        value: medium
+      - key: OPENAI_TTS_VOICE
+        value: cedar
       - key: SCENE_CONCURRENCY
-        value: "8"
+        value: "12"
+      - key: FILM_LIBRARY_DIR
+        value: /app/data/library
       - key: SAMPLE_FILM_REGEN
         value: "0"
       - key: BASIC_AUTH_USER

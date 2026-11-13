@@ -13,13 +13,14 @@ export async function understandManual(
   }
 
   const images = [];
-  for (const file of ingest.pageImages.slice(0, 2)) {
+  for (const file of ingest.pageImages.slice(0, 6)) {
     const compressed = await sharp(file)
+      .flatten({ background: "#ffffff" })
       .resize({ width: 720, withoutEnlargement: true })
-      .png({ compressionLevel: 9 })
+      .jpeg({ quality: 80 })
       .toBuffer();
     images.push({
-      mimeType: "image/png",
+      mimeType: "image/jpeg",
       base64: compressed.toString("base64"),
     });
   }

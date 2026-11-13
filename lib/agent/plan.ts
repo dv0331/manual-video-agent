@@ -1,5 +1,4 @@
 import { applyHumanAssemblyDirection } from "@/lib/agent/human-assembly";
-import { fastCut } from "@/lib/agent/fast";
 import { traceFailure } from "@/lib/agent/trace";
 import { sleep } from "@/lib/agent/pool";
 import { demoProvider } from "@/lib/agent/providers/demo";
@@ -32,7 +31,7 @@ export async function planStoryboard(
       return fallback;
     });
 
-  const raced = await Promise.race([llm, sleep(fastCut() ? 4000 : 6000).then(() => null)]);
+  const raced = await Promise.race([llm, sleep(15_000).then(() => null)]);
   if (raced && raced.length) return raced;
 
   const late = await Promise.race([llm, sleep(1).then(() => fallback)]);

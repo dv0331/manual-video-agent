@@ -1,9 +1,24 @@
-import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import { mkdir, readdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { DATA_DIR, jobDir } from "@/lib/agent/paths";
 import type { AgentStage, Job, JobStatus } from "@/lib/agent/types";
 
 const JOB_ID = /^[0-9a-f-]{36}$/i;
+
+const queues = new Map<string, Promise<unknown>>();
+
+/** Scenes finish concurrently; run each job's read-modify-write one at a time. */
+function serial<T>(id: string, fn: () => Promise<T>): Promise<T> {
+  const next = (queues.get(id) ?? Promise.resolve()).catch(() => undefined).then(fn);
+  queues.set(id, next);
+  void next
+    .finally(() => {
+      if (queues.get(id) === next) queues.delete(id);
+    })
+    .catch(() => undefined);
+  return next;
+}
 
 export async function createJob(partial: Omit<Job, "logs" | "updatedAt"> & { logs?: Job["logs"] }): Promise<Job> {
   const job: Job = {
@@ -29,23 +44,24 @@ export async function saveJob(job: Job): Promise<void> {
   job.updatedAt = new Date().toISOString();
   const dir = jobDir(job.id);
   await mkdir(dir, { recursive: true });
-  await writeFile(path.join(dir, "job.json"), JSON.stringify(job, null, 2));
+  const tmp = path.join(dir, `job.json.${randomUUID()}.tmp`);
+  await writeFile(tmp, JSON.stringify(job, null, 2));
+  await rename(tmp, path.join(dir, "job.json"));
 }
 
-export async function updateJob(
-  id: string,
-  patch: Partial<Job> & { log?: string },
-): Promise<Job> {
-  const job = await loadJob(id);
-  if (!job) {
-    throw new Error(`Job ${id} not found`);
-  }
-  const next: Job = { ...job, ...patch, logs: [...job.logs] };
-  if (patch.log) {
-    next.logs.push({ at: new Date().toISOString(), message: patch.log });
-  }
-  await saveJob(next);
-  return next;
+export function updateJob(id: string, patch: Partial<Job> & { log?: string }): Promise<Job> {
+  return serial(id, async () => {
+    const job = await loadJob(id);
+    if (!job) {
+      throw new Error(`Job ${id} not found`);
+    }
+    const next: Job = { ...job, ...patch, logs: [...job.logs] };
+    if (patch.log) {
+      next.logs.push({ at: new Date().toISOString(), message: patch.log });
+    }
+    await saveJob(next);
+    return next;
+  });
 }
 
 export async function setStage(

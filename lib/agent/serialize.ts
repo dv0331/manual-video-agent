@@ -1,15 +1,27 @@
 import path from "node:path";
+import { filmAssetUrl, findFilmDir } from "@/lib/agent/library";
 import { assetUrl, jobDir } from "@/lib/agent/paths";
 import type { Job, SceneResult } from "@/lib/agent/types";
 
-function toAsset(jobId: string, filePath?: string) {
-  if (!filePath) return undefined;
-  const rel = path.relative(jobDir(jobId), filePath);
-  if (rel.startsWith("..")) return undefined;
-  return assetUrl(jobId, rel);
+function inside(root: string, filePath: string) {
+  const rel = path.relative(root, filePath);
+  return rel && !rel.startsWith("..") && !path.isAbsolute(rel) ? rel : null;
+}
+
+function assetResolver(job: Job) {
+  const filmDir = job.filmId ? findFilmDir(job.filmId) : null;
+  return (filePath?: string) => {
+    if (!filePath) return undefined;
+    const inJob = inside(jobDir(job.id), filePath);
+    if (inJob) return assetUrl(job.id, inJob);
+    const inFilm = filmDir && job.filmId ? inside(filmDir, filePath) : null;
+    if (inFilm && job.filmId) return filmAssetUrl(job.filmId, inFilm);
+    return undefined;
+  };
 }
 
 export function serializeJob(job: Job) {
+  const toAsset = assetResolver(job);
   return {
     id: job.id,
     createdAt: job.createdAt,
@@ -24,26 +36,32 @@ export function serializeJob(job: Job) {
     provider: job.provider,
     error: job.error,
     graph: job.graph,
+    filmId: job.filmId,
+    timings: job.timings,
     scenes: job.scenes?.map((scene, i) => ({
       ...scene,
       figurePath: undefined,
       durationSeconds: job.sceneResults?.[i]?.durationSeconds ?? scene.durationSeconds,
     })),
     logs: job.logs,
-    videoUrl: toAsset(job.id, job.videoPath),
-    vttUrl: toAsset(job.id, job.vttPath),
-    captionsUrl: toAsset(job.id, job.captionsPath),
-    sceneResults: job.sceneResults?.map((result) => serializeResult(job.id, result)),
+    videoUrl: toAsset(job.videoPath),
+    vttUrl: toAsset(job.vttPath),
+    captionsUrl: toAsset(job.captionsPath),
+    sceneResults: job.sceneResults?.map((result) => serializeResult(result, toAsset)),
   };
 }
 
-function serializeResult(jobId: string, result: SceneResult) {
+function serializeResult(result: SceneResult, toAsset: (filePath?: string) => string | undefined) {
   return {
     ...result,
-    frameUrl: toAsset(jobId, result.framePath),
-    clipUrl: toAsset(jobId, result.clipPath),
+    scene: { ...result.scene, figurePath: undefined },
+    frameUrl: toAsset(result.framePath),
+    referenceUrl: toAsset(result.referencePath),
+    clipUrl: toAsset(result.clipPath),
     framePath: undefined,
+    referencePath: undefined,
     clipPath: undefined,
+    stillPath: undefined,
   };
 }
 

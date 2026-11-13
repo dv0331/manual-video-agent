@@ -17,10 +17,11 @@ export type StartFrameStrategy =
   | "manual-figure"
   | "generated-isometric";
 
-export type MotionSource = "sora" | "veo" | "kenburns";
+export type MotionSource = "sora" | "veo" | "kenburns" | "still";
 
 export type CameraMotion =
   | "slow_left_to_right"
+  | "slow_right_to_left"
   | "slow_zoom_in"
   | "slow_zoom_out"
   | "static";
@@ -71,6 +72,15 @@ export interface Scene {
   voiceProfile?: string;
   soundEffects?: string;
   visualDescription?: string;
+  /** Manual step numbers this scene covers, as printed. Empty for intro or guide scenes. */
+  steps?: number[];
+  /** Name of the build when one manual holds several (e.g. "Rectangular table"). */
+  build?: string;
+  /** 1-based manual page with this scene's drawing, and its vertical span (0–1). */
+  page?: number;
+  crop?: { top: number; bottom: number };
+  /** Seconds of spoken narration inside the clip. */
+  speechSeconds?: number;
 }
 
 export interface EvaluationScores {
@@ -94,7 +104,12 @@ export interface EvaluationScores {
 export interface SceneResult {
   scene: Scene;
   framePath: string;
+  /** Manual drawing the still was made from. */
+  referencePath?: string;
+  /** Per-scene motion clip; empty when the film holds one picture per scene. */
   clipPath: string;
+  /** Finished 720p picture (photo plus labels) held for the whole scene in a still-frame film. */
+  stillPath?: string;
   attempts: number;
   evaluation: EvaluationScores;
   motionSource: MotionSource;
@@ -125,6 +140,12 @@ export interface Job {
   videoPath?: string;
   vttPath?: string;
   captionsPath?: string;
+  /** SHA-256 of the uploaded file; keys the saved-film library. */
+  sourceHash?: string;
+  /** Saved film this job was opened from, if it did not render. */
+  filmId?: string;
+  /** Wall-clock seconds per stage. */
+  timings?: Partial<Record<"ingest" | "storyboard" | "scenes" | "stitch" | "total", number>>;
   logs: JobLog[];
 }
 

@@ -3,6 +3,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { after } from "next/server";
 import { NextResponse } from "next/server";
+import { filmIdFor, hashSource, loadFilm, openFilmInJob } from "@/lib/agent/library";
 import { jobDir } from "@/lib/agent/paths";
 import { resolveProviderName } from "@/lib/agent/providers";
 import { startJob } from "@/lib/agent/run";
@@ -46,7 +47,28 @@ export async function POST(request: Request) {
   const createdAt = new Date().toISOString();
 
   if (contentType.includes("application/json")) {
-    const body = (await request.json()) as { source?: string; sampleId?: string };
+    const body = (await request.json()) as { source?: string; sampleId?: string; filmId?: string };
+    if (body.source === "film") {
+      const film = body.filmId ? await loadFilm(body.filmId) : null;
+      if (!film) {
+        return NextResponse.json({ error: "That saved film is no longer available" }, { status: 404 });
+      }
+      await createJob({
+        id,
+        createdAt,
+        status: "queued",
+        stage: "queued",
+        stageLabel: "Queued",
+        progress: 0,
+        sourceName: film.manifest.sourceName,
+        sourceKind: "upload",
+        provider: film.manifest.provider,
+        sourceHash: film.manifest.sourceHash,
+        filmId: film.manifest.id,
+      });
+      const ready = await openFilmInJob(id, film.manifest.id, "Opened a saved film");
+      return NextResponse.json(serializeJob(ready));
+    }
     if (body.source !== "sample") {
       return NextResponse.json({ error: "Unknown source" }, { status: 400 });
     }
@@ -84,6 +106,8 @@ export async function POST(request: Request) {
 
   const buffer = Buffer.from(await file.arrayBuffer());
   const mimeType = file.type || "application/octet-stream";
+  const sourceHash = hashSource(buffer);
+  const fresh = form.get("fresh") === "1";
   const job = await createJob({
     id,
     createdAt,
@@ -94,6 +118,7 @@ export async function POST(request: Request) {
     sourceName: file.name,
     sourceKind: "upload",
     provider: resolveProviderName(),
+    sourceHash,
   });
   const ext = mimeType.includes("pdf") || file.name.toLowerCase().endsWith(".pdf")
     ? ".pdf"
@@ -105,12 +130,14 @@ export async function POST(request: Request) {
     JSON.stringify({ name: file.name, mimeType }),
   );
 
+  const saved = fresh ? null : await loadFilm(filmIdFor(sourceHash));
+  if (saved) {
+    const ready = await openFilmInJob(id, saved.manifest.id, "Same manual as a saved film — opened it");
+    return NextResponse.json(serializeJob(ready));
+  }
+
   after(() => {
-    startJob(id, {
-      name: file.name,
-      buffer,
-      mimeType,
-    });
+    startJob(id, { name: file.name, buffer, mimeType }, { fresh });
   });
   return NextResponse.json(serializeJob(job));
 }

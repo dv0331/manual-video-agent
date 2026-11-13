@@ -1,8 +1,16 @@
+import type { Storyboard, StoryboardPage } from "@/lib/agent/storyboard";
 import type { AssemblyGraph, EvaluationScores, Scene } from "@/lib/agent/types";
 
 export interface ImageInput {
   mimeType: string;
   base64: string;
+}
+
+export interface StillJudgement {
+  /** 0–1: how clearly the photo shows the same moment as the manual drawing. */
+  matches: number;
+  problems: string[];
+  critique: string;
 }
 
 export interface MediaProvider {
@@ -33,4 +41,17 @@ export interface MediaProvider {
     previousFrame?: ImageInput;
     knownPartIds: string[];
   }): Promise<EvaluationScores>;
+
+  /** One vision pass over every page that returns the whole storyboard. */
+  storyboard?(input: { sourceName: string; pages: StoryboardPage[] }): Promise<Storyboard>;
+  /** Photo still from a finished prompt, edited from the manual drawing when given. */
+  generateStill?(input: { prompt: string; reference?: ImageInput }): Promise<Buffer | null>;
+  /** Narration audio for one finished line. */
+  speak?(text: string): Promise<Buffer | null>;
+  /** Compare a generated still with the manual drawing it must show. */
+  judgeStill?(input: {
+    scene: Scene;
+    still: ImageInput;
+    reference?: ImageInput;
+  }): Promise<StillJudgement>;
 }
