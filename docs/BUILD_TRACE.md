@@ -375,6 +375,17 @@ library — what a fresh Render instance has:
 **Review:** The cookie is the same for everyone with the same sign-in, so changing
 `BASIC_AUTH_PASSWORD` on Render is how to sign everyone out.
 
+## Step 19 — Deploy and check the live site (Nov 13, 2:56 AM)
+
+**What:** Pushed `75a9911` to GitHub and deployed it through Render's API (68 s). Ran the step 18
+smoke test against https://assemble-81fm.onrender.com: **25 of 25 pass**. The four committed
+films are listed and download under their manuals' names, and uploading the BEKANT PDF opened its
+committed film in 1.4 s, upload included, with nothing generated.
+
+**Review:** Sessions from before this deploy ended because the cookie changed; sign in once
+more. A film made on the live site is saved only until the instance restarts (free instances
+have no disk); the four committed films are always there.
+
 ## Pipeline as built
 
 1. **Cache:** SHA-256 of the PDF. A film saved for the same file (runtime library, or the films
