@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
 import { requestIsHttps } from "@/lib/https";
-
-const COOKIE = "mtav_session";
+import { SESSION_COOKIE, sameSecret, sessionToken, siteCredentials } from "@/lib/session";
 
 export async function POST(request: Request) {
-  const expectedUser = process.env.BASIC_AUTH_USER;
-  const expectedPassword = process.env.BASIC_AUTH_PASSWORD;
-  if (!expectedUser || !expectedPassword) {
+  const credentials = siteCredentials();
+  if (!credentials) {
     return NextResponse.json({ ok: true });
   }
 
@@ -14,15 +12,16 @@ export async function POST(request: Request) {
     user?: string;
     password?: string;
   };
-  if (body.user !== expectedUser || body.password !== expectedPassword) {
+  const userMatches = sameSecret(body.user, credentials.user);
+  const passwordMatches = sameSecret(body.password, credentials.password);
+  if (!userMatches || !passwordMatches) {
     return NextResponse.json({ error: "Wrong username or password" }, { status: 401 });
   }
 
-  const token = btoa(`${expectedUser}:${expectedPassword}`);
   const response = NextResponse.json({ ok: true });
   response.cookies.set({
-    name: COOKIE,
-    value: token,
+    name: SESSION_COOKIE,
+    value: await sessionToken(credentials.user, credentials.password),
     httpOnly: true,
     sameSite: "lax",
     secure: requestIsHttps(request),

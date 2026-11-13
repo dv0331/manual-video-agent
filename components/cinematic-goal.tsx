@@ -28,36 +28,36 @@ const REELS = [
   {
     id: "plan",
     chapter: "02",
-    title: "Lock the scene plan",
-    line: "Each beat is ~20 words for eight seconds, a camera move, and a workshop sound — planned before any pixels.",
+    title: "Write the storyboard",
+    line: "One model reads every page and writes each scene: the steps, the drawing to follow, and a complete spoken line.",
     image: "/sample-manual/fig-01.png",
   },
   {
     id: "still",
     chapter: "03",
-    title: "The start frame",
-    line: "A 16:9 still of adult hands at the bench, styled from the manual figure. Same workshop every scene.",
+    title: "A photo of each step",
+    line: "A 16:9 photo of hands doing the step, made from the manual drawing. Same room and look in every scene.",
     image: "/sample-manual/fig-03.png",
   },
   {
     id: "motion",
     chapter: "04",
-    title: "Motion and a spoken line",
-    line: "Image-to-video with quoted narration. Audio fail retries the clip. Visual fail remakes the still.",
+    title: "The spoken line",
+    line: "Every step is read aloud in full by one calm voice, levelled to the same loudness from start to finish.",
     image: "/sample-manual/fig-04.png",
   },
   {
     id: "judge",
     chapter: "05",
-    title: "Judge, then rewrite",
-    line: "Cheap alignment first, then a scored critique. One prompt rewrite. A person still signs off on warnings.",
+    title: "Check against the drawing",
+    line: "A judge compares each photo with its manual drawing. A weak one gets one retake with the judge's note.",
     image: "/sample-manual/fig-05.png",
   },
   {
     id: "stitch",
     chapter: "06",
     title: "Cut the movie",
-    line: "Clips concat in order. Captions and chapters ride along. That is the film you opened with.",
+    line: "The scenes are cut together once, with captions and chapters. That is the film you opened with.",
     image: "/sample-manual/fig-06.png",
   },
 ] as const;
@@ -100,9 +100,13 @@ export function CinematicGoal() {
         </p>
 
         <div className="relative mt-8 overflow-hidden rounded-2xl border border-white/10 bg-zinc-950 shadow-2xl">
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-10 bg-black" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-10 bg-black" />
-          <div className="film-grain pointer-events-none absolute inset-0 z-10 opacity-30" />
+          {showVideo ? null : (
+            <>
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-10 bg-black" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-10 bg-black" />
+              <div className="film-grain pointer-events-none absolute inset-0 z-10 opacity-30" />
+            </>
+          )}
 
           <div className="relative aspect-video w-full overflow-hidden">
             {showVideo ? (

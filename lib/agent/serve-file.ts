@@ -50,7 +50,10 @@ export function safeJoin(root: string, segments: string[]) {
 function downloadName(request: Request, filePath: string) {
   const params = new URL(request.url).searchParams;
   if (params.get("download") !== "1") return null;
-  const name = (params.get("name") || path.basename(filePath)).replace(/[^A-Za-z0-9._-]+/g, "-");
+  const name = (params.get("name") || path.basename(filePath))
+    .replace(/[^A-Za-z0-9 ._-]+/g, "-")
+    .replace(/ +/g, " ")
+    .trim();
   return name.slice(0, 120) || "download";
 }
 

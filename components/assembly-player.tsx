@@ -2,23 +2,32 @@
 
 import { useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { sceneBadge } from "@/lib/agent/badge";
 import type { Scene } from "@/lib/agent/types";
 import { SCENE_SECONDS } from "@/lib/agent/types";
+import { downloadUrl } from "@/lib/download-url";
 
 export function AssemblyPlayer({
   videoUrl,
   vttUrl,
   captionsUrl,
   scenes,
+  sourceName,
+  posterUrl,
 }: {
   videoUrl: string;
   vttUrl?: string;
   captionsUrl?: string;
   scenes: Scene[];
+  sourceName: string;
+  /** Shown before playback; the film itself opens on black. */
+  posterUrl?: string;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [active, setActive] = useState(0);
   const [failed, setFailed] = useState(false);
+  // Guides (articles, not step-by-step manuals) have no step numbers anywhere.
+  const kind = scenes.some((scene) => scene.steps?.length) ? "assembly" : "guide";
 
   function durations() {
     return scenes.map((scene) => scene.durationSeconds ?? SCENE_SECONDS);
@@ -45,6 +54,7 @@ export function AssemblyPlayer({
             controls
             playsInline
             preload="auto"
+            poster={posterUrl}
             src={videoUrl}
             onPlay={(e) => {
               e.currentTarget.muted = false;
@@ -91,14 +101,22 @@ export function AssemblyPlayer({
             Play video
           </button>
           <a
-            href={videoUrl}
+            href={downloadUrl(videoUrl, sourceName)}
             className="text-primary underline-offset-4 hover:underline"
           >
-            Open MP4
+            Download MP4
+          </a>
+          <a
+            href={videoUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="text-primary underline-offset-4 hover:underline"
+          >
+            Open in a new tab
           </a>
           {failed ? (
             <span className="text-destructive">
-              Safari could not start playback. Use Open MP4.
+              The browser could not start playback. Open it in a new tab.
             </span>
           ) : null}
         </div>
@@ -118,7 +136,7 @@ export function AssemblyPlayer({
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-mono text-[11px] text-primary">
-                    STEP {String(scene.index).padStart(2, "0")}
+                    {sceneBadge(scene, kind)}
                   </span>
                   {scene.warnings.length ? (
                     <Badge variant="destructive">warning</Badge>

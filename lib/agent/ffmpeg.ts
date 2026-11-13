@@ -163,17 +163,6 @@ function wrap(text: string, size: number, maxWidth: number, maxLines: number, bo
   return lines;
 }
 
-export function sceneBadge(scene: Pick<Scene, "steps" | "index">, kind: "assembly" | "guide") {
-  const steps = [...(scene.steps ?? [])].sort((a, b) => a - b);
-  if (!steps.length) {
-    if (kind === "guide") return `PART ${scene.index}`;
-    return scene.index === 1 ? "BEFORE YOU START" : "GOOD TO KNOW";
-  }
-  if (steps.length === 1) return `STEP ${steps[0]}`;
-  const contiguous = steps.every((n, i) => i === 0 || n === steps[i - 1] + 1);
-  return contiguous ? `STEPS ${steps[0]}–${steps.at(-1)}` : `STEPS ${steps.join(", ")}`;
-}
-
 export interface OverlaySpec {
   badge: string;
   build?: string;

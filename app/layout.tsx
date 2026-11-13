@@ -25,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="min-h-full flex flex-col overflow-x-clip bg-background text-foreground">
         <header className="border-b border-border/80">
           <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
             <Link href="/" className="flex items-baseline gap-3">

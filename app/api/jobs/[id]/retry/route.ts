@@ -28,6 +28,15 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
   if (filmDir && !existsSync(source) && existsSync(path.join(filmDir, "source.pdf"))) {
     await copyFile(path.join(filmDir, "source.pdf"), source);
   }
+  // Films committed with the app ship without their PDFs.
+  const hasSource =
+    Boolean(job.sampleId) || ["source.pdf", "source.png"].some((name) => existsSync(path.join(jobDir(id), name)));
+  if (!hasSource) {
+    return NextResponse.json(
+      { error: "This saved film has no PDF with it. Upload the PDF, then make a fresh cut from that job." },
+      { status: 409 },
+    );
+  }
 
   const next = await updateJob(id, {
     status: "queued",

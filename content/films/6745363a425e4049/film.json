@@ -1,0 +1,1293 @@
+{
+  "id": "6745363a425e4049",
+  "sourceHash": "6745363a425e404928cb30319fbece54b2915fe67e155a16912c2e89699260cb",
+  "sourceName": "BEKANT Table Frame Assembly Instructions.pdf",
+  "title": "BEKANT table frame",
+  "createdAt": "2026-11-13T08:30:17.921Z",
+  "provider": "openai",
+  "graph": {
+    "title": "BEKANT table frame",
+    "documentId": "AA-1007233-4",
+    "tools": [
+      "Hammer",
+      "Spirit level",
+      "Allen key 100092"
+    ],
+    "parts": [
+      {
+        "id": "139433/141693",
+        "name": "joining bracket",
+        "qty": 1
+      },
+      {
+        "id": "105102",
+        "name": "bolt",
+        "qty": 16
+      },
+      {
+        "id": "130886",
+        "name": "peg",
+        "qty": 5
+      },
+      {
+        "id": "130884",
+        "name": "threaded insert",
+        "qty": 5
+      },
+      {
+        "id": "100092",
+        "name": "Allen key",
+        "qty": 1
+      },
+      {
+        "id": "130896/130897",
+        "name": "cable outlet",
+        "qty": 1
+      }
+    ],
+    "steps": [
+      {
+        "index": 1,
+        "title": "Start the half-round frame",
+        "instruction": "For the half-round table, lay the frame pieces upside down on a soft surface. Slide the curved rail and straight rail into the two leg units, matching the tabs and holes shown in the close-ups.",
+        "figureRef": "Page 3",
+        "fasteners": [
+          "Half-round build",
+          "Soft surface"
+        ],
+        "tools": [],
+        "warnings": [
+          "Do not work directly on a hard floor."
+        ]
+      },
+      {
+        "index": 2,
+        "title": "Fasten one side and add the next leg unit",
+        "instruction": "Tighten four bolts with the Allen key to secure the first frame section. Then slide the next leg unit onto the straight rail, keeping all legs pointing upward because the frame is still upside down.",
+        "figureRef": "Page 4",
+        "fasteners": [
+          "4× 105102",
+          "Allen key"
+        ],
+        "tools": [],
+        "warnings": []
+      },
+      {
+        "index": 4,
+        "title": "Complete and bolt the half-round frame",
+        "instruction": "Fit the remaining straight rail into the open sockets, checking that the tabs line up with the matching holes. Tighten five more bolts with the Allen key so the upside-down frame is square and secure.",
+        "figureRef": "Page 5",
+        "fasteners": [
+          "5× 105102",
+          "Allen key"
+        ],
+        "tools": [],
+        "warnings": []
+      },
+      {
+        "index": 6,
+        "title": "Attach the half-round tabletop",
+        "instruction": "Place the half-round tabletop face down on the soft surface, then set the frame on it and align the holes. Screw in five threaded inserts, then tap five pegs into them with a hammer.",
+        "figureRef": "Page 6",
+        "fasteners": [
+          "5× 130884",
+          "5× 130886",
+          "Hammer"
+        ],
+        "tools": [],
+        "warnings": [
+          "Keep the tabletop on a soft surface to avoid scratches."
+        ]
+      },
+      {
+        "index": 8,
+        "title": "Level the half-round table",
+        "instruction": "Turn the half-round table upright with help. Use the adjustable feet to raise or lower each leg, and check the tabletop with a spirit level until it stands steady.",
+        "figureRef": "Page 7",
+        "fasteners": [
+          "4 adjustable feet",
+          "Spirit level",
+          "2 people"
+        ],
+        "tools": [],
+        "warnings": [
+          "Have a second person help turn the table upright."
+        ]
+      },
+      {
+        "index": 1,
+        "title": "Start the rectangular frame",
+        "instruction": "For the rectangular table, fasten the center support between the two long side rails with four long bolts. Then slide a leg unit onto each rail end, matching the tabs with the holes.",
+        "figureRef": "Page 8",
+        "fasteners": [
+          "Rectangular build",
+          "4× 105105",
+          "Allen key"
+        ],
+        "tools": [],
+        "warnings": []
+      },
+      {
+        "index": 3,
+        "title": "Complete and bolt the rectangular frame",
+        "instruction": "Add the remaining rails to close the rectangular frame, making sure every corner socket is fully seated. Tighten eight bolts with the Allen key at the corner brackets.",
+        "figureRef": "Page 9",
+        "fasteners": [
+          "8× 105102",
+          "Allen key"
+        ],
+        "tools": [],
+        "warnings": []
+      },
+      {
+        "index": 5,
+        "title": "Prepare and attach the rectangular tabletop",
+        "instruction": "Lay the two tabletop panels face down and push them together so the center opening lines up. Place the frame on top, align the holes, and screw in eight threaded inserts.",
+        "figureRef": "Page 10",
+        "fasteners": [
+          "8× 130884",
+          "Soft surface"
+        ],
+        "tools": [],
+        "warnings": [
+          "Keep the tabletop panels on a soft surface, not a bare floor."
+        ]
+      },
+      {
+        "index": 7,
+        "title": "Lock the tabletop and level the table",
+        "instruction": "Tap eight pegs into the threaded inserts to lock the frame to the tabletop. With help, turn the table upright and adjust all four feet until the tabletop is level.",
+        "figureRef": "Page 11",
+        "fasteners": [
+          "8× 130886",
+          "4 adjustable feet",
+          "2 people"
+        ],
+        "tools": [],
+        "warnings": [
+          "Have a second person help turn the table upright."
+        ]
+      },
+      {
+        "index": 9,
+        "title": "Fit the cable outlet and join tables if needed",
+        "instruction": "Press the cable outlet into the opening in the rectangular tabletop. If you are connecting the half-round table to it, place the two joining brackets under the meeting edge as shown and secure the tables together.",
+        "figureRef": "Page 12",
+        "fasteners": [
+          "Cable outlet",
+          "2× joining brackets"
+        ],
+        "tools": [],
+        "warnings": []
+      }
+    ],
+    "notes": [
+      "Assemble the BEKANT table frame for the half-round add-on table or the rectangular table, attach the tabletop, level the legs, and fit the cable-management parts. The final page also shows how to connect the half-round table to another BEKANT table using the joining brackets.",
+      "Use two people for handling and assembly; do not assemble alone.",
+      "Protect the parts by working on a soft surface such as a rug or blanket, not directly on a hard floor.",
+      "If anything is unclear or missing, contact IKEA before continuing."
+    ]
+  },
+  "scenes": [
+    {
+      "id": "scene-01",
+      "index": 1,
+      "title": "Before you start",
+      "narration": "Before you start, gather the Allen key, a hammer, and a spirit level. For the half-round table, check the frame parts, bolts, threaded inserts, pegs, cable outlet, and joining bracket shown here.",
+      "onScreenCallouts": [
+        "Hammer",
+        "Spirit level",
+        "Allen key 100092"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Overhead photo of the white steel frame parts, white half-round tabletop, hardware, Allen key, hammer, and spirit level laid neatly on a soft rug.",
+      "visualDescription": "Overhead photo of the white steel frame parts, white half-round tabletop, hardware, Allen key, hammer, and spirit level laid neatly on a soft rug.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [
+        "Work with two people and protect the parts on a soft surface."
+      ],
+      "allowedPartIds": [
+        "139433/141693",
+        "105102",
+        "130886",
+        "130884",
+        "100092",
+        "130896/130897"
+      ],
+      "cameraMotion": "slow_zoom_in",
+      "steps": [],
+      "page": 3,
+      "crop": {
+        "top": 0,
+        "bottom": 0.42
+      },
+      "durationSeconds": 13.24,
+      "speechSeconds": 11.95
+    },
+    {
+      "id": "scene-02",
+      "index": 2,
+      "title": "Start the half-round frame",
+      "narration": "For the half-round table, lay the frame pieces upside down on a soft surface. Slide the curved rail and straight rail into the two leg units, matching the tabs and holes shown in the close-ups.",
+      "onScreenCallouts": [
+        "Half-round build",
+        "Soft surface"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Three-quarter overhead photo of the half-round white steel frame upside down, with two leg units connected by one curved rail and one straight rail on a rug; hands guide the rail ends into the leg sockets.",
+      "visualDescription": "Three-quarter overhead photo of the half-round white steel frame upside down, with two leg units connected by one curved rail and one straight rail on a rug; hands guide the rail ends into the leg sockets.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [
+        "Do not work directly on a hard floor."
+      ],
+      "allowedPartIds": [
+        "139433/141693",
+        "105102",
+        "130886",
+        "130884",
+        "100092",
+        "130896/130897"
+      ],
+      "cameraMotion": "slow_left_to_right",
+      "steps": [
+        1
+      ],
+      "build": "half-round table",
+      "page": 3,
+      "crop": {
+        "top": 0.42,
+        "bottom": 1
+      },
+      "durationSeconds": 14.04,
+      "speechSeconds": 12.75
+    },
+    {
+      "id": "scene-03",
+      "index": 3,
+      "title": "Fasten one side and add the next leg unit",
+      "narration": "Tighten four bolts with the Allen key to secure the first frame section. Then slide the next leg unit onto the straight rail, keeping all legs pointing upward because the frame is still upside down.",
+      "onScreenCallouts": [
+        "4× 105102",
+        "Allen key"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Overhead angled photo of the upside-down half-round frame with one side bolted and a third leg unit being slid onto the straight rail; one hand holds the rail and the other uses the Allen key nearby.",
+      "visualDescription": "Overhead angled photo of the upside-down half-round frame with one side bolted and a third leg unit being slid onto the straight rail; one hand holds the rail and the other uses the Allen key nearby.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "139433/141693",
+        "105102",
+        "130886",
+        "130884",
+        "100092",
+        "130896/130897"
+      ],
+      "cameraMotion": "slow_zoom_out",
+      "steps": [
+        2,
+        3
+      ],
+      "build": "half-round table",
+      "page": 4,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 15.04,
+      "speechSeconds": 13.75
+    },
+    {
+      "id": "scene-04",
+      "index": 4,
+      "title": "Complete and bolt the half-round frame",
+      "narration": "Fit the remaining straight rail into the open sockets, checking that the tabs line up with the matching holes. Tighten five more bolts with the Allen key so the upside-down frame is square and secure.",
+      "onScreenCallouts": [
+        "5× 105102",
+        "Allen key"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Three-quarter overhead photo of the completed upside-down half-round frame with all curved and straight rails in place; hands tighten a bolt with the Allen key near the front edge.",
+      "visualDescription": "Three-quarter overhead photo of the completed upside-down half-round frame with all curved and straight rails in place; hands tighten a bolt with the Allen key near the front edge.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "139433/141693",
+        "105102",
+        "130886",
+        "130884",
+        "100092",
+        "130896/130897"
+      ],
+      "cameraMotion": "slow_right_to_left",
+      "steps": [
+        4,
+        5
+      ],
+      "build": "half-round table",
+      "page": 5,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 14.4,
+      "speechSeconds": 13.1
+    },
+    {
+      "id": "scene-05",
+      "index": 5,
+      "title": "Attach the half-round tabletop",
+      "narration": "Place the half-round tabletop face down on the soft surface, then set the frame on it and align the holes. Screw in five threaded inserts, then tap five pegs into them with a hammer.",
+      "onScreenCallouts": [
+        "5× 130884",
+        "5× 130886",
+        "Hammer"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Overhead angled photo of the white half-round tabletop face down on a rug with the upside-down frame aligned on top; one hand steadies the frame while the other taps a peg with a hammer.",
+      "visualDescription": "Overhead angled photo of the white half-round tabletop face down on a rug with the upside-down frame aligned on top; one hand steadies the frame while the other taps a peg with a hammer.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [
+        "Keep the tabletop on a soft surface to avoid scratches."
+      ],
+      "allowedPartIds": [
+        "139433/141693",
+        "105102",
+        "130886",
+        "130884",
+        "100092",
+        "130896/130897"
+      ],
+      "cameraMotion": "slow_zoom_in",
+      "steps": [
+        6,
+        7
+      ],
+      "build": "half-round table",
+      "page": 6,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 14.72,
+      "speechSeconds": 13.4
+    },
+    {
+      "id": "scene-06",
+      "index": 6,
+      "title": "Level the half-round table",
+      "narration": "Turn the half-round table upright with help. Use the adjustable feet to raise or lower each leg, and check the tabletop with a spirit level until it stands steady.",
+      "onScreenCallouts": [
+        "4 adjustable feet",
+        "Spirit level",
+        "2 people"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Front three-quarter photo of the finished half-round white table standing upright against a wall; one hand turns a foot adjuster while a spirit level rests on the tabletop.",
+      "visualDescription": "Front three-quarter photo of the finished half-round white table standing upright against a wall; one hand turns a foot adjuster while a spirit level rests on the tabletop.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [
+        "Have a second person help turn the table upright."
+      ],
+      "allowedPartIds": [
+        "139433/141693",
+        "105102",
+        "130886",
+        "130884",
+        "100092",
+        "130896/130897"
+      ],
+      "cameraMotion": "slow_left_to_right",
+      "steps": [
+        8
+      ],
+      "build": "half-round table",
+      "page": 7,
+      "crop": {
+        "top": 0,
+        "bottom": 0.48
+      },
+      "durationSeconds": 12.2,
+      "speechSeconds": 10.9
+    },
+    {
+      "id": "scene-07",
+      "index": 7,
+      "title": "Start the rectangular frame",
+      "narration": "For the rectangular table, fasten the center support between the two long side rails with four long bolts. Then slide a leg unit onto each rail end, matching the tabs with the holes.",
+      "onScreenCallouts": [
+        "Rectangular build",
+        "4× 105105",
+        "Allen key"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Overhead photo of the rectangular white steel frame upside down: two long rails connected by the center support, with four leg units being positioned at the corners; Allen key and bolts visible.",
+      "visualDescription": "Overhead photo of the rectangular white steel frame upside down: two long rails connected by the center support, with four leg units being positioned at the corners; Allen key and bolts visible.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "139433/141693",
+        "105102",
+        "130886",
+        "130884",
+        "100092",
+        "130896/130897"
+      ],
+      "cameraMotion": "slow_zoom_out",
+      "steps": [
+        1,
+        2
+      ],
+      "build": "rectangular table",
+      "page": 8,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 14.32,
+      "speechSeconds": 13
+    },
+    {
+      "id": "scene-08",
+      "index": 8,
+      "title": "Complete and bolt the rectangular frame",
+      "narration": "Add the remaining rails to close the rectangular frame, making sure every corner socket is fully seated. Tighten eight bolts with the Allen key at the corner brackets.",
+      "onScreenCallouts": [
+        "8× 105102",
+        "Allen key"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Three-quarter overhead photo of the completed upside-down rectangular steel frame with four legs pointing up; hands tighten a corner bolt with the Allen key.",
+      "visualDescription": "Three-quarter overhead photo of the completed upside-down rectangular steel frame with four legs pointing up; hands tighten a corner bolt with the Allen key.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "139433/141693",
+        "105102",
+        "130886",
+        "130884",
+        "100092",
+        "130896/130897"
+      ],
+      "cameraMotion": "slow_right_to_left",
+      "steps": [
+        3,
+        4
+      ],
+      "build": "rectangular table",
+      "page": 9,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 12.64,
+      "speechSeconds": 11.35
+    },
+    {
+      "id": "scene-09",
+      "index": 9,
+      "title": "Prepare and attach the rectangular tabletop",
+      "narration": "Lay the two tabletop panels face down and push them together so the center opening lines up. Place the frame on top, align the holes, and screw in eight threaded inserts.",
+      "onScreenCallouts": [
+        "8× 130884",
+        "Soft surface"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Overhead photo of two white rectangular tabletop panels face down on a rug with the upside-down frame aligned on top; hands place threaded inserts through the frame plates.",
+      "visualDescription": "Overhead photo of two white rectangular tabletop panels face down on a rug with the upside-down frame aligned on top; hands place threaded inserts through the frame plates.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [
+        "Keep the tabletop panels on a soft surface, not a bare floor."
+      ],
+      "allowedPartIds": [
+        "139433/141693",
+        "105102",
+        "130886",
+        "130884",
+        "100092",
+        "130896/130897"
+      ],
+      "cameraMotion": "slow_zoom_in",
+      "steps": [
+        5,
+        6
+      ],
+      "build": "rectangular table",
+      "page": 10,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 13.84,
+      "speechSeconds": 12.55
+    },
+    {
+      "id": "scene-10",
+      "index": 10,
+      "title": "Lock the tabletop and level the table",
+      "narration": "Tap eight pegs into the threaded inserts to lock the frame to the tabletop. With help, turn the table upright and adjust all four feet until the tabletop is level.",
+      "onScreenCallouts": [
+        "8× 130886",
+        "4 adjustable feet",
+        "2 people"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Front three-quarter photo of the rectangular white table upright; a spirit level sits on top while a hand turns one adjustable foot, with the hammer set aside.",
+      "visualDescription": "Front three-quarter photo of the rectangular white table upright; a spirit level sits on top while a hand turns one adjustable foot, with the hammer set aside.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [
+        "Have a second person help turn the table upright."
+      ],
+      "allowedPartIds": [
+        "139433/141693",
+        "105102",
+        "130886",
+        "130884",
+        "100092",
+        "130896/130897"
+      ],
+      "cameraMotion": "slow_left_to_right",
+      "steps": [
+        7,
+        8
+      ],
+      "build": "rectangular table",
+      "page": 11,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 12.84,
+      "speechSeconds": 11.55
+    },
+    {
+      "id": "scene-11",
+      "index": 11,
+      "title": "Fit the cable outlet and join tables if needed",
+      "narration": "Press the cable outlet into the opening in the rectangular tabletop. If you are connecting the half-round table to it, place the two joining brackets under the meeting edge as shown and secure the tables together.",
+      "onScreenCallouts": [
+        "Cable outlet",
+        "2× joining brackets"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Three-quarter photo of the finished rectangular table with the cable outlet pressed into the center opening; nearby, the half-round table is aligned to one side and hands position the joining brackets underneath.",
+      "visualDescription": "Three-quarter photo of the finished rectangular table with the cable outlet pressed into the center opening; nearby, the half-round table is aligned to one side and hands position the joining brackets underneath.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "139433/141693",
+        "105102",
+        "130886",
+        "130884",
+        "100092",
+        "130896/130897"
+      ],
+      "cameraMotion": "slow_zoom_out",
+      "steps": [
+        9
+      ],
+      "build": "rectangular table",
+      "page": 12,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 14.4,
+      "speechSeconds": 13.1
+    }
+  ],
+  "sceneResults": [
+    {
+      "scene": {
+        "id": "scene-01",
+        "index": 1,
+        "title": "Before you start",
+        "narration": "Before you start, gather the Allen key, a hammer, and a spirit level. For the half-round table, check the frame parts, bolts, threaded inserts, pegs, cable outlet, and joining bracket shown here.",
+        "onScreenCallouts": [
+          "Hammer",
+          "Spirit level",
+          "Allen key 100092"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Overhead photo of the white steel frame parts, white half-round tabletop, hardware, Allen key, hammer, and spirit level laid neatly on a soft rug.",
+        "visualDescription": "Overhead photo of the white steel frame parts, white half-round tabletop, hardware, Allen key, hammer, and spirit level laid neatly on a soft rug.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [
+          "Work with two people and protect the parts on a soft surface."
+        ],
+        "allowedPartIds": [
+          "139433/141693",
+          "105102",
+          "130886",
+          "130884",
+          "100092",
+          "130896/130897"
+        ],
+        "cameraMotion": "slow_zoom_in",
+        "steps": [],
+        "page": 3,
+        "crop": {
+          "top": 0,
+          "bottom": 0.42
+        },
+        "durationSeconds": 13.24,
+        "speechSeconds": 11.95
+      },
+      "framePath": "frames/scene-01.jpg",
+      "referencePath": "refs/scene-01.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Matches the manual drawing",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 13.24
+    },
+    {
+      "scene": {
+        "id": "scene-02",
+        "index": 2,
+        "title": "Start the half-round frame",
+        "narration": "For the half-round table, lay the frame pieces upside down on a soft surface. Slide the curved rail and straight rail into the two leg units, matching the tabs and holes shown in the close-ups.",
+        "onScreenCallouts": [
+          "Half-round build",
+          "Soft surface"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Three-quarter overhead photo of the half-round white steel frame upside down, with two leg units connected by one curved rail and one straight rail on a rug; hands guide the rail ends into the leg sockets.",
+        "visualDescription": "Three-quarter overhead photo of the half-round white steel frame upside down, with two leg units connected by one curved rail and one straight rail on a rug; hands guide the rail ends into the leg sockets.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [
+          "Do not work directly on a hard floor."
+        ],
+        "allowedPartIds": [
+          "139433/141693",
+          "105102",
+          "130886",
+          "130884",
+          "100092",
+          "130896/130897"
+        ],
+        "cameraMotion": "slow_left_to_right",
+        "steps": [
+          1
+        ],
+        "build": "half-round table",
+        "page": 3,
+        "crop": {
+          "top": 0.42,
+          "bottom": 1
+        },
+        "durationSeconds": 14.04,
+        "speechSeconds": 12.75
+      },
+      "framePath": "frames/scene-02.jpg",
+      "referencePath": "refs/scene-02.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "The photo should show the rail ends being slid into the leg sockets more clearly to fully match the drawing's moment.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 14.04
+    },
+    {
+      "scene": {
+        "id": "scene-03",
+        "index": 3,
+        "title": "Fasten one side and add the next leg unit",
+        "narration": "Tighten four bolts with the Allen key to secure the first frame section. Then slide the next leg unit onto the straight rail, keeping all legs pointing upward because the frame is still upside down.",
+        "onScreenCallouts": [
+          "4× 105102",
+          "Allen key"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Overhead angled photo of the upside-down half-round frame with one side bolted and a third leg unit being slid onto the straight rail; one hand holds the rail and the other uses the Allen key nearby.",
+        "visualDescription": "Overhead angled photo of the upside-down half-round frame with one side bolted and a third leg unit being slid onto the straight rail; one hand holds the rail and the other uses the Allen key nearby.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "139433/141693",
+          "105102",
+          "130886",
+          "130884",
+          "100092",
+          "130896/130897"
+        ],
+        "cameraMotion": "slow_zoom_out",
+        "steps": [
+          2,
+          3
+        ],
+        "build": "half-round table",
+        "page": 4,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 15.04,
+        "speechSeconds": 13.75
+      },
+      "framePath": "frames/scene-03.jpg",
+      "referencePath": "refs/scene-03.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "The photo angle should shift slightly to more clearly show the Allen key tightening the bolts as in the drawing.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 15.04
+    },
+    {
+      "scene": {
+        "id": "scene-04",
+        "index": 4,
+        "title": "Complete and bolt the half-round frame",
+        "narration": "Fit the remaining straight rail into the open sockets, checking that the tabs line up with the matching holes. Tighten five more bolts with the Allen key so the upside-down frame is square and secure.",
+        "onScreenCallouts": [
+          "5× 105102",
+          "Allen key"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Three-quarter overhead photo of the completed upside-down half-round frame with all curved and straight rails in place; hands tighten a bolt with the Allen key near the front edge.",
+        "visualDescription": "Three-quarter overhead photo of the completed upside-down half-round frame with all curved and straight rails in place; hands tighten a bolt with the Allen key near the front edge.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "139433/141693",
+          "105102",
+          "130886",
+          "130884",
+          "100092",
+          "130896/130897"
+        ],
+        "cameraMotion": "slow_right_to_left",
+        "steps": [
+          4,
+          5
+        ],
+        "build": "half-round table",
+        "page": 5,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 14.4,
+        "speechSeconds": 13.1
+      },
+      "framePath": "frames/scene-04.jpg",
+      "referencePath": "refs/scene-04.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Change the photo angle slightly so the hands tightening the bolt are visible near the front edge, better matching the three-quarter overhead view.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 14.4
+    },
+    {
+      "scene": {
+        "id": "scene-05",
+        "index": 5,
+        "title": "Attach the half-round tabletop",
+        "narration": "Place the half-round tabletop face down on the soft surface, then set the frame on it and align the holes. Screw in five threaded inserts, then tap five pegs into them with a hammer.",
+        "onScreenCallouts": [
+          "5× 130884",
+          "5× 130886",
+          "Hammer"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Overhead angled photo of the white half-round tabletop face down on a rug with the upside-down frame aligned on top; one hand steadies the frame while the other taps a peg with a hammer.",
+        "visualDescription": "Overhead angled photo of the white half-round tabletop face down on a rug with the upside-down frame aligned on top; one hand steadies the frame while the other taps a peg with a hammer.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [
+          "Keep the tabletop on a soft surface to avoid scratches."
+        ],
+        "allowedPartIds": [
+          "139433/141693",
+          "105102",
+          "130886",
+          "130884",
+          "100092",
+          "130896/130897"
+        ],
+        "cameraMotion": "slow_zoom_in",
+        "steps": [
+          6,
+          7
+        ],
+        "build": "half-round table",
+        "page": 6,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 14.72,
+        "speechSeconds": 13.4
+      },
+      "framePath": "frames/scene-05.jpg",
+      "referencePath": "refs/scene-05.jpg",
+      "clipPath": "",
+      "attempts": 2,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.5,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": false,
+        "critique": "Adjust the photo to show the frame upside down on the tabletop to match the drawing's perspective.",
+        "failureType": "visual",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 14.72
+    },
+    {
+      "scene": {
+        "id": "scene-06",
+        "index": 6,
+        "title": "Level the half-round table",
+        "narration": "Turn the half-round table upright with help. Use the adjustable feet to raise or lower each leg, and check the tabletop with a spirit level until it stands steady.",
+        "onScreenCallouts": [
+          "4 adjustable feet",
+          "Spirit level",
+          "2 people"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Front three-quarter photo of the finished half-round white table standing upright against a wall; one hand turns a foot adjuster while a spirit level rests on the tabletop.",
+        "visualDescription": "Front three-quarter photo of the finished half-round white table standing upright against a wall; one hand turns a foot adjuster while a spirit level rests on the tabletop.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [
+          "Have a second person help turn the table upright."
+        ],
+        "allowedPartIds": [
+          "139433/141693",
+          "105102",
+          "130886",
+          "130884",
+          "100092",
+          "130896/130897"
+        ],
+        "cameraMotion": "slow_left_to_right",
+        "steps": [
+          8
+        ],
+        "build": "half-round table",
+        "page": 7,
+        "crop": {
+          "top": 0,
+          "bottom": 0.48
+        },
+        "durationSeconds": 12.2,
+        "speechSeconds": 10.9
+      },
+      "framePath": "frames/scene-06.jpg",
+      "referencePath": "refs/scene-06.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Matches the manual drawing",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 12.2
+    },
+    {
+      "scene": {
+        "id": "scene-07",
+        "index": 7,
+        "title": "Start the rectangular frame",
+        "narration": "For the rectangular table, fasten the center support between the two long side rails with four long bolts. Then slide a leg unit onto each rail end, matching the tabs with the holes.",
+        "onScreenCallouts": [
+          "Rectangular build",
+          "4× 105105",
+          "Allen key"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Overhead photo of the rectangular white steel frame upside down: two long rails connected by the center support, with four leg units being positioned at the corners; Allen key and bolts visible.",
+        "visualDescription": "Overhead photo of the rectangular white steel frame upside down: two long rails connected by the center support, with four leg units being positioned at the corners; Allen key and bolts visible.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "139433/141693",
+          "105102",
+          "130886",
+          "130884",
+          "100092",
+          "130896/130897"
+        ],
+        "cameraMotion": "slow_zoom_out",
+        "steps": [
+          1,
+          2
+        ],
+        "build": "rectangular table",
+        "page": 8,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 14.32,
+        "speechSeconds": 13
+      },
+      "framePath": "frames/scene-07.jpg",
+      "referencePath": "refs/scene-07.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Change the camera angle to an overhead view showing the frame upside down, as in the manual drawing, to better illustrate the assembly state.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 14.32
+    },
+    {
+      "scene": {
+        "id": "scene-08",
+        "index": 8,
+        "title": "Complete and bolt the rectangular frame",
+        "narration": "Add the remaining rails to close the rectangular frame, making sure every corner socket is fully seated. Tighten eight bolts with the Allen key at the corner brackets.",
+        "onScreenCallouts": [
+          "8× 105102",
+          "Allen key"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Three-quarter overhead photo of the completed upside-down rectangular steel frame with four legs pointing up; hands tighten a corner bolt with the Allen key.",
+        "visualDescription": "Three-quarter overhead photo of the completed upside-down rectangular steel frame with four legs pointing up; hands tighten a corner bolt with the Allen key.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "139433/141693",
+          "105102",
+          "130886",
+          "130884",
+          "100092",
+          "130896/130897"
+        ],
+        "cameraMotion": "slow_right_to_left",
+        "steps": [
+          3,
+          4
+        ],
+        "build": "rectangular table",
+        "page": 9,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 12.64,
+        "speechSeconds": 11.35
+      },
+      "framePath": "frames/scene-08.jpg",
+      "referencePath": "refs/scene-08.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "The photo shows the same product, parts, orientation, and assembly state as the drawing; no changes needed.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 12.64
+    },
+    {
+      "scene": {
+        "id": "scene-09",
+        "index": 9,
+        "title": "Prepare and attach the rectangular tabletop",
+        "narration": "Lay the two tabletop panels face down and push them together so the center opening lines up. Place the frame on top, align the holes, and screw in eight threaded inserts.",
+        "onScreenCallouts": [
+          "8× 130884",
+          "Soft surface"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Overhead photo of two white rectangular tabletop panels face down on a rug with the upside-down frame aligned on top; hands place threaded inserts through the frame plates.",
+        "visualDescription": "Overhead photo of two white rectangular tabletop panels face down on a rug with the upside-down frame aligned on top; hands place threaded inserts through the frame plates.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [
+          "Keep the tabletop panels on a soft surface, not a bare floor."
+        ],
+        "allowedPartIds": [
+          "139433/141693",
+          "105102",
+          "130886",
+          "130884",
+          "100092",
+          "130896/130897"
+        ],
+        "cameraMotion": "slow_zoom_in",
+        "steps": [
+          5,
+          6
+        ],
+        "build": "rectangular table",
+        "page": 10,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 13.84,
+        "speechSeconds": 12.55
+      },
+      "framePath": "frames/scene-09.jpg",
+      "referencePath": "refs/scene-09.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "The photo clearly shows the same assembly moment as the drawing; no changes needed.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 13.84
+    },
+    {
+      "scene": {
+        "id": "scene-10",
+        "index": 10,
+        "title": "Lock the tabletop and level the table",
+        "narration": "Tap eight pegs into the threaded inserts to lock the frame to the tabletop. With help, turn the table upright and adjust all four feet until the tabletop is level.",
+        "onScreenCallouts": [
+          "8× 130886",
+          "4 adjustable feet",
+          "2 people"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Front three-quarter photo of the rectangular white table upright; a spirit level sits on top while a hand turns one adjustable foot, with the hammer set aside.",
+        "visualDescription": "Front three-quarter photo of the rectangular white table upright; a spirit level sits on top while a hand turns one adjustable foot, with the hammer set aside.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [
+          "Have a second person help turn the table upright."
+        ],
+        "allowedPartIds": [
+          "139433/141693",
+          "105102",
+          "130886",
+          "130884",
+          "100092",
+          "130896/130897"
+        ],
+        "cameraMotion": "slow_left_to_right",
+        "steps": [
+          7,
+          8
+        ],
+        "build": "rectangular table",
+        "page": 11,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 12.84,
+        "speechSeconds": 11.55
+      },
+      "framePath": "frames/scene-10.jpg",
+      "referencePath": "refs/scene-10.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Matches the manual drawing",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 12.84
+    },
+    {
+      "scene": {
+        "id": "scene-11",
+        "index": 11,
+        "title": "Fit the cable outlet and join tables if needed",
+        "narration": "Press the cable outlet into the opening in the rectangular tabletop. If you are connecting the half-round table to it, place the two joining brackets under the meeting edge as shown and secure the tables together.",
+        "onScreenCallouts": [
+          "Cable outlet",
+          "2× joining brackets"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Three-quarter photo of the finished rectangular table with the cable outlet pressed into the center opening; nearby, the half-round table is aligned to one side and hands position the joining brackets underneath.",
+        "visualDescription": "Three-quarter photo of the finished rectangular table with the cable outlet pressed into the center opening; nearby, the half-round table is aligned to one side and hands position the joining brackets underneath.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "139433/141693",
+          "105102",
+          "130886",
+          "130884",
+          "100092",
+          "130896/130897"
+        ],
+        "cameraMotion": "slow_zoom_out",
+        "steps": [
+          9
+        ],
+        "build": "rectangular table",
+        "page": 12,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 14.4,
+        "speechSeconds": 13.1
+      },
+      "framePath": "frames/scene-11.jpg",
+      "referencePath": "refs/scene-11.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Matches the manual drawing",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 14.4
+    }
+  ],
+  "videoPath": "output.mp4",
+  "vttPath": "chapters.vtt",
+  "captionsPath": "captions.vtt",
+  "durationSeconds": 151.68,
+  "timings": {
+    "ingest": 0.8,
+    "storyboard": 22.8,
+    "scenes": 20.1,
+    "stitch": 0.2,
+    "total": 44
+  }
+}

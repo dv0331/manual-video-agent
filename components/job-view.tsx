@@ -19,6 +19,18 @@ type JobPayload = SerializedJob & {
   stalled?: boolean;
 };
 
+function timingLabel(timings: JobPayload["timings"]) {
+  if (!timings?.total) return null;
+  const parts = [
+    ["pages", timings.ingest],
+    ["storyboard", timings.storyboard],
+    ["scenes", timings.scenes],
+    ["cut", timings.stitch],
+  ].filter((part): part is [string, number] => typeof part[1] === "number");
+  const detail = parts.map(([name, seconds]) => `${name} ${seconds.toFixed(1)}s`).join(", ");
+  return `Made in ${timings.total.toFixed(1)}s${detail ? ` — ${detail}` : ""}`;
+}
+
 function ageLabel(iso?: string) {
   if (!iso) return "unknown";
   const sec = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 1000));
@@ -62,10 +74,10 @@ export function JobView({ jobId }: { jobId: string }) {
     };
   }, [jobId, job?.status]);
 
-  async function retry() {
+  async function retry(fresh = false) {
     setRetrying(true);
     try {
-      const response = await fetch(`/api/jobs/${jobId}/retry`, { method: "POST" });
+      const response = await fetch(`/api/jobs/${jobId}/retry${fresh ? "?fresh=1" : ""}`, { method: "POST" });
       const data = (await response.json()) as JobPayload & { error?: string };
       if (!response.ok) throw new Error(data.error ?? "Retry failed");
       setJob(data);
@@ -205,12 +217,35 @@ export function JobView({ jobId }: { jobId: string }) {
         </Alert>
       ) : null}
 
+      {job.status === "completed" ? (
+        <div className="flex flex-col gap-3 rounded-xl border border-border/80 bg-card px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-muted-foreground">
+              {job.filmId ? "Opened from your saved films. " : ""}
+              {timingLabel(job.timings) ?? "Finished."}
+            </p>
+            {error ? <p className="mt-1 text-destructive">{error}</p> : null}
+          </div>
+          <button
+            type="button"
+            onClick={() => void retry(true)}
+            disabled={retrying}
+            className="inline-flex min-h-9 shrink-0 items-center justify-center gap-2 rounded-lg border border-border px-3 font-medium hover:bg-muted disabled:opacity-50"
+          >
+            {retrying ? <LoaderCircle className="size-4 animate-spin" /> : null}
+            Make a fresh cut
+          </button>
+        </div>
+      ) : null}
+
       {job.videoUrl ? (
         <AssemblyPlayer
           videoUrl={job.videoUrl}
           vttUrl={job.vttUrl}
           captionsUrl={job.captionsUrl}
           scenes={job.scenes ?? []}
+          sourceName={job.sourceName}
+          posterUrl={job.sceneResults?.find((result) => result.frameUrl)?.frameUrl}
         />
       ) : running ? (
         <Card>
@@ -222,8 +257,9 @@ export function JobView({ jobId }: { jobId: string }) {
           </CardHeader>
           <CardContent className="space-y-2 text-sm text-muted-foreground">
             <p>
-              One scene at a time: still, motion, spoken line, judge. This
-              page updates as each take passes. Minutes per scene is expected.
+              Every scene is made at once: a photo from the step&apos;s manual
+              drawing, its spoken line, and a check against the drawing. This
+              page updates as each scene lands.
             </p>
             {job.graph ? (
               <p>

@@ -1,27 +1,28 @@
 import { CinematicGoal } from "@/components/cinematic-goal";
 import { RecentJobs } from "@/components/recent-jobs";
+import { SavedFilms } from "@/components/saved-films";
 import { UploadPanel } from "@/components/upload-panel";
 
 const beats = [
   {
     n: "01",
-    title: "Ingest the manual",
-    body: "PDF pages stay the part reference. Nothing is invented from memory.",
+    title: "Read every page",
+    body: "The PDF's own drawings stay the reference for every part. Nothing is invented from memory.",
   },
   {
     n: "02",
-    title: "Plan the reel",
-    body: "Eight-second scenes, ~20-word lines, a camera move, workshop sound.",
+    title: "Write the storyboard",
+    body: "One model reads all the pages and writes each scene: the steps, the drawing, a complete spoken line.",
   },
   {
     n: "03",
-    title: "Still, then motion",
-    body: "Style-referenced start frame. Image-to-video with a quoted spoken line.",
+    title: "Photo and voice",
+    body: "All scenes at once: a photo made from each step's drawing, and the line read by one calm voice.",
   },
   {
     n: "04",
-    title: "Judge and cut",
-    body: "Cheap gate, scored critique, one rewrite. Audio fail retries the clip only.",
+    title: "Check and cut",
+    body: "A judge compares each photo with its drawing; a weak one gets one retake. The film is cut once and saved.",
   },
 ];
 
@@ -43,12 +44,13 @@ export default function Home() {
           </h2>
           <p className="text-base leading-7 text-muted-foreground sm:text-lg">
             The four sample kits already have a finished cut. Play one and the
-            movie opens immediately. Your own PDF still walks the full reel:
-            plan, still, spoken motion, judge, stitch.
+            movie opens immediately. Your own PDF goes through the full
+            pipeline: storyboard, photos, voice, check, cut.
           </p>
         </section>
 
         <UploadPanel />
+        <SavedFilms />
         <RecentJobs />
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

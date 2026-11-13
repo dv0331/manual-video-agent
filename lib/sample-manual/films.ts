@@ -109,7 +109,10 @@ export async function saveSampleFilm(jobId: string, sampleId: string) {
 
   await copyIfPresent(path.join(src, "output.mp4"), path.join(dest, "output.mp4"));
   for (const name of ["captions.vtt", "chapters.vtt", "storyboard.json", "evaluation.json"]) {
-    await copyIfPresent(path.join(src, name), path.join(dest, name));
+    await copyIfPresent(
+      path.join(/* turbopackIgnore: true */ src, name),
+      path.join(/* turbopackIgnore: true */ dest, name),
+    );
   }
 
   const sceneResults: SceneResult[] = [];
@@ -155,15 +158,24 @@ export async function hydrateSampleFilm(jobId: string, sampleId: string): Promis
 
   await copyIfPresent(path.join(src, "output.mp4"), path.join(dest, "output.mp4"));
   for (const name of ["captions.vtt", "chapters.vtt", "storyboard.json", "evaluation.json"]) {
-    await copyIfPresent(path.join(src, name), path.join(dest, name));
+    await copyIfPresent(
+      path.join(/* turbopackIgnore: true */ src, name),
+      path.join(/* turbopackIgnore: true */ dest, name),
+    );
   }
 
   const sceneResults: SceneResult[] = [];
   for (const result of manifest.sceneResults) {
     const frameRel = relativize(src, result.framePath) ?? result.framePath;
     const clipRel = relativize(src, result.clipPath) ?? result.clipPath;
-    await copyIfPresent(path.join(src, frameRel), path.join(dest, frameRel));
-    await copyIfPresent(path.join(src, clipRel), path.join(dest, clipRel));
+    await copyIfPresent(
+      path.join(/* turbopackIgnore: true */ src, frameRel),
+      path.join(/* turbopackIgnore: true */ dest, frameRel),
+    );
+    await copyIfPresent(
+      path.join(/* turbopackIgnore: true */ src, clipRel),
+      path.join(/* turbopackIgnore: true */ dest, clipRel),
+    );
     sceneResults.push({
       ...result,
       framePath: absolutize(dest, frameRel) as string,

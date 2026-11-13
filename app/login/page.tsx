@@ -78,12 +78,7 @@ function LoginForm() {
                 <AlertTitle>Sign in failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
-            ) : (
-              <p className="text-xs text-muted-foreground">
-                Local default: <span className="font-mono">shop</span> /{" "}
-                <span className="font-mono">AP1-Assemble-9fK2</span>
-              </p>
-            )}
+            ) : null}
             <button
               type="submit"
               disabled={busy}

@@ -283,6 +283,98 @@ work is at least 125 s at 0.1 CPU. With 0.5 CPU the same work is about 25 s and 
 (about 60 s) become the limit; with 4+ CPUs a job takes 45–65 s and keeps the camera move
 (step 8).
 
+## Step 16 — Ship v2 to Render and time it there (Nov 13)
+
+**What:** Pushed `0067810` to GitHub with Windows git (the WSL checkout's remote is Cursor
+Origin, which this service does not deploy from) and started the deploy through Render's API:
+pushes do not start deploys on this service. Render now has the new OpenAI key,
+`OPENAI_BASE_URL=https://api.openai.com/v1`, the model names from `.env.example`, and the
+sign-in (`BASIC_AUTH_USER`, `BASIC_AUTH_PASSWORD`). Values are not recorded here.
+
+**Live run on the free plan, `Table Assembly Instructions.pdf`:** **84.6 s** — pages 5.0 s,
+storyboard 27.9 s, scenes 47.1 s, stitch 4.6 s. 10 scenes, 2:42 of film, 5.1 MB, H.264 720p held
+pictures, AAC 24 kHz mono at −19.1 LUFS. One OpenAI rate-limit retry (the local films in step 17
+were using the same key at the time).
+
+**Review:** Faster than the 0.1-CPU model of step 15 (140 s): Render's free instances get more
+than 0.1 CPU while the host has spare capacity, so about 1.5 minutes is typical, not guaranteed.
+The contact sheet of the live film is clean: sharp photos, step badges, captions, cautions,
+drawing insets. The storyboard chose a dark finish for the table this time and white in earlier
+runs; the manual is line art, so the finish is the model's pick.
+
+## Step 17 — Final films for the four manuals, saved (Nov 13, 2:30 AM)
+
+**What:** Ran the four manuals one after another on all CPUs (camera-move films), through the
+same API the site uses.
+
+| Manual | Made in | Scenes | Film | Size | Retakes |
+| --- | --- | --- | --- | --- | --- |
+| BEKANT Table Frame | 44.0 s | 11 | 2:32 | 22.1 MB | 1 |
+| Table Assembly Instructions | 55.3 s | 10 | 2:20 | 14.9 MB | 3 |
+| Bedside Table | 47.5 s | 12 | 2:34 | 18.2 MB | 3 |
+| KALLAX stacking article | 30.9 s | 5 | 1:04 | 6.0 MB | 1 |
+
+All four: 1280×720 H.264; AAC 24 kHz mono, about 90 kbit/s; −19.1 LUFS integrated, true peak
+−1.2 to −1.4 dBTP; captions as a soft subtitle track.
+
+Each film is saved three ways:
+
+- the runtime library (`data/library`, not committed);
+- committed in `content/films/<id>/`: film, captions, chapters, 1280 px pictures and drawing
+  crops, 68 MB for the four; not the PDFs, which stay IKEA's;
+- `Downloads\Ikea Manuals\<manual>.mp4`, next to each PDF.
+
+**Review:** Re-uploading any of the four PDFs opens its film without generating anything (27 ms
+measured, step 18). Every re-bake adds the MP4s to git history again, so re-bake only when a
+film gets better.
+
+## Step 18 — Saved films, downloads and sign-in on the site (Nov 13, 2:45 AM)
+
+**What:**
+
+- **Home page:** a **Saved films** section: thumbnail, scenes, runtime, **Play**,
+  **Download MP4**.
+- **Job page:** how long the film took, by stage; **Download MP4** (named after the manual);
+  **Open in a new tab**; **Make a fresh cut**, which reruns the pipeline even when a saved film
+  exists. A committed film opened from Saved films has no PDF, so a fresh cut of it answers
+  "upload the PDF" and leaves the film as it is (it used to reset the job and fail).
+- **Storyboard:** says "held picture" or "camera move" and the number of takes per scene, and
+  overlays the manual drawing each photo was made from.
+- **Copy:** removed the claims about Sora clips, eight-second scenes and workshop sound; the
+  pages describe the pipeline that runs.
+- **Sign-in:** `middleware.ts` is now `proxy.ts` (Next.js 16 renamed it). The session cookie
+  used to hold the user name and password in base64, readable by anyone who saw the cookie; it
+  now holds a SHA-256 digest of them, and every check compares in constant time. The login page no longer shows a "local default" password; none exists, and
+  the sign-in comes only from environment variables. Everyone signs in once more after this
+  deploy.
+- **Home preview:** plays the newest saved step-by-step film (the bedside table on a fresh
+  server) instead of an older KALLAX sample cut, with no letterbox bars or film grain over it;
+  the bars hid the film's step badge.
+- **Player:** shows the first scene's photo before playback. The film opens on black, which
+  looked like a failed load. Camera moves read "slow zoom in", not `slow_zoom_in`.
+- **Fonts:** `globals.css` set `--font-sans: var(--font-sans)`, a variable that refers to itself,
+  so every page fell back to Times New Roman. It now points at Geist. The full-width film section
+  (`100vw`, which includes the scrollbar) no longer causes an 8 px sideways scroll.
+- **Build:** the four Turbopack "dynamic filesystem access" warnings in
+  `lib/sample-manual/films.ts` are gone.
+
+**Checks:** typecheck clean; production build with no warnings. Smoke test
+(`/root/mva-work/smoke.mjs`), 25 of 25, against the production build with an empty runtime
+library — what a fresh Render instance has:
+
+- signed out, pages redirect to sign-in and the API answers 401;
+- a wrong user, wrong password, forged cookie or wrong Basic auth is refused;
+- sign-in sets a 64-character HttpOnly digest cookie that does not contain the password;
+- Basic auth still works and sets the same cookie;
+- the four committed films are listed with thumbnails, and each **Download MP4** is an
+  attachment named after the manual;
+- a saved film opens as a finished job and its video streams;
+- a fresh cut of a film without its PDF is refused, and the film stays;
+- uploading the BEKANT PDF opens its committed film in 27 ms.
+
+**Review:** The cookie is the same for everyone with the same sign-in, so changing
+`BASIC_AUTH_PASSWORD` on Render is how to sign everyone out.
+
 ## Pipeline as built
 
 1. **Cache:** SHA-256 of the PDF. A film saved for the same file (runtime library, or the films
@@ -297,4 +389,5 @@ work is at least 125 s at 0.1 CPU. With 0.5 CPU the same work is about 25 s and 
 6. **Film:** below 4 CPUs, one held 720p picture per scene encoded once (CRF 16); with 4+ CPUs,
    an eased camera move per scene (CRF 21) and a stream-copied concat. The voice is copied in,
    captions ride as a soft subtitle track, chapters as WebVTT.
-7. **Save:** the film, its pictures and its storyboard go to the library.
+7. **Save:** the film, its pictures and its storyboard go to the runtime library, which Render's
+   free plan loses on every restart; the four IKEA films are committed in `content/films`.

@@ -3,6 +3,13 @@ import type { SerializedJob } from "@/lib/agent/serialize";
 
 type Result = NonNullable<SerializedJob["sceneResults"]>[number];
 
+const MOTION_LABELS: Record<string, string> = {
+  still: "held picture",
+  kenburns: "camera move",
+  veo: "Veo clip",
+  sora: "Sora clip",
+};
+
 export function Storyboard({ results }: { results: Result[] }) {
   if (!results.length) {
     return (
@@ -22,12 +29,23 @@ export function Storyboard({ results }: { results: Result[] }) {
             className="overflow-hidden rounded-xl border border-border/80 bg-card"
           >
             {result.frameUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={result.frameUrl}
-                alt={result.scene.title}
-                className="aspect-video w-full object-cover"
-              />
+              <div className="relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={result.frameUrl}
+                  alt={result.scene.title}
+                  className="aspect-video w-full object-cover"
+                />
+                {result.referenceUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={result.referenceUrl}
+                    alt="Manual drawing for this scene"
+                    title="Manual drawing this photo was made from"
+                    className="absolute right-2 bottom-2 max-h-[38%] max-w-[34%] rounded-md border border-white/70 bg-white object-contain p-1 shadow"
+                  />
+                ) : null}
+              </div>
             ) : (
               <div className="flex aspect-video items-center justify-center text-xs text-muted-foreground">
                 Frame pending
@@ -48,9 +66,14 @@ export function Storyboard({ results }: { results: Result[] }) {
               <dl className="grid grid-cols-2 gap-x-3 gap-y-1 font-mono text-[11px] text-muted-foreground">
                 <div>gate {(result.evaluation.cheapGate ?? result.evaluation.similarity ?? 0).toFixed(2)}</div>
                 <div>parts {(result.evaluation.partIdentity ?? 0).toFixed(2)}</div>
-                <div>{result.scene.cameraMotion ?? "camera"}</div>
                 <div>
-                  {result.motionSource} · {result.attempts}×
+                  {MOTION_LABELS[result.motionSource] ?? result.motionSource}
+                  {result.motionSource === "kenburns" && result.scene.cameraMotion
+                    ? ` · ${result.scene.cameraMotion.replaceAll("_", " ")}`
+                    : ""}
+                </div>
+                <div>
+                  {result.attempts} {result.attempts === 1 ? "take" : "takes"}
                 </div>
               </dl>
             </div>

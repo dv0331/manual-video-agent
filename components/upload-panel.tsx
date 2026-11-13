@@ -72,8 +72,9 @@ export function UploadPanel() {
         <CardHeader>
           <CardTitle>Drop an instruction manual</CardTitle>
           <CardDescription>
-            PDF or page images. The agent plans the reel, shoots a person at
-            each step, speaks the line, judges the take, and returns the movie.
+            PDF or page images. The agent storyboards every page, photographs
+            each step from its drawing, speaks the line, checks the photo, and
+            returns the movie.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -121,9 +122,9 @@ export function UploadPanel() {
             </Alert>
           ) : null}
           <p className="text-xs text-muted-foreground">
-            Each scene is one take: start frame, image-to-video, spoken line,
-            then a judge. Audio fail retries the clip. Visual fail remakes the
-            still. If motion models are down, the same still still moves.
+            Each scene is a photo made from its manual drawing, a spoken line,
+            and a check against the drawing; a weak photo gets one retake. If
+            a photo fails, the scene shows the manual drawing itself.
           </p>
         </CardContent>
       </Card>

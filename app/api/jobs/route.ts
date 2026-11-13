@@ -3,7 +3,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { after } from "next/server";
 import { NextResponse } from "next/server";
-import { filmIdFor, hashSource, loadFilm, openFilmInJob } from "@/lib/agent/library";
+import { featuredFilm, filmIdFor, hashSource, loadFilm, openFilmInJob } from "@/lib/agent/library";
 import { jobDir } from "@/lib/agent/paths";
 import { resolveProviderName } from "@/lib/agent/providers";
 import { startJob } from "@/lib/agent/run";
@@ -16,6 +16,10 @@ export async function GET(request: Request) {
   const jobs = await listJobs(24);
   const featured = new URL(request.url).searchParams.get("featured") === "1";
   if (featured) {
+    const saved = await featuredFilm();
+    if (saved) {
+      return NextResponse.json({ featured: saved });
+    }
     const cached = featuredFromSampleFilm();
     if (cached) {
       return NextResponse.json({ featured: cached });

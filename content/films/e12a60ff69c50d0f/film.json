@@ -1,0 +1,420 @@
+{
+  "id": "e12a60ff69c50d0f",
+  "sourceHash": "e12a60ff69c50d0f4638137908eab19a400ad5d71f5afb5a7c679279ef79cf61",
+  "sourceName": "4420853-a34b835eb81bbe9fc917aa5f653ea75e.pdf",
+  "title": "IKEA KALLAX stackable units",
+  "createdAt": "2026-11-13T08:32:39.491Z",
+  "provider": "openai",
+  "graph": {
+    "title": "IKEA KALLAX stackable units",
+    "documentId": "4420853-a34b835eb81bbe9fc917aa5f653ea75e.pdf",
+    "tools": [],
+    "parts": [],
+    "steps": [],
+    "notes": [
+      "Safety guide for configuring, placing, stacking, and securing IKEA KALLAX shelving units.",
+      "Furniture that tips over can cause serious injuries, particularly to children.",
+      "Secure the furniture to the wall using the provided hardware.",
+      "When stacking units or using them as a room divider, fasten the tip-over restraint to a structural wall component.",
+      "Before combining multiple units, verify that the floor surface is completely level."
+    ]
+  },
+  "scenes": [
+    {
+      "id": "scene-01",
+      "index": 1,
+      "title": "Choose a KALLAX layout",
+      "narration": "KALLAX can be used as one shelving unit or combined into a larger storage system. Plan the layout first, whether it will stand on the floor, mount to a wall, or work as a room divider.",
+      "onScreenCallouts": [
+        "Plan the configuration",
+        "Floor, wall, or room divider"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Single front three-quarter photo of a white KALLAX cube shelving unit filled with a few white inserts and boxes, standing upright against a plain wall on the floor.",
+      "visualDescription": "Single front three-quarter photo of a white KALLAX cube shelving unit filled with a few white inserts and boxes, standing upright against a plain wall on the floor.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [],
+      "cameraMotion": "slow_zoom_in",
+      "steps": [],
+      "page": 2,
+      "crop": {
+        "top": 0.05,
+        "bottom": 0.95
+      },
+      "durationSeconds": 12.2,
+      "speechSeconds": 10.9
+    },
+    {
+      "id": "scene-02",
+      "index": 2,
+      "title": "Assemble before combining",
+      "narration": "Select the unit sizes that fit your space, then fully assemble every KALLAX unit before positioning or combining them. The frames should be complete and square before you stack or align them.",
+      "onScreenCallouts": [
+        "Fully assemble first",
+        "Check the frame is square"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Front angled photo of a fully assembled white KALLAX shelving unit standing upright, with a second assembled unit nearby ready to be placed; hands check the front edges for alignment.",
+      "visualDescription": "Front angled photo of a fully assembled white KALLAX shelving unit standing upright, with a second assembled unit nearby ready to be placed; hands check the front edges for alignment.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [],
+      "cameraMotion": "slow_left_to_right",
+      "steps": [],
+      "page": 3,
+      "crop": {
+        "top": 0,
+        "bottom": 0.32
+      },
+      "durationSeconds": 12.56,
+      "speechSeconds": 11.25
+    },
+    {
+      "id": "scene-03",
+      "index": 3,
+      "title": "Secure with the tip-over restraint",
+      "narration": "Use the provided tip-over restraint to secure the furniture to the wall. This is especially important when units are stacked higher or arranged where they could tip, such as a room divider setup.",
+      "onScreenCallouts": [
+        "Tip-over restraint",
+        "Secure to wall"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Close three-quarter photo of the top rear of a white KALLAX unit beside a wall, with hands positioning the supplied wall restraint at the back edge.",
+      "visualDescription": "Close three-quarter photo of the top rear of a white KALLAX unit beside a wall, with hands positioning the supplied wall restraint at the back edge.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [
+        "Tip-over hazard: furniture must be fastened to the wall to help prevent serious injury."
+      ],
+      "allowedPartIds": [],
+      "cameraMotion": "slow_zoom_out",
+      "steps": [],
+      "page": 3,
+      "crop": {
+        "top": 0.32,
+        "bottom": 0.73
+      },
+      "durationSeconds": 11.84,
+      "speechSeconds": 10.55
+    },
+    {
+      "id": "scene-04",
+      "index": 4,
+      "title": "Place units in a safe orientation",
+      "narration": "Place the unit in an orientation suited to the room. Use vertical placement for narrow spaces, horizontal placement for a low sideboard or media console, and only use underframes with compatible models.",
+      "onScreenCallouts": [
+        "Vertical or horizontal",
+        "Compatible underframes only"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Front angled photo of a white KALLAX unit placed horizontally as a low storage console, level on the floor, with hands adjusting the position near one end.",
+      "visualDescription": "Front angled photo of a white KALLAX unit placed horizontally as a low storage console, level on the floor, with hands adjusting the position near one end.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [],
+      "cameraMotion": "slow_right_to_left",
+      "steps": [],
+      "page": 3,
+      "crop": {
+        "top": 0.73,
+        "bottom": 1
+      },
+      "durationSeconds": 14.72,
+      "speechSeconds": 13.4
+    },
+    {
+      "id": "scene-05",
+      "index": 5,
+      "title": "Check the floor before combining",
+      "narration": "Before combining multiple units, make sure the floor is completely level. An uneven base can make stacked units unstable and stop the frames from lining up flush with each other.",
+      "onScreenCallouts": [
+        "Level floor",
+        "Frames flush"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Low front angle photo of two white KALLAX units aligned side by side on the floor, with a hand checking the floor line and the front edges for flush alignment.",
+      "visualDescription": "Low front angle photo of two white KALLAX units aligned side by side on the floor, with a hand checking the floor line and the front edges for flush alignment.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [
+        "Do not combine units on an uneven floor; instability can compromise stacked units."
+      ],
+      "allowedPartIds": [],
+      "cameraMotion": "slow_zoom_in",
+      "steps": [],
+      "page": 4,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 12.24,
+      "speechSeconds": 10.95
+    }
+  ],
+  "sceneResults": [
+    {
+      "scene": {
+        "id": "scene-01",
+        "index": 1,
+        "title": "Choose a KALLAX layout",
+        "narration": "KALLAX can be used as one shelving unit or combined into a larger storage system. Plan the layout first, whether it will stand on the floor, mount to a wall, or work as a room divider.",
+        "onScreenCallouts": [
+          "Plan the configuration",
+          "Floor, wall, or room divider"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Single front three-quarter photo of a white KALLAX cube shelving unit filled with a few white inserts and boxes, standing upright against a plain wall on the floor.",
+        "visualDescription": "Single front three-quarter photo of a white KALLAX cube shelving unit filled with a few white inserts and boxes, standing upright against a plain wall on the floor.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [],
+        "cameraMotion": "slow_zoom_in",
+        "steps": [],
+        "page": 2,
+        "crop": {
+          "top": 0.05,
+          "bottom": 0.95
+        },
+        "durationSeconds": 12.2,
+        "speechSeconds": 10.9
+      },
+      "framePath": "frames/scene-01.jpg",
+      "referencePath": "refs/scene-01.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Matches the manual drawing",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 12.2
+    },
+    {
+      "scene": {
+        "id": "scene-02",
+        "index": 2,
+        "title": "Assemble before combining",
+        "narration": "Select the unit sizes that fit your space, then fully assemble every KALLAX unit before positioning or combining them. The frames should be complete and square before you stack or align them.",
+        "onScreenCallouts": [
+          "Fully assemble first",
+          "Check the frame is square"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Front angled photo of a fully assembled white KALLAX shelving unit standing upright, with a second assembled unit nearby ready to be placed; hands check the front edges for alignment.",
+        "visualDescription": "Front angled photo of a fully assembled white KALLAX shelving unit standing upright, with a second assembled unit nearby ready to be placed; hands check the front edges for alignment.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [],
+        "cameraMotion": "slow_left_to_right",
+        "steps": [],
+        "page": 3,
+        "crop": {
+          "top": 0,
+          "bottom": 0.32
+        },
+        "durationSeconds": 12.56,
+        "speechSeconds": 11.25
+      },
+      "framePath": "frames/scene-02.jpg",
+      "referencePath": "refs/scene-02.jpg",
+      "clipPath": "",
+      "attempts": 2,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Include hands checking the front edges more clearly for alignment to match the narration.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 12.56
+    },
+    {
+      "scene": {
+        "id": "scene-03",
+        "index": 3,
+        "title": "Secure with the tip-over restraint",
+        "narration": "Use the provided tip-over restraint to secure the furniture to the wall. This is especially important when units are stacked higher or arranged where they could tip, such as a room divider setup.",
+        "onScreenCallouts": [
+          "Tip-over restraint",
+          "Secure to wall"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Close three-quarter photo of the top rear of a white KALLAX unit beside a wall, with hands positioning the supplied wall restraint at the back edge.",
+        "visualDescription": "Close three-quarter photo of the top rear of a white KALLAX unit beside a wall, with hands positioning the supplied wall restraint at the back edge.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [
+          "Tip-over hazard: furniture must be fastened to the wall to help prevent serious injury."
+        ],
+        "allowedPartIds": [],
+        "cameraMotion": "slow_zoom_out",
+        "steps": [],
+        "page": 3,
+        "crop": {
+          "top": 0.32,
+          "bottom": 0.73
+        },
+        "durationSeconds": 11.84,
+        "speechSeconds": 10.55
+      },
+      "framePath": "frames/scene-03.jpg",
+      "referencePath": "refs/scene-03.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Adjust the angle slightly to show more of the top rear edge where the tip-over restraint attaches for clearer visibility.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 11.84
+    },
+    {
+      "scene": {
+        "id": "scene-04",
+        "index": 4,
+        "title": "Place units in a safe orientation",
+        "narration": "Place the unit in an orientation suited to the room. Use vertical placement for narrow spaces, horizontal placement for a low sideboard or media console, and only use underframes with compatible models.",
+        "onScreenCallouts": [
+          "Vertical or horizontal",
+          "Compatible underframes only"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Front angled photo of a white KALLAX unit placed horizontally as a low storage console, level on the floor, with hands adjusting the position near one end.",
+        "visualDescription": "Front angled photo of a white KALLAX unit placed horizontally as a low storage console, level on the floor, with hands adjusting the position near one end.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [],
+        "cameraMotion": "slow_right_to_left",
+        "steps": [],
+        "page": 3,
+        "crop": {
+          "top": 0.73,
+          "bottom": 1
+        },
+        "durationSeconds": 14.72,
+        "speechSeconds": 13.4
+      },
+      "framePath": "frames/scene-04.jpg",
+      "referencePath": "refs/scene-04.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Matches the manual drawing",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 14.72
+    },
+    {
+      "scene": {
+        "id": "scene-05",
+        "index": 5,
+        "title": "Check the floor before combining",
+        "narration": "Before combining multiple units, make sure the floor is completely level. An uneven base can make stacked units unstable and stop the frames from lining up flush with each other.",
+        "onScreenCallouts": [
+          "Level floor",
+          "Frames flush"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Low front angle photo of two white KALLAX units aligned side by side on the floor, with a hand checking the floor line and the front edges for flush alignment.",
+        "visualDescription": "Low front angle photo of two white KALLAX units aligned side by side on the floor, with a hand checking the floor line and the front edges for flush alignment.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [
+          "Do not combine units on an uneven floor; instability can compromise stacked units."
+        ],
+        "allowedPartIds": [],
+        "cameraMotion": "slow_zoom_in",
+        "steps": [],
+        "page": 4,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 12.24,
+        "speechSeconds": 10.95
+      },
+      "framePath": "frames/scene-05.jpg",
+      "referencePath": "refs/scene-05.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "The photo clearly shows the same KALLAX units and the action of checking the floor and front edges for alignment; no changes needed.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 12.24
+    }
+  ],
+  "videoPath": "output.mp4",
+  "vttPath": "chapters.vtt",
+  "captionsPath": "captions.vtt",
+  "durationSeconds": 63.559999999999995,
+  "timings": {
+    "ingest": 0.2,
+    "storyboard": 11,
+    "scenes": 19.6,
+    "stitch": 0.1,
+    "total": 30.9
+  }
+}

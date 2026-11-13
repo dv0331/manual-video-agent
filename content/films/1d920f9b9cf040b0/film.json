@@ -1,0 +1,1224 @@
+{
+  "id": "1d920f9b9cf040b0",
+  "sourceHash": "1d920f9b9cf040b005003864f5d35cdbdac198c23543d91b52c642ce259cdf61",
+  "sourceName": "Table Assembly Instructions.pdf",
+  "title": "IKEA GRÅFJÄLLET table",
+  "createdAt": "2026-11-13T08:31:15.544Z",
+  "provider": "openai",
+  "graph": {
+    "title": "IKEA GRÅFJÄLLET table",
+    "documentId": "AA-2537619-1",
+    "tools": [
+      "Phillips screwdriver",
+      "Allen key 100092"
+    ],
+    "parts": [
+      {
+        "id": "10115474 / 10115476",
+        "name": "adjustable round feet",
+        "qty": 4
+      },
+      {
+        "id": "100092",
+        "name": "Allen key",
+        "qty": 1
+      },
+      {
+        "id": "10047138",
+        "name": "push latch",
+        "qty": 1
+      },
+      {
+        "id": "151059",
+        "name": "door hinge pin",
+        "qty": 1
+      },
+      {
+        "id": "118253",
+        "name": "Allen bolts",
+        "qty": 4
+      },
+      {
+        "id": "108444",
+        "name": "small screw",
+        "qty": 1
+      },
+      {
+        "id": "100395",
+        "name": "screws",
+        "qty": 10
+      },
+      {
+        "id": "10099092",
+        "name": "cover cap",
+        "qty": 1
+      },
+      {
+        "id": "190447",
+        "name": "washer",
+        "qty": 1
+      }
+    ],
+    "steps": [
+      {
+        "index": 1,
+        "title": "Start the frame and first side panel",
+        "instruction": "Lay the metal frame flat on the protective surface. Slide the first side panel down into the matching slots, checking the notches match the drawing, then fasten it with two screws from underneath.",
+        "figureRef": "Page 6",
+        "fasteners": [
+          "2× 100395",
+          "Soft surface"
+        ],
+        "tools": [],
+        "warnings": [
+          "Protect the surface and do not force the panel if it is not aligned."
+        ]
+      },
+      {
+        "index": 3,
+        "title": "Fit the second side panel",
+        "instruction": "Add the second side panel in the same way, sliding it into the frame slots with the cutouts facing correctly. Secure the bottom edge with two more screws.",
+        "figureRef": "Page 7",
+        "fasteners": [
+          "2× 100395"
+        ],
+        "tools": [],
+        "warnings": []
+      },
+      {
+        "index": 5,
+        "title": "Fold the frame and lock the side panels",
+        "instruction": "Fold the connected frame section over to form the box shape around the panels. Once the edges sit square, fasten the lower corners with four screws.",
+        "figureRef": "Page 8",
+        "fasteners": [
+          "4× 100395"
+        ],
+        "tools": [],
+        "warnings": []
+      },
+      {
+        "index": 7,
+        "title": "Install and lock the back panels",
+        "instruction": "Slide the back panel into the open frame channel, then press the four locking tabs until they click into place. Turn the unit as shown and repeat with the other back panel and four more locks.",
+        "figureRef": "Page 9",
+        "fasteners": [
+          "4 locks each side",
+          "Press to lock"
+        ],
+        "tools": [],
+        "warnings": []
+      },
+      {
+        "index": 11,
+        "title": "Attach the tabletop and upright the table",
+        "instruction": "Place the tabletop face down, position the assembled frame over it, and fasten the four corners with the Allen key and bolts. Screw the four round feet into the leg ends, then turn the table upright.",
+        "figureRef": "Page 11",
+        "fasteners": [
+          "4× 118253",
+          "4× feet",
+          "Allen key"
+        ],
+        "tools": [],
+        "warnings": []
+      },
+      {
+        "index": 13,
+        "title": "Prepare the door",
+        "instruction": "Lay the door panel flat with its inside facing up. Fasten the handle with two screws, add the small screw and washer at the hinge edge, then press the cover cap into the remaining hole.",
+        "figureRef": "Page 13",
+        "fasteners": [
+          "2× 100395",
+          "1× 108444 + 190447",
+          "1× 10099092"
+        ],
+        "tools": [],
+        "warnings": []
+      },
+      {
+        "index": 16,
+        "title": "Choose the door swing and fit the lower hinge pin",
+        "instruction": "This build follows the first door option shown, with the door opening to the right. Insert the hinge pin into the lower hinge hole on the front frame; the opposite-hand door is assembled as a mirror image.",
+        "figureRef": "Page 14",
+        "fasteners": [
+          "1× 151059",
+          "Right-opening door"
+        ],
+        "tools": [],
+        "warnings": []
+      },
+      {
+        "index": 17,
+        "title": "Hang the door and add the latch",
+        "instruction": "Lower the door onto the hinge pin so it sits in the bottom hinge hole. Slide the push latch upward into its bracket inside the frame, then press until it clicks and holds.",
+        "figureRef": "Page 15",
+        "fasteners": [
+          "1× 10047138",
+          "Click"
+        ],
+        "tools": [],
+        "warnings": []
+      },
+      {
+        "index": 19,
+        "title": "Close the door and level the feet",
+        "instruction": "Swing the door closed and check that the front sits even. Adjust the four round feet by turning them until the table stands level, then remember the table is delicate and not for sitting.",
+        "figureRef": "Page 18",
+        "fasteners": [
+          "Adjust 4 feet",
+          "Max load 25 kg"
+        ],
+        "tools": [],
+        "warnings": [
+          "Do not sit on the table or place more than 25 kg, 55 lb, on it."
+        ]
+      }
+    ],
+    "notes": [
+      "Assemble the GRÅFJÄLLET bedside-style table with metal frame, side panels, a hinged door, four adjustable feet, and a push latch. The door can be mounted to open either direction; this storyboard follows the first option shown and notes that the other side mirrors it.",
+      "Delicate table: do not sit on the product.",
+      "Do not place heavy objects on this product. Maximum load is 25 kg, or 55 lb.",
+      "Use a screwdriver by hand, not a power driver.",
+      "Assemble on a soft protective surface to avoid damage.",
+      "If parts are missing or damaged, contact IKEA instead of forcing assembly."
+    ]
+  },
+  "scenes": [
+    {
+      "id": "scene-01",
+      "index": 1,
+      "title": "Before you start",
+      "narration": "Check that you have the Allen key, four adjustable round feet, the push latch, hinge pin, screws, washer, and cover cap. Use a hand screwdriver only, and keep the parts on a soft surface.",
+      "onScreenCallouts": [
+        "Allen key 100092",
+        "Hand screwdriver",
+        "Protect surface"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Overhead photo of all white table parts and hardware laid out neatly on a protective cloth, with the Allen key and screwdriver beside them.",
+      "visualDescription": "Overhead photo of all white table parts and hardware laid out neatly on a protective cloth, with the Allen key and screwdriver beside them.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [
+        "Use a hand screwdriver only; do not use a power driver."
+      ],
+      "allowedPartIds": [
+        "10115474 / 10115476",
+        "100092",
+        "10047138",
+        "151059",
+        "118253",
+        "108444",
+        "100395",
+        "10099092",
+        "190447"
+      ],
+      "cameraMotion": "slow_zoom_in",
+      "steps": [],
+      "page": 5,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 13.56,
+      "speechSeconds": 12.25
+    },
+    {
+      "id": "scene-02",
+      "index": 2,
+      "title": "Start the frame and first side panel",
+      "narration": "Lay the metal frame flat on the protective surface. Slide the first side panel down into the matching slots, checking the notches match the drawing, then fasten it with two screws from underneath.",
+      "onScreenCallouts": [
+        "2× 100395",
+        "Soft surface"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Three-quarter overhead photo of the white metal frame lying flat, first vertical side panel installed at one end, hands tightening two screws with a screwdriver.",
+      "visualDescription": "Three-quarter overhead photo of the white metal frame lying flat, first vertical side panel installed at one end, hands tightening two screws with a screwdriver.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [
+        "Protect the surface and do not force the panel if it is not aligned."
+      ],
+      "allowedPartIds": [
+        "10115474 / 10115476",
+        "100092",
+        "10047138",
+        "151059",
+        "118253",
+        "108444",
+        "100395",
+        "10099092",
+        "190447"
+      ],
+      "cameraMotion": "slow_left_to_right",
+      "steps": [
+        1,
+        2
+      ],
+      "page": 6,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 14.2,
+      "speechSeconds": 12.9
+    },
+    {
+      "id": "scene-03",
+      "index": 3,
+      "title": "Fit the second side panel",
+      "narration": "Add the second side panel in the same way, sliding it into the frame slots with the cutouts facing correctly. Secure the bottom edge with two more screws.",
+      "onScreenCallouts": [
+        "2× 100395"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Overhead angled photo of the frame still lying flat, two white side panels standing in place, hands driving the second pair of screws at the base.",
+      "visualDescription": "Overhead angled photo of the frame still lying flat, two white side panels standing in place, hands driving the second pair of screws at the base.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "10115474 / 10115476",
+        "100092",
+        "10047138",
+        "151059",
+        "118253",
+        "108444",
+        "100395",
+        "10099092",
+        "190447"
+      ],
+      "cameraMotion": "slow_zoom_out",
+      "steps": [
+        3,
+        4
+      ],
+      "page": 7,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 13.6,
+      "speechSeconds": 12.3
+    },
+    {
+      "id": "scene-04",
+      "index": 4,
+      "title": "Fold the frame and lock the side panels",
+      "narration": "Fold the connected frame section over to form the box shape around the panels. Once the edges sit square, fasten the lower corners with four screws.",
+      "onScreenCallouts": [
+        "4× 100395"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Three-quarter photo of the white frame folded into a rectangular cabinet-like shape on its side, hands tightening corner screws with a screwdriver.",
+      "visualDescription": "Three-quarter photo of the white frame folded into a rectangular cabinet-like shape on its side, hands tightening corner screws with a screwdriver.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "10115474 / 10115476",
+        "100092",
+        "10047138",
+        "151059",
+        "118253",
+        "108444",
+        "100395",
+        "10099092",
+        "190447"
+      ],
+      "cameraMotion": "slow_right_to_left",
+      "steps": [
+        5,
+        6
+      ],
+      "page": 8,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 13.24,
+      "speechSeconds": 11.95
+    },
+    {
+      "id": "scene-05",
+      "index": 5,
+      "title": "Install and lock the back panels",
+      "narration": "Slide the back panel into the open frame channel, then press the four locking tabs until they click into place. Turn the unit as shown and repeat with the other back panel and four more locks.",
+      "onScreenCallouts": [
+        "4 locks each side",
+        "Press to lock"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Angled photo of the table body lying on its side, white back panels seated in the frame, one hand pressing a small locking tab flush.",
+      "visualDescription": "Angled photo of the table body lying on its side, white back panels seated in the frame, one hand pressing a small locking tab flush.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "10115474 / 10115476",
+        "100092",
+        "10047138",
+        "151059",
+        "118253",
+        "108444",
+        "100395",
+        "10099092",
+        "190447"
+      ],
+      "cameraMotion": "slow_zoom_in",
+      "steps": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "page": 9,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 14.52,
+      "speechSeconds": 13.2
+    },
+    {
+      "id": "scene-06",
+      "index": 6,
+      "title": "Attach the tabletop and upright the table",
+      "narration": "Place the tabletop face down, position the assembled frame over it, and fasten the four corners with the Allen key and bolts. Screw the four round feet into the leg ends, then turn the table upright.",
+      "onScreenCallouts": [
+        "4× 118253",
+        "4× feet",
+        "Allen key"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Low three-quarter photo of the upside-down white table frame on the underside of the tabletop, hands using the Allen key at one corner, with round feet visible on the leg ends.",
+      "visualDescription": "Low three-quarter photo of the upside-down white table frame on the underside of the tabletop, hands using the Allen key at one corner, with round feet visible on the leg ends.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "10115474 / 10115476",
+        "100092",
+        "10047138",
+        "151059",
+        "118253",
+        "108444",
+        "100395",
+        "10099092",
+        "190447"
+      ],
+      "cameraMotion": "slow_left_to_right",
+      "steps": [
+        11,
+        12
+      ],
+      "page": 11,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 14.56,
+      "speechSeconds": 13.25
+    },
+    {
+      "id": "scene-07",
+      "index": 7,
+      "title": "Prepare the door",
+      "narration": "Lay the door panel flat with its inside facing up. Fasten the handle with two screws, add the small screw and washer at the hinge edge, then press the cover cap into the remaining hole.",
+      "onScreenCallouts": [
+        "2× 100395",
+        "1× 108444 + 190447",
+        "1× 10099092"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Overhead photo of the white door panel on a cloth, handle attached along one edge, hands pressing the small cover cap into the door face.",
+      "visualDescription": "Overhead photo of the white door panel on a cloth, handle attached along one edge, hands pressing the small cover cap into the door face.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "10115474 / 10115476",
+        "100092",
+        "10047138",
+        "151059",
+        "118253",
+        "108444",
+        "100395",
+        "10099092",
+        "190447"
+      ],
+      "cameraMotion": "slow_zoom_out",
+      "steps": [
+        13,
+        14,
+        15
+      ],
+      "page": 13,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 14.72,
+      "speechSeconds": 13.4
+    },
+    {
+      "id": "scene-08",
+      "index": 8,
+      "title": "Choose the door swing and fit the lower hinge pin",
+      "narration": "This build follows the first door option shown, with the door opening to the right. Insert the hinge pin into the lower hinge hole on the front frame; the opposite-hand door is assembled as a mirror image.",
+      "onScreenCallouts": [
+        "1× 151059",
+        "Right-opening door"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Front three-quarter photo of the upright white table, open front facing the camera, hand placing the hinge pin into the lower hinge point on the right side.",
+      "visualDescription": "Front three-quarter photo of the upright white table, open front facing the camera, hand placing the hinge pin into the lower hinge point on the right side.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "10115474 / 10115476",
+        "100092",
+        "10047138",
+        "151059",
+        "118253",
+        "108444",
+        "100395",
+        "10099092",
+        "190447"
+      ],
+      "cameraMotion": "slow_right_to_left",
+      "steps": [
+        16
+      ],
+      "build": "right-opening door",
+      "page": 14,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 13.36,
+      "speechSeconds": 12.05
+    },
+    {
+      "id": "scene-09",
+      "index": 9,
+      "title": "Hang the door and add the latch",
+      "narration": "Lower the door onto the hinge pin so it sits in the bottom hinge hole. Slide the push latch upward into its bracket inside the frame, then press until it clicks and holds.",
+      "onScreenCallouts": [
+        "1× 10047138",
+        "Click"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Front three-quarter photo of the table with the door open to the right, one hand steadying the door and the other pressing the push latch into the inside bracket.",
+      "visualDescription": "Front three-quarter photo of the table with the door open to the right, one hand steadying the door and the other pressing the push latch into the inside bracket.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [],
+      "allowedPartIds": [
+        "10115474 / 10115476",
+        "100092",
+        "10047138",
+        "151059",
+        "118253",
+        "108444",
+        "100395",
+        "10099092",
+        "190447"
+      ],
+      "cameraMotion": "slow_zoom_in",
+      "steps": [
+        17,
+        18
+      ],
+      "build": "right-opening door",
+      "page": 15,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 14.6,
+      "speechSeconds": 13.3
+    },
+    {
+      "id": "scene-10",
+      "index": 10,
+      "title": "Close the door and level the feet",
+      "narration": "Swing the door closed and check that the front sits even. Adjust the four round feet by turning them until the table stands level, then remember the table is delicate and not for sitting.",
+      "onScreenCallouts": [
+        "Adjust 4 feet",
+        "Max load 25 kg"
+      ],
+      "motionPrompt": "",
+      "framePrompt": "Front three-quarter photo of the finished white table standing upright with the door closed, hands turning one adjustable foot at floor level.",
+      "visualDescription": "Front three-quarter photo of the finished white table standing upright with the door closed, hands turning one adjustable foot at floor level.",
+      "startFrameStrategy": "human-assembly",
+      "warnings": [
+        "Do not sit on the table or place more than 25 kg, 55 lb, on it."
+      ],
+      "allowedPartIds": [
+        "10115474 / 10115476",
+        "100092",
+        "10047138",
+        "151059",
+        "118253",
+        "108444",
+        "100395",
+        "10099092",
+        "190447"
+      ],
+      "cameraMotion": "slow_left_to_right",
+      "steps": [
+        19
+      ],
+      "page": 18,
+      "crop": {
+        "top": 0,
+        "bottom": 1
+      },
+      "durationSeconds": 13.72,
+      "speechSeconds": 12.4
+    }
+  ],
+  "sceneResults": [
+    {
+      "scene": {
+        "id": "scene-01",
+        "index": 1,
+        "title": "Before you start",
+        "narration": "Check that you have the Allen key, four adjustable round feet, the push latch, hinge pin, screws, washer, and cover cap. Use a hand screwdriver only, and keep the parts on a soft surface.",
+        "onScreenCallouts": [
+          "Allen key 100092",
+          "Hand screwdriver",
+          "Protect surface"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Overhead photo of all white table parts and hardware laid out neatly on a protective cloth, with the Allen key and screwdriver beside them.",
+        "visualDescription": "Overhead photo of all white table parts and hardware laid out neatly on a protective cloth, with the Allen key and screwdriver beside them.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [
+          "Use a hand screwdriver only; do not use a power driver."
+        ],
+        "allowedPartIds": [
+          "10115474 / 10115476",
+          "100092",
+          "10047138",
+          "151059",
+          "118253",
+          "108444",
+          "100395",
+          "10099092",
+          "190447"
+        ],
+        "cameraMotion": "slow_zoom_in",
+        "steps": [],
+        "page": 5,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 13.56,
+        "speechSeconds": 12.25
+      },
+      "framePath": "frames/scene-01.jpg",
+      "referencePath": "refs/scene-01.jpg",
+      "clipPath": "",
+      "attempts": 2,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.5,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": false,
+        "critique": "Include all four adjustable round feet to match the manual drawing accurately.",
+        "failureType": "visual",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 13.56
+    },
+    {
+      "scene": {
+        "id": "scene-02",
+        "index": 2,
+        "title": "Start the frame and first side panel",
+        "narration": "Lay the metal frame flat on the protective surface. Slide the first side panel down into the matching slots, checking the notches match the drawing, then fasten it with two screws from underneath.",
+        "onScreenCallouts": [
+          "2× 100395",
+          "Soft surface"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Three-quarter overhead photo of the white metal frame lying flat, first vertical side panel installed at one end, hands tightening two screws with a screwdriver.",
+        "visualDescription": "Three-quarter overhead photo of the white metal frame lying flat, first vertical side panel installed at one end, hands tightening two screws with a screwdriver.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [
+          "Protect the surface and do not force the panel if it is not aligned."
+        ],
+        "allowedPartIds": [
+          "10115474 / 10115476",
+          "100092",
+          "10047138",
+          "151059",
+          "118253",
+          "108444",
+          "100395",
+          "10099092",
+          "190447"
+        ],
+        "cameraMotion": "slow_left_to_right",
+        "steps": [
+          1,
+          2
+        ],
+        "page": 6,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 14.2,
+        "speechSeconds": 12.9
+      },
+      "framePath": "frames/scene-02.jpg",
+      "referencePath": "refs/scene-02.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Angle could be slightly more overhead to better show the matching notches as in the drawing.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 14.2
+    },
+    {
+      "scene": {
+        "id": "scene-03",
+        "index": 3,
+        "title": "Fit the second side panel",
+        "narration": "Add the second side panel in the same way, sliding it into the frame slots with the cutouts facing correctly. Secure the bottom edge with two more screws.",
+        "onScreenCallouts": [
+          "2× 100395"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Overhead angled photo of the frame still lying flat, two white side panels standing in place, hands driving the second pair of screws at the base.",
+        "visualDescription": "Overhead angled photo of the frame still lying flat, two white side panels standing in place, hands driving the second pair of screws at the base.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "10115474 / 10115476",
+          "100092",
+          "10047138",
+          "151059",
+          "118253",
+          "108444",
+          "100395",
+          "10099092",
+          "190447"
+        ],
+        "cameraMotion": "slow_zoom_out",
+        "steps": [
+          3,
+          4
+        ],
+        "page": 7,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 13.6,
+        "speechSeconds": 12.3
+      },
+      "framePath": "frames/scene-03.jpg",
+      "referencePath": "refs/scene-03.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Change the camera angle to be overhead and more angled to clearly show the frame lying flat, matching the manual illustration.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 13.6
+    },
+    {
+      "scene": {
+        "id": "scene-04",
+        "index": 4,
+        "title": "Fold the frame and lock the side panels",
+        "narration": "Fold the connected frame section over to form the box shape around the panels. Once the edges sit square, fasten the lower corners with four screws.",
+        "onScreenCallouts": [
+          "4× 100395"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Three-quarter photo of the white frame folded into a rectangular cabinet-like shape on its side, hands tightening corner screws with a screwdriver.",
+        "visualDescription": "Three-quarter photo of the white frame folded into a rectangular cabinet-like shape on its side, hands tightening corner screws with a screwdriver.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "10115474 / 10115476",
+          "100092",
+          "10047138",
+          "151059",
+          "118253",
+          "108444",
+          "100395",
+          "10099092",
+          "190447"
+        ],
+        "cameraMotion": "slow_right_to_left",
+        "steps": [
+          5,
+          6
+        ],
+        "page": 8,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 13.24,
+        "speechSeconds": 11.95
+      },
+      "framePath": "frames/scene-04.jpg",
+      "referencePath": "refs/scene-04.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Show the frame and panels at a slightly higher angle to better match the drawing's perspective and clearly display the corner where screws are being fastened.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 13.24
+    },
+    {
+      "scene": {
+        "id": "scene-05",
+        "index": 5,
+        "title": "Install and lock the back panels",
+        "narration": "Slide the back panel into the open frame channel, then press the four locking tabs until they click into place. Turn the unit as shown and repeat with the other back panel and four more locks.",
+        "onScreenCallouts": [
+          "4 locks each side",
+          "Press to lock"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Angled photo of the table body lying on its side, white back panels seated in the frame, one hand pressing a small locking tab flush.",
+        "visualDescription": "Angled photo of the table body lying on its side, white back panels seated in the frame, one hand pressing a small locking tab flush.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "10115474 / 10115476",
+          "100092",
+          "10047138",
+          "151059",
+          "118253",
+          "108444",
+          "100395",
+          "10099092",
+          "190447"
+        ],
+        "cameraMotion": "slow_zoom_in",
+        "steps": [
+          7,
+          8,
+          9,
+          10
+        ],
+        "page": 9,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 14.52,
+        "speechSeconds": 13.2
+      },
+      "framePath": "frames/scene-05.jpg",
+      "referencePath": "refs/scene-05.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Matches the manual drawing",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 14.52
+    },
+    {
+      "scene": {
+        "id": "scene-06",
+        "index": 6,
+        "title": "Attach the tabletop and upright the table",
+        "narration": "Place the tabletop face down, position the assembled frame over it, and fasten the four corners with the Allen key and bolts. Screw the four round feet into the leg ends, then turn the table upright.",
+        "onScreenCallouts": [
+          "4× 118253",
+          "4× feet",
+          "Allen key"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Low three-quarter photo of the upside-down white table frame on the underside of the tabletop, hands using the Allen key at one corner, with round feet visible on the leg ends.",
+        "visualDescription": "Low three-quarter photo of the upside-down white table frame on the underside of the tabletop, hands using the Allen key at one corner, with round feet visible on the leg ends.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "10115474 / 10115476",
+          "100092",
+          "10047138",
+          "151059",
+          "118253",
+          "108444",
+          "100395",
+          "10099092",
+          "190447"
+        ],
+        "cameraMotion": "slow_left_to_right",
+        "steps": [
+          11,
+          12
+        ],
+        "page": 11,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 14.56,
+        "speechSeconds": 13.25
+      },
+      "framePath": "frames/scene-06.jpg",
+      "referencePath": "refs/scene-06.jpg",
+      "clipPath": "",
+      "attempts": 2,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.5,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": false,
+        "critique": "Include the round feet screwed into the leg ends in the photo to fully match the narrated step.",
+        "failureType": "visual",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 14.56
+    },
+    {
+      "scene": {
+        "id": "scene-07",
+        "index": 7,
+        "title": "Prepare the door",
+        "narration": "Lay the door panel flat with its inside facing up. Fasten the handle with two screws, add the small screw and washer at the hinge edge, then press the cover cap into the remaining hole.",
+        "onScreenCallouts": [
+          "2× 100395",
+          "1× 108444 + 190447",
+          "1× 10099092"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Overhead photo of the white door panel on a cloth, handle attached along one edge, hands pressing the small cover cap into the door face.",
+        "visualDescription": "Overhead photo of the white door panel on a cloth, handle attached along one edge, hands pressing the small cover cap into the door face.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "10115474 / 10115476",
+          "100092",
+          "10047138",
+          "151059",
+          "118253",
+          "108444",
+          "100395",
+          "10099092",
+          "190447"
+        ],
+        "cameraMotion": "slow_zoom_out",
+        "steps": [
+          13,
+          14,
+          15
+        ],
+        "page": 13,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 14.72,
+        "speechSeconds": 13.4
+      },
+      "framePath": "frames/scene-07.jpg",
+      "referencePath": "refs/scene-07.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "Show the door's inside surface facing up with the handle already attached on the hinge edge, and hands pressing the small cover cap into the correct hole near the hinge edge as in the drawing.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 14.72
+    },
+    {
+      "scene": {
+        "id": "scene-08",
+        "index": 8,
+        "title": "Choose the door swing and fit the lower hinge pin",
+        "narration": "This build follows the first door option shown, with the door opening to the right. Insert the hinge pin into the lower hinge hole on the front frame; the opposite-hand door is assembled as a mirror image.",
+        "onScreenCallouts": [
+          "1× 151059",
+          "Right-opening door"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Front three-quarter photo of the upright white table, open front facing the camera, hand placing the hinge pin into the lower hinge point on the right side.",
+        "visualDescription": "Front three-quarter photo of the upright white table, open front facing the camera, hand placing the hinge pin into the lower hinge point on the right side.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "10115474 / 10115476",
+          "100092",
+          "10047138",
+          "151059",
+          "118253",
+          "108444",
+          "100395",
+          "10099092",
+          "190447"
+        ],
+        "cameraMotion": "slow_right_to_left",
+        "steps": [
+          16
+        ],
+        "build": "right-opening door",
+        "page": 14,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 13.36,
+        "speechSeconds": 12.05
+      },
+      "framePath": "frames/scene-08.jpg",
+      "referencePath": "refs/scene-08.jpg",
+      "clipPath": "",
+      "attempts": 2,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "The photo is well composed but could better emphasize the hinge pin being inserted by zooming in slightly.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 13.36
+    },
+    {
+      "scene": {
+        "id": "scene-09",
+        "index": 9,
+        "title": "Hang the door and add the latch",
+        "narration": "Lower the door onto the hinge pin so it sits in the bottom hinge hole. Slide the push latch upward into its bracket inside the frame, then press until it clicks and holds.",
+        "onScreenCallouts": [
+          "1× 10047138",
+          "Click"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Front three-quarter photo of the table with the door open to the right, one hand steadying the door and the other pressing the push latch into the inside bracket.",
+        "visualDescription": "Front three-quarter photo of the table with the door open to the right, one hand steadying the door and the other pressing the push latch into the inside bracket.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [],
+        "allowedPartIds": [
+          "10115474 / 10115476",
+          "100092",
+          "10047138",
+          "151059",
+          "118253",
+          "108444",
+          "100395",
+          "10099092",
+          "190447"
+        ],
+        "cameraMotion": "slow_zoom_in",
+        "steps": [
+          17,
+          18
+        ],
+        "build": "right-opening door",
+        "page": 15,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 14.6,
+        "speechSeconds": 13.3
+      },
+      "framePath": "frames/scene-09.jpg",
+      "referencePath": "refs/scene-09.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "The photo would improve by showing the door lowered onto the hinge pin more clearly, emphasizing the exact moment described in the narration.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 14.6
+    },
+    {
+      "scene": {
+        "id": "scene-10",
+        "index": 10,
+        "title": "Close the door and level the feet",
+        "narration": "Swing the door closed and check that the front sits even. Adjust the four round feet by turning them until the table stands level, then remember the table is delicate and not for sitting.",
+        "onScreenCallouts": [
+          "Adjust 4 feet",
+          "Max load 25 kg"
+        ],
+        "motionPrompt": "",
+        "framePrompt": "Front three-quarter photo of the finished white table standing upright with the door closed, hands turning one adjustable foot at floor level.",
+        "visualDescription": "Front three-quarter photo of the finished white table standing upright with the door closed, hands turning one adjustable foot at floor level.",
+        "startFrameStrategy": "human-assembly",
+        "warnings": [
+          "Do not sit on the table or place more than 25 kg, 55 lb, on it."
+        ],
+        "allowedPartIds": [
+          "10115474 / 10115476",
+          "100092",
+          "10047138",
+          "151059",
+          "118253",
+          "108444",
+          "100395",
+          "10099092",
+          "190447"
+        ],
+        "cameraMotion": "slow_left_to_right",
+        "steps": [
+          19
+        ],
+        "page": 18,
+        "crop": {
+          "top": 0,
+          "bottom": 1
+        },
+        "durationSeconds": 13.72,
+        "speechSeconds": 12.4
+      },
+      "framePath": "frames/scene-10.jpg",
+      "referencePath": "refs/scene-10.jpg",
+      "clipPath": "",
+      "attempts": 1,
+      "evaluation": {
+        "similarity": 1,
+        "promptAdherence": 1,
+        "visualQuality": 0.9,
+        "partIdentity": 1,
+        "safetyCoverage": 1,
+        "inventedParts": false,
+        "warningPresent": true,
+        "sequenceCorrect": true,
+        "temporalConsistency": 0.9,
+        "passed": true,
+        "critique": "The photo angle should be more of a front three-quarter view, showing the door fully closed and the hand adjusting one of the feet closer to the front, to better match the drawing.",
+        "failureType": "none",
+        "narrationAlignment": 1,
+        "motionCoherence": 0.9,
+        "cheapGate": 1
+      },
+      "motionSource": "kenburns",
+      "durationSeconds": 13.72
+    }
+  ],
+  "videoPath": "output.mp4",
+  "vttPath": "chapters.vtt",
+  "captionsPath": "captions.vtt",
+  "durationSeconds": 140.08,
+  "timings": {
+    "ingest": 0.7,
+    "storyboard": 22.1,
+    "scenes": 32.3,
+    "stitch": 0.2,
+    "total": 55.3
+  }
+}

@@ -13,8 +13,8 @@ import {
   renderOverlay,
   renderSceneClip,
   renderStill,
-  sceneBadge,
 } from "@/lib/agent/ffmpeg";
+import { sceneBadge } from "@/lib/agent/badge";
 import { narrationScript } from "@/lib/agent/narration";
 import { limiter, mapLimit } from "@/lib/agent/pool";
 import { logProduction } from "@/lib/agent/production-log";

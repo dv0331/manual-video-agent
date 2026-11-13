@@ -107,6 +107,20 @@ export async function listFilms(): Promise<FilmSummary[]> {
   return [...seen.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
+/** The newest saved step-by-step film, for the home page preview. */
+export async function featuredFilm() {
+  for (const summary of await listFilms()) {
+    const film = await loadFilm(summary.id);
+    if (!film?.manifest.scenes.some((scene) => scene.steps?.length)) continue;
+    return {
+      sourceName: film.manifest.title,
+      videoUrl: filmAssetUrl(summary.id, film.manifest.videoPath),
+      scenes: film.manifest.scenes.map((scene) => ({ title: scene.title, narration: scene.narration })),
+    };
+  }
+  return null;
+}
+
 async function copyIfPresent(from: string | undefined, to: string) {
   if (!from || !existsSync(from)) return false;
   await mkdir(path.dirname(to), { recursive: true });

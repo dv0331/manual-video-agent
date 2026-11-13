@@ -1,19 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { requestIsHttps } from "@/lib/https";
-
-const COOKIE = "mtav_session";
-
-function expectedToken() {
-  const user = process.env.BASIC_AUTH_USER;
-  const password = process.env.BASIC_AUTH_PASSWORD;
-  if (!user || !password) return null;
-  return btoa(`${user}:${password}`);
-}
-
-function credentialsMatch(header: string | null, token: string) {
-  if (!header?.startsWith("Basic ")) return false;
-  return header.slice(6) === token;
-}
+import { SESSION_COOKIE, sameSecret, sessionToken, siteCredentials } from "@/lib/session";
 
 function wantsHtml(request: NextRequest) {
   return (request.headers.get("accept") ?? "").includes("text/html");
@@ -27,9 +14,9 @@ function loginUrl(request: NextRequest) {
   return url;
 }
 
-export function middleware(request: NextRequest) {
-  const token = expectedToken();
-  if (!token) {
+export async function proxy(request: NextRequest) {
+  const credentials = siteCredentials();
+  if (!credentials) {
     return NextResponse.next();
   }
 
@@ -38,15 +25,17 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const cookie = request.cookies.get(COOKIE)?.value;
-  if (cookie === token) {
+  const token = await sessionToken(credentials.user, credentials.password);
+  if (sameSecret(request.cookies.get(SESSION_COOKIE)?.value, token)) {
     return NextResponse.next();
   }
 
-  if (credentialsMatch(request.headers.get("authorization"), token)) {
+  const header = request.headers.get("authorization");
+  const basic = btoa(`${credentials.user}:${credentials.password}`);
+  if (header?.startsWith("Basic ") && sameSecret(header.slice(6), basic)) {
     const response = NextResponse.next();
     response.cookies.set({
-      name: COOKIE,
+      name: SESSION_COOKIE,
       value: token,
       httpOnly: true,
       sameSite: "lax",
